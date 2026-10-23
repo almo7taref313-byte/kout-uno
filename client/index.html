@@ -219,12 +219,33 @@
       transform-origin: 50% 50%;
       filter: drop-shadow(0 0 6px #f59e0b);
     }
-    .neon-pulse-glow {
-      animation: neonPulse 1.2s infinite alternate;
+    
+    /* وهج أصفر فسفوري بسيط وأنيق لصاحب الدور */
+    .glow-turn-phosphor {
+      border-color: #facc15 !important;
+      box-shadow: 0 0 14px 2px rgba(250, 204, 21, 0.85), inset 0 0 6px rgba(250, 204, 21, 0.4) !important;
+      animation: pulsePhosphor 1.5s infinite ease-in-out alternate;
     }
-    @keyframes neonPulse {
-      from { box-shadow: 0 0 6px 1px #f59e0b, inset 0 0 4px #f59e0b; }
-      to { box-shadow: 0 0 20px 4px #fbbf24, inset 0 0 8px #fbbf24; }
+    @keyframes pulsePhosphor {
+      0% { box-shadow: 0 0 8px 1px rgba(250, 204, 21, 0.65), inset 0 0 4px rgba(250, 204, 21, 0.3); }
+      100% { box-shadow: 0 0 18px 3px rgba(250, 204, 21, 0.95), inset 0 0 8px rgba(250, 204, 21, 0.5); }
+    }
+
+    /* وهج أحمر متزامن يومض بقوة مع اقتراب نفاذ الوقت */
+    .glow-turn-critical-red {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.95), inset 0 0 8px rgba(239, 68, 68, 0.6) !important;
+      animation: flashCriticalRed 0.45s infinite alternate ease-in-out;
+    }
+    @keyframes flashCriticalRed {
+      0% {
+        box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.6), inset 0 0 3px rgba(239, 68, 68, 0.3);
+        transform: scale(1);
+      }
+      100% {
+        box-shadow: 0 0 24px 6px rgba(239, 68, 68, 1), inset 0 0 10px rgba(239, 68, 68, 0.7);
+        transform: scale(1.06);
+      }
     }
 
     /* Voice Callout Bubble */
@@ -327,10 +348,10 @@
       </p>
     </div>
 
-    <!-- Main 3 Action Buttons -->
-    <div class="w-full max-w-md space-y-3 pb-2">
+    <!-- Main Action Buttons -->
+    <div class="w-full max-w-md space-y-2.5 pb-2">
       <!-- 1. Play Online Fast Button -->
-      <button id="btnPlayOnlineFast" class="btn-glow-green w-full text-slate-950 font-black py-3.5 sm:py-4 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-emerald-300/50">
+      <button id="btnPlayOnlineFast" class="btn-glow-green w-full text-slate-950 font-black py-3 sm:py-3.5 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-emerald-300/50">
         <div class="flex items-center gap-3">
           <span class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition">⚡</span>
           <div class="text-right">
@@ -342,7 +363,7 @@
       </button>
 
       <!-- 2. Host Custom Table for Friends Button -->
-      <button id="btnOpenHostTableModal" class="btn-glow-blue w-full text-white font-black py-3.5 sm:py-4 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-blue-300/40">
+      <button id="btnOpenHostTableModal" class="btn-glow-blue w-full text-white font-black py-3 sm:py-3.5 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-blue-300/40">
         <div class="flex items-center gap-3">
           <span class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition">👥</span>
           <div class="text-right">
@@ -355,14 +376,26 @@
 
       <!-- 3. Join by 4-digit code (Quick Bar) -->
       <div class="flex gap-2">
-        <input type="text" id="inputLobbyQuickJoinCode" maxlength="4" placeholder="أدخل رمز غرفة (4 أرقام)" class="flex-1 bg-slate-900 border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2.5 text-center font-mono font-black text-amber-300 tracking-widest text-sm outline-none placeholder:text-slate-500 placeholder:text-xs">
-        <button id="btnLobbyQuickJoin" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 px-4 py-2.5 rounded-xl font-bold text-xs text-amber-300 transition">
+        <input type="text" id="inputLobbyQuickJoinCode" maxlength="4" placeholder="أدخل رمز غرفة (4 أرقام)" class="flex-1 bg-slate-900 border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2 text-center font-mono font-black text-amber-300 tracking-widest text-sm outline-none placeholder:text-slate-500 placeholder:text-xs">
+        <button id="btnLobbyQuickJoin" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 px-4 py-2 rounded-xl font-bold text-xs text-amber-300 transition">
           انضمام 🚪
         </button>
       </div>
 
-      <!-- 4. Exit Application Button -->
-      <button id="btnExitAppLobby" class="w-full bg-slate-900/90 hover:bg-rose-950/70 border border-slate-800 hover:border-rose-500/50 text-slate-400 hover:text-rose-300 font-bold py-2.5 rounded-xl text-xs transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
+      <!-- 4. Install & Download Game Button (Universal for Android, iOS, Windows, Mac, iPad) -->
+      <button id="btnOpenInstallModal" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-4 rounded-xl flex items-center justify-between active:scale-[0.98] transition shadow-lg border border-yellow-200">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">📥</span>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black block leading-tight">تثبيت وتحميل اللعبة على جهازك</span>
+            <span id="detectedPlatformText" class="text-[10px] text-slate-900/80 font-bold">يدعم: أندرويد • آيفون • آيباد • ويندوز • ماك</span>
+          </div>
+        </div>
+        <span class="bg-slate-950/15 px-2 py-0.5 rounded-lg text-[10px] font-black border border-slate-950/10">تثبيت 📲</span>
+      </button>
+
+      <!-- 5. Exit Application Button -->
+      <button id="btnExitAppLobby" class="w-full bg-slate-900/90 hover:bg-rose-950/70 border border-slate-800 hover:border-rose-500/50 text-slate-400 hover:text-rose-300 font-bold py-2 rounded-xl text-xs transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
         <span>🚪</span>
         <span>الخروج من اللعبة</span>
       </button>
@@ -371,6 +404,150 @@
     <!-- Footer Copyright & Info -->
     <div class="text-center text-[10px] text-slate-500 pt-1">
       كوت بو ستة أونو الكويتية • نسخة الويب الرسمية PWA
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: INSTALL & DEVICE ORIENTATION SETTINGS (تحميل اللعبة لجميع الأجهزة)
+       ========================================== -->
+  <div id="installAppModal" class="hidden fixed inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border-2 border-amber-500/80 rounded-3xl w-full max-w-lg p-4 sm:p-5 text-right shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">📱</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-amber-400">تثبيت اللعبة وإعدادات الشاشة</h3>
+            <span class="text-[10px] text-slate-400">تشغيل كتطبيق أصلي بملء الشاشة على كافة الأنظمة</span>
+          </div>
+        </div>
+        <button id="btnCloseInstallModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+      </div>
+
+      <!-- Quick Native Install Action Banner (Shows when PWA prompt is ready) -->
+      <div id="pwaPromptContainer" class="hidden mb-3 bg-gradient-to-r from-emerald-600 to-teal-600 p-3 rounded-2xl text-white flex items-center justify-between shadow-lg">
+        <div>
+          <div class="font-black text-xs sm:text-sm">تثبيت بنقرة واحدة متاح لجهازك!</div>
+          <div class="text-[10px] text-emerald-100 font-medium">سيتم إنشاء أيقونة للعبة على الشاشة الرئيسية مباشرة</div>
+        </div>
+        <button id="btnTriggerPWAInstall" class="bg-white text-emerald-900 font-black px-3.5 py-2 rounded-xl text-xs active:scale-95 transition shadow">
+          تثبيت الآن 🚀
+        </button>
+      </div>
+
+      <!-- Screen Orientation & Display Controls (إعدادات الشاشة: طولي، عرضي، ملء الشاشة) -->
+      <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 mb-3.5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black text-amber-300">⚙️ وضع العرض والشاشة لجهازك:</span>
+          <span id="currentOrientationLabel" class="text-[10px] bg-slate-800 text-slate-300 font-bold px-2 py-0.5 rounded-md border border-slate-700">تلقائي</span>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-2">
+          <button id="btnSetOrientationAuto" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-slate-700 flex flex-col items-center justify-center gap-0.5 transition">
+            <span class="text-sm">🔄</span>
+            <span>تلقائي (Auto)</span>
+          </button>
+          <button id="btnSetOrientationLandscape" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-slate-700 flex flex-col items-center justify-center gap-0.5 transition">
+            <span class="text-sm">🖥️</span>
+            <span>بالعرض (Landscape)</span>
+          </button>
+          <button id="btnToggleFullscreen" class="bg-indigo-600/80 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-indigo-400 flex flex-col items-center justify-center gap-0.5 transition">
+            <span class="text-sm">⛶</span>
+            <span>ملء الشاشة</span>
+          </button>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">
+          * على أجهزة التابلت والشاشات الكبيرة، يُفضل العرض بالعرض (Landscape) للاستمتاع برؤية مقاعد اللاعبين الستة بدقة تامة.
+        </p>
+      </div>
+
+      <!-- Tabs by OS (Android, iOS, Windows, Mac, iPad/Tablet) -->
+      <div class="flex border-b border-slate-800 mb-3 gap-1 overflow-x-auto pb-1 text-xs">
+        <button class="os-tab-btn active px-3 py-1.5 rounded-xl font-black bg-amber-500 text-slate-950 transition" data-os="android">Android 🤖</button>
+        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="ios">iPhone / iPad 🍏</button>
+        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="windows">Windows 💻</button>
+        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="mac">macOS 🖥️</button>
+        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="tablet">التابلت والأجهزة اللوحية 📟</button>
+      </div>
+
+      <!-- OS Content 1: Android -->
+      <div id="osContent-android" class="os-content-panel space-y-2 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="font-black text-emerald-400 flex items-center gap-1.5">
+            <span>🤖</span>
+            <span>التثبيت على هواتف وأجهزة أندرويد (Samsung, Huawei, Xiaomi, etc):</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+            <li>افتح اللعبة عبر متصفح <b>Google Chrome</b> أو أي متصفح رئيسي.</li>
+            <li>اضغط على زر الخيارات <b>(⋮)</b> الموجود في أعلى أو أسفل المتصفح.</li>
+            <li>اختر <b>"تثبيت التطبيق" (Install app)</b> أو <b>"إضافة إلى الشاشة الرئيسية" (Add to Home screen)</b>.</li>
+            <li>ستظهر أيقونة كوت بو ستة أونو على شاشة هاتفك وتعمل فوراً بدون شريط المتصفح وبأداء كامل.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- OS Content 2: iPhone / iPad (iOS) -->
+      <div id="osContent-ios" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="font-black text-amber-300 flex items-center gap-1.5">
+            <span>🍏</span>
+            <span>التثبيت على الآيفون والآيباد (iOS / Safari):</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+            <li>افتح موقع اللعبة في متصفح <b>Safari</b>.</li>
+            <li>اضغط على زر <b>المشاركة (Share ⬆️)</b> الموجود في الشريط السفلي.</li>
+            <li>انزل لأسفل واضغط على <b>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen ➕)</b>.</li>
+            <li>اضغط <b>"إضافة" (Add)</b> في الزاوية العلوية. ستفتح اللعبة كتطبيق مستقل بشاشة كاملة وسلسة جداً!</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- OS Content 3: Windows -->
+      <div id="osContent-windows" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="font-black text-blue-400 flex items-center gap-1.5">
+            <span>💻</span>
+            <span>التثبيت على أجهزة الكمبيوتر وويندوز (Windows 10 / 11):</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+            <li>افتح اللعبة في متصفح <b>Google Chrome</b> أو <b>Microsoft Edge</b>.</li>
+            <li>في شريط العنوان بالأعلى، اضغط على أيقونة التثبيت <b>(💻 أو ⊕)</b> بجانب النجمة.</li>
+            <li>أو اضغط على القائمة <b>(⋮) ثم اختر تطبيقات (Apps) ثم تثبيت هذا الموقع كتطبيق</b>.</li>
+            <li>يمكنك الضغط على <b>F11</b> للدخول في وضع ملء الشاشة للعب مثل ألعاب الحاسوب الأصلية.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- OS Content 4: macOS -->
+      <div id="osContent-mac" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="font-black text-slate-200 flex items-center gap-1.5">
+            <span>🖥️</span>
+            <span>التثبيت على أجهزة ماك (macOS Sonoma / Ventura / Chrome / Safari):</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+            <li>في متصفح <b>Safari</b>: اضغط من شريط القوائم العلوي على <b>ملف (File) ثم اختر إضافة إلى الـ Dock (Add to Dock)</b>.</li>
+            <li>في متصفح <b>Chrome</b>: اضغط على القائمة <b>(⋮) ثم حفظ ومشاركة ثم تثبيت كوت بو ستة</b>.</li>
+            <li>ستضاف اللعبة مباشرة إلى مجلد التطبيقات والـ Dock وتعمل كنافذة مستقلة فائقة السرعة.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- OS Content 5: Tablet & iPad -->
+      <div id="osContent-tablet" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="font-black text-cyan-300 flex items-center gap-1.5">
+            <span>📟</span>
+            <span>إعدادات الأجهزة اللوحية (iPad, Galaxy Tab, Surface):</span>
+          </div>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            اللعبة مبرمجة هندسياً لتعمل تلقائياً بحجم متجاوب 100%. عند تدوير التابلت إلى <b>الوضع الأفقي (Landscape)</b> يتم توزيع الكروت والمقاعد بمسافات مريحة وواضحة جداً تحاكي جلسة الديوانية الحقيقية.
+          </p>
+        </div>
+      </div>
+
+      <button id="btnGotInstallInfo" class="w-full mt-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl transition active:scale-95 text-xs shadow-lg">
+        حسناً، فهمت الطريقة 👍
+      </button>
     </div>
   </div>
 
@@ -539,6 +716,51 @@
 
     <!-- Right Controls -->
     <div class="flex items-center gap-1 sm:gap-1.5">
+      <!-- Screen Display & Orientation Quick Settings (زر وضع العرض والشاشة داخل صفحة اللعبة) -->
+      <div class="relative">
+        <button id="btnOpenScreenDisplayMenu" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="إعدادات الشاشة والعرض">
+          <span>🖥️</span>
+          <span class="hidden md:inline text-[11px]">الشاشة</span>
+        </button>
+
+        <!-- القائمة المنسدلة الخفيفة داخل لوحة التحكم بدون حجب الطاولة أو تشتيت اللعب -->
+        <div id="screenDisplayDropdown" class="hidden absolute left-0 mt-1.5 w-60 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-800 text-right">
+          <div class="text-[11px] font-black text-slate-700 pb-1.5 border-b border-slate-200 mb-2 flex items-center justify-between">
+            <span>⚙️ وضع الشاشة والعرض:</span>
+            <span id="currentScreenModeText" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">تلقائي</span>
+          </div>
+
+          <div class="space-y-1.5">
+            <!-- 1. Auto -->
+            <button id="inGameScreenAutoBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+              <span class="flex items-center gap-1.5">
+                <span>🔄</span>
+                <span>تلقائي (Auto)</span>
+              </span>
+              <span class="text-[10px] text-slate-400">حسب تدوير جهازك</span>
+            </button>
+
+            <!-- 2. Landscape Force -->
+            <button id="inGameScreenLandscapeBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+              <span class="flex items-center gap-1.5">
+                <span>📱</span>
+                <span>بالعرض (Landscape)</span>
+              </span>
+              <span class="text-[10px] text-slate-400">مثالي للتابلت والكمبيوتر</span>
+            </button>
+
+            <!-- 3. Fullscreen Toggle -->
+            <button id="inGameScreenFullscreenBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-black bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white shadow-sm transition active:scale-95">
+              <span class="flex items-center gap-1.5">
+                <span>⛶</span>
+                <span>ملء الشاشة (Fullscreen)</span>
+              </span>
+              <span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded text-white font-mono">F11</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Room Code Modal Button -->
       <button id="btnOpenRoomsModal" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1 shadow-sm">
         <span>🌐</span>
@@ -562,14 +784,125 @@
       </button>
     </div>
   </header>
+  <!-- ==========================================
+       MODAL: INSTALL & DOWNLOAD APP (نافذة تثبيت اللعبة الواضحة والمبسطة لجميع الأنظمة)
+       ========================================== -->
+  <div id="installAppModal" class="hidden fixed inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border-2 border-amber-400/80 rounded-3xl w-full max-w-lg p-5 sm:p-6 text-right shadow-2xl text-slate-200 max-h-[92vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="text-3xl">📥</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-amber-400">تثبيت اللعبة على جهازك</h3>
+            <p class="text-[11px] text-slate-400">تعمل كتطبيق أصلي سريع بدون الحاجة لمتجر التطبيقات</p>
+          </div>
+        </div>
+        <button id="btnCloseInstallModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+      </div>
 
-  <!-- Light Grey Felt Table Arena (أرضية الطاولة رمادي فاتح) -->
-  <main class="relative flex-1 w-full max-w-6xl mx-auto flex items-center justify-center p-1 sm:p-3 overflow-hidden">
-    <!-- Dynamic Kuwaiti Voice Callout Popup Banner -->
-    <div id="voiceCalloutBox" class="absolute top-3 z-40 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 px-4 py-1.5 rounded-full shadow-2xl flex items-center gap-2 transform -translate-y-4 opacity-0 transition-all duration-300 pointer-events-none text-xs sm:text-sm font-black border-2 border-white callout-bubble">
-      <span id="calloutEmoji" class="text-lg">📢</span>
-      <span id="calloutText">يا سلام على الجيكر!</span>
+      <!-- Quick Native PWA Install Action if available -->
+      <div id="pwaDirectInstallBox" class="hidden mb-4 bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/50 p-3.5 rounded-2xl flex items-center justify-between shadow-lg">
+        <div>
+          <span class="text-xs font-black text-emerald-300 block">جهازك يدعم التثبيت المباشر بنقرة واحدة!</span>
+          <span class="text-[10px] text-slate-300">أضف اللعبة لشاشتك الرئيسية فوراً</span>
+        </div>
+        <button id="btnTriggerPWAInstall" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl transition active:scale-95 shadow">
+          تثبيت الآن 🚀
+        </button>
+      </div>
+
+      <!-- Platform Selection Tabs -->
+      <div class="mb-3">
+        <div class="text-xs font-bold text-slate-300 mb-2">اختر نوع نظام جهازك لقراءة الخطوات:</div>
+        <div class="grid grid-cols-5 gap-1.5 text-center">
+          <button class="os-tab-btn active bg-amber-500 text-slate-950 font-black text-xs py-2 px-1 rounded-xl transition" data-os="android">Android 🤖</button>
+          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="ios">iPhone / iPad 🍏</button>
+          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="windows">Windows 💻</button>
+          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="macos">macOS 🖥️</button>
+          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="tablet">تابلت 📟</button>
+        </div>
+      </div>
+
+      <!-- Platform Instructions Content Panels (واضحة تماماً وبدون أي رموز مشوهة) -->
+      <div class="bg-slate-950/90 border border-slate-800 p-4 rounded-2xl mb-4 text-xs leading-relaxed space-y-2.5">
+        
+        <!-- Android Guide -->
+        <div id="guide-android" class="os-guide-panel">
+          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+            <span>🤖</span>
+            <span>طريقة التثبيت على أجهزة أندرويد (Chrome / Samsung Internet):</span>
+          </h4>
+          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
+            <li>افتح اللعبة في متصفح <b class="text-white">Google Chrome</b> أو متصفح جهازك.</li>
+            <li>اضغط على علامة النقاط الثلاث <b class="text-amber-400 font-mono">( ⋮ )</b> في أعلى المتصفح.</li>
+            <li>اختر من القائمة: <b class="text-emerald-400">«تثبيت التطبيق»</b> أو <b class="text-emerald-400">«إضافة إلى الشاشة الرئيسية»</b>.</li>
+            <li>اضغط <b class="text-white">«تثبيت»</b>، وستظهر أيقونة اللعبة مباشرة مع تطبيقات جهازك بدون متجر.</li>
+          </ol>
+        </div>
+
+        <!-- iOS Guide -->
+        <div id="guide-ios" class="os-guide-panel hidden">
+          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+            <span>🍏</span>
+            <span>طريقة التثبيت على آيفون وآيباد (iPhone / iPad - Safari):</span>
+          </h4>
+          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
+            <li>افتح الرابط في متصفح <b class="text-white">Safari</b> الأساسي.</li>
+            <li>اضغط على زر المشاركة أسفل الشاشة <b class="text-amber-400 font-bold">«مشاركة ⎋ / Share»</b>.</li>
+            <li>مرر للأسفل واختر: <b class="text-emerald-400 font-bold">«إضافة إلى الصفحة الرئيسية ➕»</b>.</li>
+            <li>اضغط <b class="text-white">«إضافة (Add)»</b> في أعلى الشاشة.</li>
+            <li>ستعمل اللعبة الآن بملء الشاشة وبدون ظهور شريط المتصفح السفلي مثل أي تطبيق أصلي!</li>
+          </ol>
+        </div>
+
+        <!-- Windows Guide -->
+        <div id="guide-windows" class="os-guide-panel hidden">
+          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+            <span>💻</span>
+            <span>طريقة التثبيت على أجهزة ويندوز (Windows 10 / 11):</span>
+          </h4>
+          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
+            <li>افتح الرابط في متصفح <b class="text-white">Google Chrome</b> أو <b class="text-white">Microsoft Edge</b>.</li>
+            <li>ستظهر لك أيقونة شاشة كمبيوتر صغيرة في شريط العنوان بالأعلى، اضغط عليها.</li>
+            <li>أو اضغط على القائمة <b class="text-amber-400 font-mono">( ⋮ )</b> ثم اختر: <b class="text-emerald-400">«تثبيت كوت بو ستة أونو»</b>.</li>
+            <li>ستفتح اللعبة كنافذة مستقلة فائقة السرعة على سطح المكتب، ويمكنك الضغط على <b class="text-indigo-400 font-mono">F11</b> لملء الشاشة.</li>
+          </ol>
+        </div>
+
+        <!-- macOS Guide -->
+        <div id="guide-macos" class="os-guide-panel hidden">
+          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+            <span>🖥️</span>
+            <span>طريقة التثبيت على أجهزة ماك (macOS):</span>
+          </h4>
+          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
+            <li>في متصفح <b class="text-white">Safari</b>: اضغط من شريط القوائم العلوي على <b class="text-amber-400 font-bold">File (ملف)</b> ثم اختر <b class="text-emerald-400 font-bold">«Add to Dock (إضافة إلى الـ Dock)»</b>.</li>
+            <li>في متصفح <b class="text-white">Chrome</b>: اضغط على القائمة <b class="text-amber-400 font-mono">( ⋮ )</b> ثم اختر <b class="text-white">حفظ ومشاركة</b> ثم <b class="text-emerald-400 font-bold">«تثبيت كوت بو ستة»</b>.</li>
+            <li>تُضاف اللعبة مباشرة لمجلد التطبيقات وشريط الـ Dock وتعمل بدون متصفح.</li>
+          </ol>
+        </div>
+
+        <!-- Tablet Guide -->
+        <div id="guide-tablet" class="os-guide-panel hidden">
+          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+            <span>📟</span>
+            <span>للأجهزة اللوحية (iPad / Android Tablet):</span>
+          </h4>
+          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
+            <li>قم بتثبيت التطبيق بنفس خطوات الأندرويد أو الآيباد الموضحة بالأعلى.</li>
+            <li>يمكنك دائماً استخدام زر <b class="text-amber-400">«الشاشة 🖥️»</b> داخل شريط اللعبة في أي وقت لاختيار العرض بالعرض (Landscape) لرؤية اللاعبين الستة بحجم كبير ومريح.</li>
+          </ol>
+        </div>
+
+      </div>
+
+      <button id="btnUnderstandInstall" class="w-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black py-3 rounded-xl transition active:scale-95 text-xs sm:text-sm shadow-xl flex items-center justify-center gap-1.5">
+        <span>حسنًا، فهمت الطريقة 👍</span>
+      </button>
+
     </div>
+  </div>
 
     <!-- Light Grey Felt Table Container -->
     <div id="feltTableContainer" class="felt-surface relative w-full h-[330px] sm:h-[430px] md:h-[480px] max-w-4xl rounded-[40px] sm:rounded-[64px] flex items-center justify-center">
@@ -879,7 +1212,7 @@
           <div id="bidBadge-0" class="hidden absolute -top-8 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 text-xs font-black px-3 py-0.5 rounded-full shadow-lg border border-white z-40"></div>
           
           <div class="relative flex items-center gap-1.5 sm:gap-2 bg-slate-900 border border-emerald-500/40 rounded-full px-3 py-0.5">
-            <div id="humanHandAvatarIcon" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden border border-emerald-400 bg-slate-950 relative"></div>
+            <div id="humanHandAvatarIcon" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-emerald-400 bg-slate-950 relative transition-all duration-300"></div>
             <!-- Buyer indicator for Human player at bottom hand -->
             <div id="humanBuyerIndicator" class="hidden absolute -top-3.5 right-0 bg-white border-2 border-amber-400 rounded-full px-2 py-0.2 shadow flex items-center gap-1 z-30"></div>
             <span id="humanPlayerDisplayName" class="text-[11px] sm:text-xs font-bold text-emerald-300">أنت [لنا 🟢]</span>
@@ -951,71 +1284,71 @@
         slideGain.connect(this.ctx.destination);
         slideSource.start(now);
 
-        // 2. طقة خفيفة وناعمة لاستقرار الكرت على القماش (Soft Table Felt Tap)
-        const tapTime = now + 0.02;
+        // 2. طقة قماشية ناعمة وخفيفة (Soft Table Felt Tap)
         const tapOsc = this.ctx.createOscillator();
         const tapGain = this.ctx.createGain();
-        tapOsc.type = 'sine';
-        tapOsc.frequency.setValueAtTime(260, tapTime);
-        tapOsc.frequency.exponentialRampToValueAtTime(80, tapTime + 0.045);
+        tapOsc.type = 'triangle';
+        tapOsc.frequency.setValueAtTime(160, now + 0.015);
+        tapOsc.frequency.exponentialRampToValueAtTime(55, now + duration);
 
-        tapGain.gain.setValueAtTime(0.22, tapTime);
-        tapGain.gain.exponentialRampToValueAtTime(0.001, tapTime + 0.045);
+        tapGain.gain.setValueAtTime(0.22, now + 0.015);
+        tapGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
         tapOsc.connect(tapGain);
         tapGain.connect(this.ctx.destination);
-        tapOsc.start(tapTime);
-        tapOsc.stop(tapTime + 0.045);
+        tapOsc.start(now + 0.015);
+        tapOsc.stop(now + duration);
       },
 
-      // 2. خبطة الجيكر والميكر العنيفة بأسلوب الآيكوت (Heavy Slam & Bass Thud)
+      // صوت خبطة الجيكر والميكر الحاسمة (Joker & Maker Card Slam)
       playJokerSlam() {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
 
-        // ضربة جهيرة عميقة تهز الطاولة
-        const bassOsc = this.ctx.createOscillator();
-        const bassGain = this.ctx.createGain();
-        bassOsc.type = 'sine';
-        bassOsc.frequency.setValueAtTime(140, now);
-        bassOsc.frequency.exponentialRampToValueAtTime(32, now + 0.28);
-        bassGain.gain.setValueAtTime(0.65, now);
-        bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        // طبقة الاحتكاك القوي للسحب
+        const duration = 0.14;
+        const bufferSize = Math.floor(this.ctx.sampleRate * duration);
+        const noiseBuf = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = noiseBuf.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          const progress = i / bufferSize;
+          data[i] = (Math.random() * 2 - 1) * Math.sin(progress * Math.PI) * Math.exp(-progress * 2.0);
+        }
 
-        bassOsc.connect(bassGain);
-        bassGain.connect(this.ctx.destination);
-        bassOsc.start(now);
-        bassOsc.stop(now + 0.3);
+        const slamNoise = this.ctx.createBufferSource();
+        slamNoise.buffer = noiseBuf;
 
-        // صفعة كرت قوية مرافقة
-        const slap = this.ctx.createOscillator();
-        const slapGain = this.ctx.createGain();
-        slap.type = 'sawtooth';
-        slap.frequency.setValueAtTime(540, now);
-        slap.frequency.exponentialRampToValueAtTime(80, now + 0.09);
-        slapGain.gain.setValueAtTime(0.35, now);
-        slapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        const slamFilter = this.ctx.createBiquadFilter();
+        slamFilter.type = 'bandpass';
+        slamFilter.frequency.setValueAtTime(1400, now);
+        slamFilter.frequency.linearRampToValueAtTime(600, now + duration);
+        slamFilter.Q.setValueAtTime(2.0, now);
 
-        slap.connect(slapGain);
-        slapGain.connect(this.ctx.destination);
-        slap.start(now);
-        slap.stop(now + 0.09);
+        const slamGain = this.ctx.createGain();
+        slamGain.gain.setValueAtTime(0.45, now);
+        slamGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-        // صدى نغمي سريع يبرز قوة الورقة
-        [440, 660, 880].forEach((freq, idx) => {
-          const osc = this.ctx.createOscillator();
-          const g = this.ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now + 0.03 + idx * 0.04);
-          g.gain.setValueAtTime(0.18, now + 0.03 + idx * 0.04);
-          g.gain.exponentialRampToValueAtTime(0.001, now + 0.22 + idx * 0.04);
-          osc.connect(g);
-          g.connect(this.ctx.destination);
-          osc.start(now + 0.03 + idx * 0.04);
-          osc.stop(now + 0.22 + idx * 0.04);
-        });
+        slamNoise.connect(slamFilter);
+        slamFilter.connect(slamGain);
+        slamGain.connect(this.ctx.destination);
+        slamNoise.start(now);
+
+        // ضربة جهيرة عميقة على الطاولة مع رنين خفيف
+        const thudOsc = this.ctx.createOscillator();
+        const thudGain = this.ctx.createGain();
+        thudOsc.type = 'triangle';
+        thudOsc.frequency.setValueAtTime(220, now);
+        thudOsc.frequency.exponentialRampToValueAtTime(40, now + duration);
+
+        thudGain.gain.setValueAtTime(0.5, now);
+        thudGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+        thudOsc.connect(thudGain);
+        thudGain.connect(this.ctx.destination);
+        thudOsc.start(now);
+        thudOsc.stop(now + duration);
       },
 
       // 3. سحب الأكلة ولمّ الورق (Trick Gathering & Felt Whoosh)
@@ -1468,6 +1801,7 @@
       trumpColor: null,
       bidWinner: null,
       highestBid: 4,
+      isForcedBid: false, // تمييز حالة الشراء الإجباري (الملزوم)
       biddingHistory: [],
       currentTrick: [],
       tricksTeamA: 0,
@@ -1772,36 +2106,47 @@
         const isPartner = p.team === 'A';
         const teamClass = isPartner ? 'border-emerald-500/80' : 'border-rose-500/80';
 
-        // فحص إذا كان هذا اللاعب هو المشتري لإظهار لون الحكم ورقم الأكلات عند صورته
+        // فحص إذا كان هذا اللاعب هو المشتري لإظهار لون الحكم ورقم الأكلات أو "ملزوم" عند صورته
         const isBuyer = GameState.bidWinner === p.id && GameState.trumpColor;
         let buyerBadgeMarkup = '';
         if (isBuyer) {
           const trumpInfo = SUIT_COLORS[GameState.trumpColor];
-          const bidDisplay = GameState.highestBid === 9 ? '👑 باون' : `${GameState.highestBid} أكلات`;
+          let bidDisplay = '';
+          if (GameState.isForcedBid) {
+            bidDisplay = '<span class="text-rose-600 font-black">ملزوم ⚡</span>';
+          } else if (GameState.highestBid === 9) {
+            bidDisplay = '👑 باون';
+          } else {
+            bidDisplay = `${GameState.highestBid} أكلات`;
+          }
+
           buyerBadgeMarkup = `
-            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white border-2 border-amber-400 rounded-full px-2 py-0.5 shadow-md flex items-center gap-1 z-30 whitespace-nowrap animate-bounce">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white border-2 ${GameState.isForcedBid ? 'border-rose-500 ring-2 ring-rose-300/60' : 'border-amber-400'} rounded-full px-2 py-0.5 shadow-md flex items-center gap-1 z-30 whitespace-nowrap animate-bounce">
               <span class="w-3 h-3 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${trumpInfo.hex}"></span>
               <span class="text-[9px] font-black text-slate-900">${bidDisplay}</span>
             </div>
           `;
         }
 
+        const isCriticalTime = isTurn && GameState.timerRemaining <= 3;
+        const glowClass = isTurn ? (isCriticalTime ? 'glow-turn-critical-red' : 'glow-turn-phosphor') : teamClass;
+
         seat.innerHTML = `
           <div class="relative flex flex-col items-center">
             <div id="bidBadge-${p.id}" class="hidden absolute -top-6 bg-amber-400 text-slate-950 text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow border border-slate-900 z-30"></div>
 
-            <!-- شارة المشتري عند صورته (لون الحكم ورقم الأكلات) -->
+            <!-- شارة المشتري عند صورته (لون الحكم ورقم الأكلات أو كلمة ملزوم) -->
             ${buyerBadgeMarkup}
 
             <div class="relative w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 flex items-center justify-center">
               <!-- Neon Turn Timer SVG Circle -->
               <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 44 44">
                 <circle cx="22" cy="22" r="20" stroke="rgba(0,0,0,0.1)" stroke-width="3" fill="none"/>
-                <circle id="timerRing-${p.id}" class="timer-ring-neon" cx="22" cy="22" r="20" stroke="${isTurn ? '#f59e0b' : 'transparent'}" stroke-width="3.5" fill="none"/>
+                <circle id="timerRing-${p.id}" class="timer-ring-neon" cx="22" cy="22" stroke="${isCriticalTime ? '#ef4444' : (isTurn ? '#facc15' : 'transparent')}" stroke-width="3.5" fill="none"/>
               </svg>
 
-              <!-- Avatar Holder -->
-              <div class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md border-2 ${isTurn ? 'border-amber-400 neon-pulse-glow' : teamClass} bg-slate-950">
+              <!-- Avatar Holder مع الوهج الفسفوري البسيط أو الأحمر عند الخطر -->
+              <div id="avatarHolder-${p.id}" class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md border-2 ${glowClass} bg-slate-950 transition-all duration-200">
                 ${UserStore.renderAvatar(p.avatarId)}
               </div>
             </div>
@@ -1818,16 +2163,38 @@
         `;
       });
 
-      // تحديث شارة المشتري للاعب البشري ("أنت") أسفل الشاشة
+      // تحديث شارة المشتري والوهج للاعب البشري ("أنت") أسفل الشاشة
+      const humanAvatar = document.getElementById('humanHandAvatarIcon');
+      const isHumanTurn = GameState.currentTurn === 0 && (GameState.phase === 'PLAYING' || GameState.phase === 'BIDDING');
+      const isHumanCritical = isHumanTurn && GameState.timerRemaining <= 3;
+
+      if (humanAvatar) {
+        humanAvatar.classList.remove('glow-turn-phosphor', 'glow-turn-critical-red', 'border-emerald-400');
+        if (isHumanTurn) {
+          humanAvatar.classList.add(isHumanCritical ? 'glow-turn-critical-red' : 'glow-turn-phosphor');
+        } else {
+          humanAvatar.classList.add('border-emerald-400');
+        }
+      }
+
       const humanBuyerBadge = document.getElementById('humanBuyerIndicator');
       if (humanBuyerBadge) {
         if (GameState.bidWinner === 0 && GameState.trumpColor) {
           const trumpInfo = SUIT_COLORS[GameState.trumpColor];
-          const bidDisplay = GameState.highestBid === 9 ? '👑 باون' : `${GameState.highestBid} أكلات`;
+          let bidDisplay = '';
+          if (GameState.isForcedBid) {
+            bidDisplay = '<span class="text-rose-600 font-black">ملزوم ⚡</span>';
+          } else if (GameState.highestBid === 9) {
+            bidDisplay = '👑 باون';
+          } else {
+            bidDisplay = `${GameState.highestBid} أكلات`;
+          }
+
           humanBuyerBadge.innerHTML = `
             <span class="w-3 h-3 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${trumpInfo.hex}"></span>
             <span class="text-[9px] font-black text-slate-900">${bidDisplay}</span>
           `;
+          humanBuyerBadge.className = `absolute -top-3.5 right-0 bg-white border-2 ${GameState.isForcedBid ? 'border-rose-500 ring-2 ring-rose-300' : 'border-amber-400'} rounded-full px-2 py-0.2 shadow flex items-center gap-1 z-30`;
           humanBuyerBadge.classList.remove('hidden');
         } else {
           humanBuyerBadge.classList.add('hidden');
@@ -1936,13 +2303,23 @@
       renderCircularTrickDots();
 
       const buyerBox = document.getElementById('buyerStatusContent');
-      if (GameState.bidWinner !== null && GameState.highestBid > 4) {
+      if (GameState.bidWinner !== null && (GameState.highestBid > 4 || GameState.isForcedBid)) {
         const b = GameState.players[GameState.bidWinner];
         const isA = b.team === 'A';
+        
+        let bidLabel = '';
+        if (GameState.isForcedBid) {
+          bidLabel = `<span class="bg-rose-100 text-rose-700 border border-rose-300 px-1.5 py-0.2 rounded font-black text-[10px] animate-pulse">ملزوم</span>`;
+        } else if (GameState.highestBid === 9) {
+          bidLabel = `<b class="text-amber-600 font-uno">باون</b>`;
+        } else {
+          bidLabel = `<b class="text-amber-600 font-uno">${GameState.highestBid}</b>`;
+        }
+
         buyerBox.innerHTML = `
           <b class="text-slate-900">${b.name}</b>
           <span class="text-[9px] px-1 rounded font-black ${isA ? 'bg-emerald-600' : 'bg-rose-600'} text-white">${isA ? 'لنا' : 'لهم'}</span>
-          <b class="text-amber-600 font-uno">${GameState.highestBid === 9 ? 'باون' : GameState.highestBid}</b>
+          ${bidLabel}
         `;
       } else {
         buyerBox.innerHTML = `<span class="text-slate-400">مزايدة...</span>`;
@@ -2023,16 +2400,38 @@
         }
 
         const offset = totalCircumference * (1 - (GameState.timerRemaining / 12));
+        const isCritical = GameState.timerRemaining <= 3;
         
         if (GameState.currentTurn === 0) {
           updateHumanTimerDisplay(true, GameState.timerRemaining);
+          const humanAvatar = document.getElementById('humanHandAvatarIcon');
+          if (humanAvatar) {
+            if (isCritical) {
+              humanAvatar.classList.remove('glow-turn-phosphor');
+              humanAvatar.classList.add('glow-turn-critical-red');
+            } else {
+              humanAvatar.classList.remove('glow-turn-critical-red');
+              humanAvatar.classList.add('glow-turn-phosphor');
+            }
+          }
         } else {
           updateHumanTimerDisplay(false);
+          const botAvatar = document.getElementById(`avatarHolder-${GameState.currentTurn}`);
+          if (botAvatar) {
+            if (isCritical) {
+              botAvatar.classList.remove('glow-turn-phosphor');
+              botAvatar.classList.add('glow-turn-critical-red');
+            } else {
+              botAvatar.classList.remove('glow-turn-critical-red');
+              botAvatar.classList.add('glow-turn-phosphor');
+            }
+          }
         }
 
         const ring = document.getElementById(`timerRing-${GameState.currentTurn}`);
         if (ring) {
           ring.style.strokeDashoffset = offset;
+          ring.setAttribute('stroke', isCritical ? '#ef4444' : '#facc15');
         }
       }, 200);
     }
@@ -2082,6 +2481,7 @@
       GameState.trumpColor = null;
       GameState.bidWinner = null;
       GameState.highestBid = 4;
+      GameState.isForcedBid = false; // إعادة ضبط حالة الشراء الإجباري
       GameState.biddingHistory = [];
       GameState.currentTrick = [];
       GameState.tricksTeamA = 0;
@@ -2212,7 +2612,8 @@
       if (GameState.bidWinner === null) {
         GameState.bidWinner = GameState.dealerIdx;
         GameState.highestBid = 5;
-        SoundEngine.speakKuwaitiPhrase(`الكل طوّف! إجباري على الموزع ${GameState.players[GameState.dealerIdx].name}`, '⚡');
+        GameState.isForcedBid = true; // تفعيل حالة الشراء الإجباري (الملزوم)
+        SoundEngine.speakKuwaitiPhrase(`الكل طوّف! إجباري على الموزع ${GameState.players[GameState.dealerIdx].name} (ملزوم بـ 5)`, '⚡');
         updateScoreboard();
       }
 
@@ -2391,12 +2792,15 @@
 
       let pts = isBaoon ? 16 : (GameState.highestBid || 5);
 
+      // في حال الشراء الإجباري وخسارة المجبور (الملزوم) تحتسب 5 نقاط فقط بدون مضاعفة
+      let penaltyMultiplier = GameState.isForcedBid ? 1 : 2;
+
       if (isBuyerWinner) {
         if (buyer.team === 'A') GameState.matchScoreTeamA += pts;
         else GameState.matchScoreTeamB += pts;
       } else {
-        if (buyer.team === 'A') GameState.matchScoreTeamB += pts * 2;
-        else GameState.matchScoreTeamA += pts * 2;
+        if (buyer.team === 'A') GameState.matchScoreTeamB += pts * penaltyMultiplier;
+        else GameState.matchScoreTeamA += pts * penaltyMultiplier;
       }
 
       updateScoreboard();
@@ -2412,31 +2816,34 @@
       const rB = document.getElementById('resultTricksB');
       const rPts = document.getElementById('resultPointsEarned');
 
-      bName.textContent = `${buyer.name || 'لاعب'} (${buyer.team === 'A' ? 'لنا 🟢' : 'لهم 🔴'})`;
+      const forcedNotice = GameState.isForcedBid ? ' [ملزوم إجباري]' : '';
+      bName.textContent = `${buyer.name || 'لاعب'} (${buyer.team === 'A' ? 'لنا 🟢' : 'لهم 🔴'})${forcedNotice}`;
       bTarget.textContent = isBaoon ? 'باون 👑 (9 أكلات)' : `${GameState.highestBid || 5} أكلات`;
       rA.textContent = GameState.tricksTeamA;
       rB.textContent = GameState.tricksTeamB;
 
+      const defensePts = pts * penaltyMultiplier;
+
       if (userWon) {
         icon.textContent = isBaoon ? '👑' : '🎉';
-        title.textContent = isBuyerWinner ? 'وصــلـت! وعاشوا الربع!' : 'تم الكسر يا معوّد! كفو!';
+        title.textContent = isBuyerWinner ? 'وصــلـت! وعاشوا الربع!' : (GameState.isForcedBid ? 'انكسر المجبور! كفو!' : 'تم الكسر يا معوّد! كفو!');
         title.className = 'text-2xl sm:text-3xl font-black text-emerald-400 mb-1';
-        sub.textContent = isBuyerWinner ? 'حققتم عدد الأكلات المطلوب بجدارة!' : 'تصدى فريقكم للمشتري وتم كسره بنجاح!';
-        rPts.textContent = `+${isBuyerWinner ? pts : pts * 2} نقطة لفريقنا 🟢`;
+        sub.textContent = isBuyerWinner ? 'حققتم عدد الأكلات المطلوب بجدارة!' : (GameState.isForcedBid ? 'خسر الملزوم وتُحتسب 5 نقاط فقط لقانون الكوت الأصيل!' : 'تصدى فريقكم للمشتري وتم كسره بنجاح!');
+        rPts.textContent = `+${isBuyerWinner ? pts : defensePts} نقطة لفريقنا 🟢`;
         card.className = 'bg-slate-900 border-2 border-emerald-500 rounded-3xl w-full max-w-md p-5 text-center shadow-2xl';
 
         SoundEngine.playVictoryFanfare(isBaoon);
-        SoundEngine.speakKuwaitiPhrase(isBuyerWinner ? 'وصلت وعاااشوا الربع!! مبروك!' : 'تم الكسر يا معود كفو عليكم!', '🎉');
+        SoundEngine.speakKuwaitiPhrase(isBuyerWinner ? 'وصلت وعاااشوا الربع!! مبروك!' : 'انكسر المجبور وكفو عليكم!', '🎉');
       } else {
         icon.textContent = '❌';
-        title.textContent = isBuyerWinner ? 'وصل الخصم!' : 'انكسر فريقنا!';
+        title.textContent = isBuyerWinner ? 'وصل الخصم!' : (GameState.isForcedBid ? 'انكسر المجبور!' : 'انكسر فريقنا!');
         title.className = 'text-2xl sm:text-3xl font-black text-rose-500 mb-1';
-        sub.textContent = isBuyerWinner ? 'حقق فريق الخصم هدفه المطلوب' : 'للأسف تم كسر المشتري وتضاعفت النقاط للخصم';
-        rPts.textContent = `+${isBuyerWinner ? pts : pts * 2} نقطة لخصمنا 🔴`;
+        sub.textContent = isBuyerWinner ? 'حقق فريق الخصم هدفه المطلوب' : (GameState.isForcedBid ? 'خسر المجبور (الملزوم) واحتُسبت 5 نقاط للخصم دون مضاعفة' : 'للأسف تم كسر المشتري وتضاعفت النقاط للخصم');
+        rPts.textContent = `+${isBuyerWinner ? pts : defensePts} نقطة لخصمنا 🔴`;
         card.className = 'bg-slate-900 border-2 border-rose-500 rounded-3xl w-full max-w-md p-5 text-center shadow-2xl';
 
         SoundEngine.playBustedSound();
-        SoundEngine.speakKuwaitiPhrase('خيرها بغيرها.. انكسرنا هالجولة!', '❌');
+        SoundEngine.speakKuwaitiPhrase(GameState.isForcedBid ? 'خيرها بغيرها.. انكسر المجبور واحتسبت 5 نقاط' : 'خيرها بغيرها.. انكسرنا هالجولة!', '❌');
       }
 
       modal.classList.remove('hidden');
@@ -2545,7 +2952,8 @@
         'hostFriendsModal',
         'profileModal',
         'rulesModal',
-        'exitConfirmModal'
+        'exitConfirmModal',
+        'installAppModal'
       ];
       modalsToClose.forEach(id => {
         const el = document.getElementById(id);
@@ -2565,7 +2973,8 @@
         'roundResultModal',
         'exitConfirmModal',
         'rulesModal',
-        'profileModal'
+        'profileModal',
+        'installAppModal'
       ];
       modalsToClose.forEach(id => {
         const el = document.getElementById(id);
@@ -2587,6 +2996,42 @@
       if (el) el.classList.add('hidden');
     }
 
+    // PWA & Platform Detection Helpers
+    let deferredPWAInstallPrompt = null;
+
+    function detectUserPlatform() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+      const isAndroid = /android/i.test(ua);
+      const isMac = /Macintosh|Mac OS X/i.test(ua) && !isIOS;
+      const isWindows = /Windows NT/i.test(ua);
+      const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk)/i.test(ua);
+
+      if (isIOS) return isTablet ? 'ios-tablet' : 'ios';
+      if (isAndroid) return isTablet ? 'android-tablet' : 'android';
+      if (isMac) return 'mac';
+      if (isWindows) return 'windows';
+      return 'generic';
+    }
+
+    function updatePlatformLabel() {
+      const p = detectUserPlatform();
+      const txt = document.getElementById('detectedPlatformText');
+      if (!txt) return;
+
+      if (p === 'android' || p === 'android-tablet') {
+        txt.textContent = 'جهازك أندرويد 🤖 • اضغط للتثبيت السريع';
+      } else if (p === 'ios') {
+        txt.textContent = 'جهازك آيفون 🍏 • اضغط لخطوات التثبيت بشاشة كاملة';
+      } else if (p === 'ios-tablet') {
+        txt.textContent = 'جهازك آيباد 📟 • متوافق مع العرض الأفقي والرأسي';
+      } else if (p === 'windows') {
+        txt.textContent = 'جهازك ويندوز 💻 • يدعم وضع ملء الشاشة F11 والتطبيق المستقل';
+      } else if (p === 'mac') {
+        txt.textContent = 'جهازك ماك 🖥️ • يدعم إضافة للتطبيقات والـ Dock';
+      }
+    }
+
     // Safe event listener binding utility
     function bindClick(id, handler) {
       const el = document.getElementById(id);
@@ -2597,6 +3042,171 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       UserStore.init();
+      updatePlatformLabel();
+
+      // Listen for PWA install prompt
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPWAInstallPrompt = e;
+        const promptContainer = document.getElementById('pwaPromptContainer');
+        if (promptContainer) {
+          promptContainer.classList.remove('hidden');
+        }
+      });
+
+      // --- INSTALL APP MODAL LISTENERS ---
+      bindClick('btnOpenInstallModal', () => {
+        const modal = document.getElementById('installAppModal');
+        if (modal) modal.classList.remove('hidden');
+
+        // Auto select tab based on detected OS
+        const platform = detectUserPlatform();
+        let targetOs = 'android';
+        if (platform.includes('ios')) targetOs = 'ios';
+        else if (platform === 'windows') targetOs = 'windows';
+        else if (platform === 'mac') targetOs = 'mac';
+        else if (platform.includes('tablet')) targetOs = 'tablet';
+
+        document.querySelectorAll('.os-tab-btn').forEach(btn => {
+          if (btn.dataset.os === targetOs) {
+            btn.click();
+          }
+        });
+      });
+
+      bindClick('btnCloseInstallModal', () => {
+        const modal = document.getElementById('installAppModal');
+        if (modal) modal.classList.add('hidden');
+      });
+
+      bindClick('btnGotInstallInfo', () => {
+        const modal = document.getElementById('installAppModal');
+        if (modal) modal.classList.add('hidden');
+      });
+
+      bindClick('btnTriggerPWAInstall', async () => {
+        if (deferredPWAInstallPrompt) {
+          deferredPWAInstallPrompt.prompt();
+          const { outcome } = await deferredPWAInstallPrompt.userChoice;
+          if (outcome === 'accepted') {
+            SoundEngine.speakKuwaitiPhrase('تم تثبيت اللعبة بنجاح! نورتنا', '🎉');
+          }
+          deferredPWAInstallPrompt = null;
+          const promptContainer = document.getElementById('pwaPromptContainer');
+          if (promptContainer) promptContainer.classList.add('hidden');
+        } else {
+          SoundEngine.speakKuwaitiPhrase('اتبع الخطوات الموضحة بالأسفل لتثبيت التطبيق', '📲');
+        }
+      });
+
+      // OS Tabs Switcher
+      document.querySelectorAll('.os-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const os = btn.dataset.os;
+          document.querySelectorAll('.os-tab-btn').forEach(b => {
+            b.classList.remove('bg-amber-500', 'text-slate-950');
+            b.classList.add('text-slate-400');
+          });
+          btn.classList.add('bg-amber-500', 'text-slate-950');
+          btn.classList.remove('text-slate-400');
+
+          document.querySelectorAll('.os-content-panel').forEach(panel => {
+            panel.classList.add('hidden');
+          });
+          const target = document.getElementById(`osContent-${os}`);
+          if (target) target.classList.remove('hidden');
+        });
+      });
+
+      // Screen Orientation Controls
+      bindClick('btnSetOrientationAuto', () => {
+        const lbl = document.getElementById('currentOrientationLabel');
+        if (lbl) lbl.textContent = 'تلقائي';
+        SoundEngine.speakKuwaitiPhrase('وضع الشاشة: تلقائي يتكيف مع حركة جهازك', '🔄');
+      });
+
+      bindClick('btnSetOrientationLandscape', () => {
+        const lbl = document.getElementById('currentOrientationLabel');
+        if (lbl) lbl.textContent = 'بالعرض (Landscape)';
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+        SoundEngine.speakKuwaitiPhrase('تم تفعيل وضع اللعب بالعرض 🖥️', '🖥️');
+      });
+
+      bindClick('btnToggleFullscreen', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+          SoundEngine.speakKuwaitiPhrase('تم تفعيل ملء الشاشة ⛶', '⛶');
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          }
+        }
+      });
+
+      // --- IN-GAME SCREEN DISPLAY DROPDOWN (قائمة الشاشة والعرض داخل اللعبة) ---
+      const screenMenuBtn = document.getElementById('btnOpenScreenDisplayMenu');
+      const screenDropdown = document.getElementById('screenDisplayDropdown');
+      const currentModeText = document.getElementById('currentScreenModeText');
+
+      if (screenMenuBtn && screenDropdown) {
+        screenMenuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          screenDropdown.classList.toggle('hidden');
+        });
+
+        // إغلاق القائمة عند النقر خارجها في أي مكان في الصفحة
+        document.addEventListener('click', (e) => {
+          if (!screenDropdown.contains(e.target) && e.target !== screenMenuBtn) {
+            screenDropdown.classList.add('hidden');
+          }
+        });
+      }
+
+      bindClick('inGameScreenAutoBtn', () => {
+        if (screenDropdown) screenDropdown.classList.add('hidden');
+        if (currentModeText) currentModeText.textContent = 'تلقائي';
+        if (screen.orientation && screen.orientation.unlock) {
+          try { screen.orientation.unlock(); } catch (err) {}
+        }
+        document.body.classList.remove('rotate-90-custom');
+        SoundEngine.speakKuwaitiPhrase('وضع الشاشة: تلقائي يتكيف مع جهازك', '🔄');
+      });
+
+      bindClick('inGameScreenLandscapeBtn', () => {
+        if (screenDropdown) screenDropdown.classList.add('hidden');
+        if (currentModeText) currentModeText.textContent = 'بالعرض';
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {
+            // حل بديل للمتصفحات التي تمنع الـ lock برمجياً
+            SoundEngine.speakKuwaitiPhrase('يُرجى تدوير هاتفك بالعرض للاستمتاع بالطاولة', '📱');
+          });
+        }
+        SoundEngine.speakKuwaitiPhrase('تم تفعيل وضع العرض الأفقي (Landscape) 🖥️', '🖥️');
+      });
+
+      bindClick('inGameScreenFullscreenBtn', () => {
+        if (screenDropdown) screenDropdown.classList.add('hidden');
+        if (!document.fullscreenElement) {
+          const docEl = document.documentElement;
+          if (docEl.requestFullscreen) {
+            docEl.requestFullscreen().catch(() => {});
+          } else if (docEl.webkitRequestFullscreen) {
+            docEl.webkitRequestFullscreen();
+          } else if (docEl.msRequestFullscreen) {
+            docEl.msRequestFullscreen();
+          }
+          SoundEngine.speakKuwaitiPhrase('تم تفعيل ملء الشاشة ⛶', '⛶');
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+          SoundEngine.speakKuwaitiPhrase('تم الخروج من ملء الشاشة', '🔲');
+        }
+      });
 
       // --- LOBBY BUTTON LISTENERS ---
       bindClick('btnPlayOnlineFast', () => {
