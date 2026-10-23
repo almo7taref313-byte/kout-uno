@@ -1169,11 +1169,11 @@
             <p>• <b>ممنوع رمي الميكر على الجيكر</b> في نفس الأكلة إذا كان لديك خيار بديل.</p>
             <p>• يمكنك لعب الجيكر أو الميكر في الأدوار اللاحقة لأي أكلة بحرية تامة.</p>
           </div>
-
-          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+          <div class="bg-slate-950 p-3 rounded-xl border border-yellow-400 text-sm mb-1">
             <h4 class="font-black text-yellow-400 text-sm mb-1">🏆 المزايدة والباون والحسم:</h4>
             <p>• أقل شراء يبدأ من <b>5 أكلات</b> وحتى <b>8</b>.</p>
-            <p>• <b>الباون (9 أكلات):</b> المشتري يتعهد بأكل جميع أكلات الجولة (<b>36 نقطة</b> لفريق المشتري عند الوصول، أو <b>18 نقطة</b> للفريق الخصم عند كسر الباون).</p>
+            <p>• <b>الباون (9 أكلات):</b> ينتهي الشراء فوراً دون انتظار أحد، ويتعهد المشتري بأكل الـ 9 أكلات كاملة (<b>36 نقطة</b> عند الوصول، أو <b>18 نقطة</b> للخصم عند الكسر).</p>
+            <p>• <b>قانون العسم:</b> يحدث العسم في حالتين: وصول باون الجولة الأولى، أو وصول أحد الفريقين إلى <b>51 نقطة مقابل صفر</b> للخصم (عسم الصيدة)، وتنتهي المباراة فوراً!</p>
             <p>• <b>وصلت!</b> عند تحقيق المشتري للرقم المطلوب تنتهي الجولة فوراً لصالحه.</p>
             <p>• <b>تم الكسر!</b> بمجرد استحالة وصول المشتري لهدفه رياضياً تنتهي الجولة بالكسر فوراً لصالح المدافعين.</p>
           </div>
@@ -2593,6 +2593,11 @@
 
         if (val === 9) {
           SoundEngine.speakKuwaitiPhrase(`بااااون من ${player.name}! عزم عليها وحسمها!`, '👑');
+          // عند اختيار الباون ينتهي الشراء فوراً دون انتظار أي لاعب ليضغط طوف
+          setTimeout(() => {
+            endBidding();
+          }, 600);
+          return;
         } else {
           SoundEngine.speakKuwaitiPhrase(`${player.name} شراي بـ ${val}! منو يزود؟`, '🔥');
         }
@@ -2609,6 +2614,9 @@
     }
 
     function endBidding() {
+      // إيقاف العداد وإغلاق نوافذ المزايدة فوراً
+      clearInterval(GameState.timerInterval);
+      updateHumanTimerDisplay(false);
       document.getElementById('biddingModal').classList.add('hidden');
 
       if (GameState.bidWinner === null) {
@@ -2811,6 +2819,12 @@
 
       updateScoreboard();
 
+      // فحص قانون العسم الثاني: إذا وصل أحد الفريقين إلى 51 أو أكثر والخصم صفر (51 - 0)
+      const isZeroAsamTeamA = GameState.matchScoreTeamA >= 51 && GameState.matchScoreTeamB === 0;
+      const isZeroAsamTeamB = GameState.matchScoreTeamB >= 51 && GameState.matchScoreTeamA === 0;
+      const isZeroAsam = isZeroAsamTeamA || isZeroAsamTeamB;
+      const isTotalMatchOver = isAsam || isZeroAsam || GameState.matchScoreTeamA >= 51 || GameState.matchScoreTeamB >= 51;
+
       const modal = document.getElementById('roundResultModal');
       const card = document.getElementById('resultModalCard');
       const icon = document.getElementById('resultIcon');
@@ -2831,14 +2845,15 @@
 
       const defensePts = isBaoon ? 18 : pts * penaltyMultiplier;
 
-      // حالة العسم (باون من أول جولة ووصل)
-      if (isAsam) {
-        if (userWon) {
+      // حالة العسم (سواء باون أول جولة أو بلوغ 51 نقطة مقابل صفر)
+      if (isAsam || isZeroAsam) {
+        const didUserTeamWinAsam = isAsam ? userWon : isZeroAsamTeamA;
+        if (didUserTeamWinAsam) {
           icon.textContent = '👑';
           title.textContent = 'عــــســـــم! فـوز سـاحـق!';
           title.className = 'text-2xl sm:text-3xl font-black text-amber-400 mb-1 animate-bounce';
-          sub.textContent = 'باون من الجولة الأولى! انتهت اللعبة بفوز فريقكم بالضربة القاضية!';
-          rPts.textContent = `فوز كامل بالمباراة (عسم) 🏆`;
+          sub.textContent = isZeroAsam ? 'وصلتم 51 نقطة والخصم صفر على الصفر! عسم كاسح!' : 'باون من الجولة الأولى! فوز بالضربة القاضية!';
+          rPts.textContent = `فوز كامل بالمباراة (عسم كالبـاون) 🏆`;
           card.className = 'bg-slate-900 border-4 border-amber-400 rounded-3xl w-full max-w-md p-5 text-center shadow-[0_0_50px_rgba(251,191,36,0.6)]';
           if (btnNext) btnNext.innerHTML = '<span>لعبة جديدة 🔄</span>';
           SoundEngine.playVictoryFanfare(true);
@@ -2847,13 +2862,22 @@
           icon.textContent = '🎯';
           title.textContent = 'طلع عليكم عسم يالصيدة!';
           title.className = 'text-2xl sm:text-3xl font-black text-rose-500 mb-1 animate-pulse';
-          sub.textContent = 'فاز الخصم بباون من أول جولة.. انتهت اللعبة بالكامل!';
-          rPts.textContent = `خسارة المباراة بالعسم ❌`;
+          sub.textContent = isZeroAsam ? 'وصل الخصم 51 نقطة وسكوركم صفر! طلع عليكم عسم!' : 'فاز الخصم بباون من أول جولة.. انتهت اللعبة بالكامل!';
+          rPts.textContent = `خسارة المباراة بالعسم (صفر نقاط) ❌`;
           card.className = 'bg-slate-900 border-4 border-rose-600 rounded-3xl w-full max-w-md p-5 text-center shadow-[0_0_50px_rgba(225,29,72,0.7)]';
           if (btnNext) btnNext.innerHTML = '<span>لعبة جديدة 🔄</span>';
           SoundEngine.playBustedSound();
           SoundEngine.speakKuwaitiPhrase('طلع عليكم عسم يالصيدة!', '🎯');
         }
+      } else if (GameState.matchScoreTeamA >= 51 || GameState.matchScoreTeamB >= 51) {
+        // فوز عادي ببلوغ 51 نقطة
+        const userMatchWon = GameState.matchScoreTeamA >= 51;
+        icon.textContent = userMatchWon ? '🏆' : '🏁';
+        title.textContent = userMatchWon ? 'مبروك الفوز بالمباراة! 🏆' : 'انتهت المباراة بفوز الخصم 🏁';
+        title.className = userMatchWon ? 'text-2xl sm:text-3xl font-black text-amber-400 mb-1' : 'text-2xl sm:text-3xl font-black text-slate-300 mb-1';
+        sub.textContent = `النتيجة النهائية: لنا (${GameState.matchScoreTeamA}) مقابل لهم (${GameState.matchScoreTeamB})`;
+        rPts.textContent = userMatchWon ? 'فوز مستحق باللعبة!' : 'خيرها بغيرها!';
+        if (btnNext) btnNext.innerHTML = '<span>مباراة جديدة 🔄</span>';
       } else if (userWon) {
         icon.textContent = isBaoon ? '👑' : '🎉';
         title.textContent = isBuyerWinner ? (isBaoon ? 'وصل الباون وعاشوا الربع! 👑' : 'وصــلـت! وعاشوا الربع!') : (GameState.isForcedBid ? 'انكسر المجبور! كفو!' : (isBaoon ? 'انكسر الباون! كفو يا أبطال!' : 'تم الكسر يا معوّد! كفو!'));
@@ -3480,10 +3504,14 @@
         const resModal = document.getElementById('roundResultModal');
         if (resModal) resModal.classList.add('hidden');
         
-        // إذا كان هناك عسم، تبدأ مباراة جديدة بالكامل
+        // إذا كان هناك عسم (باون الجولة الأولى أو 51 مقابل صفر) أو انتهاء المباراة، تبدأ مباراة جديدة بالكامل
         const isBaoon = GameState.highestBid === 9;
         const buyerTricks = GameState.bidWinner !== null && GameState.players[GameState.bidWinner]?.team === 'A' ? GameState.tricksTeamA : GameState.tricksTeamB;
-        if (isBaoon && buyerTricks >= 9 && GameState.roundNumber === 1) {
+        const isAsamFirstRound = isBaoon && buyerTricks >= 9 && GameState.roundNumber === 1;
+        const isZeroAsam = (GameState.matchScoreTeamA >= 51 && GameState.matchScoreTeamB === 0) || (GameState.matchScoreTeamB >= 51 && GameState.matchScoreTeamA === 0);
+        const isMatchOver = GameState.matchScoreTeamA >= 51 || GameState.matchScoreTeamB >= 51;
+
+        if (isAsamFirstRound || isZeroAsam || isMatchOver) {
           startNewMatch();
           return;
         }
