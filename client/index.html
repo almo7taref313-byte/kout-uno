@@ -134,6 +134,21 @@
       }
     }
 
+    /* وضع التدوير الإجباري بالعرض للأجهزة (Forced Landscape CSS Mode) */
+    body.forced-landscape-mode {
+      overflow: hidden;
+    }
+    body.forced-landscape-mode #gameMainWrapper {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 100dvh !important;
+      height: 100dvw !important;
+      transform: translate(-50%, -50%) rotate(90deg) !important;
+      transform-origin: center center !important;
+      z-index: 100;
+    }
+
     /* UNO Cards */
     .uno-card {
       position: relative;
@@ -421,7 +436,7 @@
   <div id="gameMainWrapper" class="safe-top safe-bottom">
     
     <!-- Top Responsive Header: Scoreboard & Mobile-Friendly Toolbar -->
-    <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 px-1 sm:px-3 py-1 flex items-center justify-between shadow-sm z-30 overflow-x-auto no-scrollbar">
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 px-1 sm:px-3 py-1 flex items-center justify-between shadow-sm z-30 relative">
       
       <!-- Right: User & Room Info -->
       <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
@@ -470,26 +485,32 @@
       <!-- Left: Mobile Toolbar Buttons (Always Visible & Responsive) -->
       <div class="flex items-center gap-1 flex-shrink-0">
         
-        <!-- Screen Settings Dropdown -->
+        <!-- Screen Settings Dropdown Anchor -->
         <div class="relative">
-          <button id="btnOpenScreenDisplayMenu" class="p-1 sm:px-2 sm:py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="وضعية الشاشة">
+          <button id="btnOpenScreenDisplayMenu" type="button" class="p-1 sm:px-2 sm:py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 border border-amber-600 rounded-lg font-black text-xs transition active:scale-95 flex items-center gap-1 shadow cursor-pointer z-40" title="وضعية الشاشة">
             <span>🖥️</span>
-            <span id="currentScreenModeText" class="hidden md:inline text-[10px]">الشاشة</span>
+            <span id="currentScreenModeText" class="text-[10px] font-bold">الشاشة</span>
+            <span class="text-[8px]">▼</span>
           </button>
 
-          <div id="screenDisplayDropdown" class="hidden absolute left-0 mt-1.5 w-44 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2 z-50 text-slate-800 text-right">
-            <div class="text-[10px] font-black text-slate-700 pb-1 border-b border-slate-200 mb-1">
-              🖥️ إعدادات العرض:
+          <!-- Dropdown floating menu -->
+          <div id="screenDisplayDropdown" class="hidden absolute left-0 top-full mt-2 w-52 bg-slate-900 border-2 border-amber-400 rounded-2xl shadow-2xl p-2.5 z-50 text-white text-right">
+            <div class="text-[11px] font-black text-amber-400 pb-1.5 border-b border-slate-800 mb-2 flex items-center justify-between">
+              <span>🖥️ أوضاع عرض الشاشة</span>
+              <span id="screenStatusIndicator" class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">عادي</span>
             </div>
-            <div class="space-y-1">
-              <button id="inGameScreenAutoBtn" class="w-full flex items-center justify-between p-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 border border-slate-200">
-                <span>🔄 تلقائي (Auto)</span>
+            <div class="space-y-1.5">
+              <button id="inGameScreenAutoBtn" type="button" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-amber-500 hover:text-slate-950 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>🔄</span><span>تلقائي (Auto)</span></span>
+                <span class="text-[9px] text-slate-400">افتراضي</span>
               </button>
-              <button id="inGameScreenLandscapeBtn" class="w-full flex items-center justify-between p-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 border border-slate-200">
-                <span>📱 بالعرض (Landscape)</span>
+              <button id="inGameScreenLandscapeBtn" type="button" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-amber-500 hover:text-slate-950 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>📱</span><span>بالعرض (Landscape)</span></span>
+                <span class="text-[9px] text-amber-400 font-bold">تدوير</span>
               </button>
-              <button id="inGameScreenFullscreenBtn" class="w-full flex items-center justify-between p-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 border border-slate-200">
-                <span>⛶ ملء الشاشة</span>
+              <button id="inGameScreenFullscreenBtn" type="button" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-amber-500 hover:text-slate-950 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>⛶</span><span>ملء الشاشة</span></span>
+                <span class="text-[9px] text-emerald-400 font-bold">كامل</span>
               </button>
             </div>
           </div>
@@ -3002,52 +3023,114 @@
       const screenMenuBtn = document.getElementById('btnOpenScreenDisplayMenu');
       const screenDropdown = document.getElementById('screenDisplayDropdown');
       const currentModeText = document.getElementById('currentScreenModeText');
+      const screenStatusIndicator = document.getElementById('screenStatusIndicator');
 
-      if (screenMenuBtn && screenDropdown) {
-        screenMenuBtn.addEventListener('click', (e) => {
+      let currentModeState = 'auto'; // 'auto' | 'landscape' | 'fullscreen'
+
+      function toggleScreenDropdown(e) {
+        if (e) {
+          e.preventDefault();
           e.stopPropagation();
-          screenDropdown.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!screenDropdown.contains(e.target) && e.target !== screenMenuBtn) {
-            screenDropdown.classList.add('hidden');
-          }
-        });
+        }
+        if (!screenDropdown) return;
+        screenDropdown.classList.toggle('hidden');
       }
 
-      bindClick('inGameScreenAutoBtn', () => {
+      if (screenMenuBtn) {
+        screenMenuBtn.onclick = toggleScreenDropdown;
+        screenMenuBtn.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+          toggleScreenDropdown(e);
+        }, { passive: false });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (screenDropdown && !screenDropdown.contains(e.target) && e.target !== screenMenuBtn && !screenMenuBtn.contains(e.target)) {
+          screenDropdown.classList.add('hidden');
+        }
+      });
+
+      // 1. زر الوضع التلقائي (Auto)
+      bindClick('inGameScreenAutoBtn', (e) => {
+        if (e) e.stopPropagation();
+        currentModeState = 'auto';
+        document.body.classList.remove('forced-landscape-mode');
         if (screenDropdown) screenDropdown.classList.add('hidden');
         if (currentModeText) currentModeText.textContent = 'تلقائي';
+        if (screenStatusIndicator) screenStatusIndicator.textContent = 'تلقائي';
+
+        if (document.fullscreenElement) {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+
         if (screen.orientation && screen.orientation.unlock) {
           try { screen.orientation.unlock(); } catch (err) {}
         }
-        SoundEngine.speakKuwaitiPhrase('وضع الشاشة: تلقائي', '🔄');
+
+        recalculateResponsiveLayout();
+        SoundEngine.speakKuwaitiPhrase('وضع الشاشة: تلقائي 🔄', '🔄');
       });
 
-      bindClick('inGameScreenLandscapeBtn', () => {
+      // 2. زر الوضع العرضي (Landscape) مع التدوير الداخلي المضمون
+      bindClick('inGameScreenLandscapeBtn', (e) => {
+        if (e) e.stopPropagation();
+        currentModeState = 'landscape';
         if (screenDropdown) screenDropdown.classList.add('hidden');
         if (currentModeText) currentModeText.textContent = 'بالعرض';
+        if (screenStatusIndicator) screenStatusIndicator.textContent = 'بالعرض';
+
+        // محاولة القفل عبر API أولاً
+        let lockedViaApi = false;
         if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('landscape').catch(() => {
-            SoundEngine.speakKuwaitiPhrase('قم بتدوير هاتفك بالعرض للاستمتاع بالطاولة', '📱');
-          });
+          screen.orientation.lock('landscape').then(() => {
+            lockedViaApi = true;
+          }).catch(() => {});
         }
-        SoundEngine.speakKuwaitiPhrase('وضع العرض الأفقي (Landscape)', '🖥️');
+
+        // إذا كان الجهاز هاتفاً بالوضع الرأسي، نقوم بتدوير الشاشة عبر CSS فوراً
+        const isPortrait = window.innerHeight > window.innerWidth;
+        if (isPortrait && !lockedViaApi) {
+          document.body.classList.add('forced-landscape-mode');
+        } else {
+          document.body.classList.remove('forced-landscape-mode');
+        }
+
+        setTimeout(() => {
+          recalculateResponsiveLayout();
+        }, 150);
+
+        SoundEngine.speakKuwaitiPhrase('تم تحويل العرض إلى الوضع الأفقي 📱', '🖥️');
       });
 
-      bindClick('inGameScreenFullscreenBtn', () => {
+      // 3. زر ملء الشاشة (Fullscreen)
+      bindClick('inGameScreenFullscreenBtn', (e) => {
+        if (e) e.stopPropagation();
         if (screenDropdown) screenDropdown.classList.add('hidden');
-        if (!document.fullscreenElement) {
+
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
           const docEl = document.documentElement;
-          if (docEl.requestFullscreen) docEl.requestFullscreen().catch(() => {});
-          else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+          if (docEl.requestFullscreen) {
+            docEl.requestFullscreen().catch(() => {
+              SoundEngine.speakKuwaitiPhrase('يرجى تثبيت التطبيق لملء الشاشة على هذا المتصفح', '📲');
+            });
+          } else if (docEl.webkitRequestFullscreen) {
+            docEl.webkitRequestFullscreen();
+          }
+          if (currentModeText) currentModeText.textContent = 'ملء الشاشة';
+          if (screenStatusIndicator) screenStatusIndicator.textContent = 'كامل';
           SoundEngine.speakKuwaitiPhrase('ملء الشاشة ⛶', '⛶');
         } else {
           if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
           else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-          SoundEngine.speakKuwaitiPhrase('الخروج من ملء الشاشة', '🔲');
+          if (currentModeText) currentModeText.textContent = 'الشاشة';
+          if (screenStatusIndicator) screenStatusIndicator.textContent = 'عادي';
+          SoundEngine.speakKuwaitiPhrase('إلغاء ملء الشاشة 🔲', '🔲');
         }
+
+        setTimeout(() => {
+          recalculateResponsiveLayout();
+        }, 200);
       });
 
       // الانضمام عبر رمز في اللوبي
@@ -3249,20 +3332,23 @@
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-        const isPortrait = window.innerHeight > window.innerWidth;
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const isForced = document.body.classList.contains('forced-landscape-mode');
+        const width = isForced ? window.innerHeight : window.innerWidth;
+        const height = isForced ? window.innerWidth : window.innerHeight;
+        const isPortrait = height > width;
 
         const felt = document.querySelector('.felt-surface');
         if (felt) {
           if (isPortrait) {
             // شاشات الهواتف الرأسية
-            const availableHeight = height - 190;
-            felt.style.height = `${Math.min(availableHeight, width * 1.25)}px`;
+            const availableHeight = height - 170;
+            felt.style.height = `${Math.min(availableHeight, width * 1.15)}px`;
+            felt.style.maxWidth = '98%';
             felt.style.aspectRatio = 'auto';
           } else {
             // شاشات التابلت أو الوضع العرضي
-            felt.style.height = '98%';
+            felt.style.height = '94%';
+            felt.style.maxWidth = `${Math.min(width * 0.94, 960)}px`;
             felt.style.aspectRatio = '16 / 10';
           }
         }
@@ -3275,6 +3361,12 @@
 
       window.addEventListener('resize', recalculateResponsiveLayout);
       window.addEventListener('orientationchange', () => {
+        setTimeout(recalculateResponsiveLayout, 150);
+      });
+      document.addEventListener('fullscreenchange', () => {
+        setTimeout(recalculateResponsiveLayout, 150);
+      });
+      document.addEventListener('webkitfullscreenchange', () => {
         setTimeout(recalculateResponsiveLayout, 150);
       });
       recalculateResponsiveLayout();
