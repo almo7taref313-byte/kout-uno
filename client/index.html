@@ -684,35 +684,48 @@
 
     <!-- Host Friends Modal -->
     <div id="hostFriendsModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-      <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl w-full max-w-sm p-5 text-center shadow-2xl">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
+      <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl w-full max-w-lg p-4 sm:p-5 text-center shadow-2xl max-h-[95vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
           <h3 class="text-base font-black text-amber-400 flex items-center gap-1.5">
             <span>👥</span>
-            <span>طاولتك الخاصة مع الربع</span>
+            <span>طاولتك الخاصة وتوزيع المقاعد والفرق</span>
           </h3>
           <button id="btnCloseHostModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
         </div>
 
-        <p class="text-xs text-slate-300 mb-3 leading-relaxed">شارك الرمز مع أصدقائك، وسيقوم النظام بإكمال المقاعد بالبوتات تلقائياً عند البدء.</p>
+        <p class="text-[11px] text-slate-300 mb-2 leading-relaxed">
+          اختر مقعدك وفريقك؛ يمكنك النقر على أي مقعد للانتقال إليه أو تبديل اللاعبين قبل بدء الجولة.
+        </p>
 
-        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 mb-3">
-          <span class="text-[10px] text-slate-400 block mb-0.5">رمز الطاولة الخاص:</span>
-          <div id="hostModalRoomCodeDisplay" class="font-mono font-black text-3xl text-amber-400 tracking-widest my-1">4821</div>
-          <button id="btnHostRegenerateCode" class="text-[10px] text-slate-400 hover:text-amber-400 font-bold transition">تغيير الرمز 🔄</button>
+        <!-- Room Code & Share Header -->
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 mb-3 flex items-center justify-between">
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 block">رمز الطاولة الخاص:</span>
+            <div id="hostModalRoomCodeDisplay" class="font-mono font-black text-2xl text-amber-400 tracking-wider">4821</div>
+          </div>
+          <div class="flex gap-1.5">
+            <button id="btnHostShareWhatsApp" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[11px] font-bold shadow transition active:scale-95 flex items-center gap-1">
+              <span>💬</span><span>واتساب</span>
+            </button>
+            <button id="btnHostCopyLink" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-[11px] font-bold transition active:scale-95">
+              📋 نسخ
+            </button>
+            <button id="btnHostRegenerateCode" class="p-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl border border-slate-700 transition" title="رمز جديد">🔄</button>
+          </div>
         </div>
 
-        <div class="space-y-2 mb-3">
-          <button id="btnHostShareWhatsApp" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow transition active:scale-95 flex items-center justify-center gap-1.5">
-            <span>💬</span>
-            <span>إرسال دعوة عبر واتساب</span>
-          </button>
-          <button id="btnHostCopyLink" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition active:scale-95">
-            📋 نسخ رابط الطاولة المباشر
-          </button>
+        <!-- 6-Seats Interactive Roster Grid -->
+        <div class="mb-3">
+          <div class="flex items-center justify-between text-[11px] font-black px-1 mb-1.5">
+            <span class="text-emerald-400 flex items-center gap-1">🟢 فريقنا (لنا) - مقاعد 0، 2، 4</span>
+            <span class="text-rose-400 flex items-center gap-1">فريقهم (لهم) - مقاعد 1، 3، 5 🔴</span>
+          </div>
+
+          <div id="roomSeatsSelectorGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
         </div>
 
-        <button id="btnHostEnterTable" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow transition active:scale-95">
-          دخول الطاولة وبدء اللعب 🚀
+        <button id="btnHostEnterTable" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black rounded-xl text-sm sm:text-base shadow-xl transition active:scale-95 flex items-center justify-center gap-2">
+          <span>دخول الطاولة وبدء اللعب 🚀</span>
         </button>
       </div>
     </div>
@@ -1541,6 +1554,13 @@
         const lobbyAvatarEl = document.getElementById('lobbyUserAvatar');
         if (lobbyAvatarEl) lobbyAvatarEl.innerHTML = markup;
 
+        // Update seat definitions with active player details
+        if (SEAT_DEFINITIONS[currentHumanSeatIndex]) {
+          SEAT_DEFINITIONS[currentHumanSeatIndex].defaultName = this.user.name;
+          SEAT_DEFINITIONS[currentHumanSeatIndex].avatarId = this.user.avatarId;
+          SEAT_DEFINITIONS[currentHumanSeatIndex].customPhoto = this.user.customPhoto;
+        }
+
         if (GameState.players && GameState.players[0]) {
           GameState.players[0].name = this.user.name;
           GameState.players[0].avatarId = this.user.avatarId;
@@ -1552,101 +1572,177 @@
     /* ==========================================================================
        4. GAME STATE & SEAT ENGINE (1-6 Humans + Auto AI Bot Fill)
        ========================================================================== */
-    const SEAT_DEFINITIONS = [
-      { id: 0, defaultName: 'أنت', team: 'A', avatarId: 'ghutra_beard', seatEl: null },
-      { id: 1, defaultName: 'فهد', team: 'B', avatarId: 'shirt_beard_glasses', seatEl: 'seat-1' },
-      { id: 2, defaultName: 'جاسم', team: 'A', avatarId: 'bald_beard', seatEl: 'seat-2' },
-      { id: 3, defaultName: 'دلال', team: 'B', avatarId: 'kuwaiti_lady', seatEl: 'seat-3' },
-      { id: 4, defaultName: 'براك', team: 'A', avatarId: 'ghutra_glasses', seatEl: 'seat-4' },
-      { id: 5, defaultName: 'سبيكة', team: 'B', avatarId: 'blackhair_glasses', seatEl: 'seat-5' }
+    let SEAT_DEFINITIONS = [
+      { id: 0, defaultName: 'أنت', team: 'A', avatarId: 'ghutra_beard', seatEl: null, isHuman: true },
+      { id: 1, defaultName: 'فهد', team: 'B', avatarId: 'shirt_beard_glasses', seatEl: 'seat-1', isHuman: false },
+      { id: 2, defaultName: 'جاسم', team: 'A', avatarId: 'bald_beard', seatEl: 'seat-2', isHuman: false },
+      { id: 3, defaultName: 'دلال', team: 'B', avatarId: 'kuwaiti_lady', seatEl: 'seat-3', isHuman: false },
+      { id: 4, defaultName: 'براك', team: 'A', avatarId: 'ghutra_glasses', seatEl: 'seat-4', isHuman: false },
+      { id: 5, defaultName: 'سبيكة', team: 'B', avatarId: 'blackhair_glasses', seatEl: 'seat-5', isHuman: false }
     ];
 
+    // Current human seat position inside SEAT_DEFINITIONS (Default: Seat 0)
+    let currentHumanSeatIndex = 0;
+
     const SUIT_RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '0', 'reverse', 'skip', 'draw2', '1'];
+
     const SUIT_COLORS = {
       red: { name: 'أحمر', hex: '#EA1D2D' },
       blue: { name: 'أزرق', hex: '#0063B0' },
       green: { name: 'أخضر', hex: '#2EB844' },
-      yellow: { name: 'أصفر', hex: '#FED000' },
-      special: { name: 'خاص', hex: '#0f172a' }
+      yellow: { name: 'أصفر', hex: '#FED000' }
     };
 
     const GameState = {
-      deck: [],
-      players: [],
-      phase: 'DEALING',
-      currentTurn: 0,
-      dealerIdx: 0,
-      roundNumber: 1, // تتبع رقم الجولة لتطبيق قانون العسم في أول جولة
-      trumpColor: null,
-      bidWinner: null,
-      highestBid: 4,
-      isForcedBid: false, // تمييز حالة الشراء الإجباري (الملزوم)
-      biddingHistory: [],
-      currentTrick: [],
-      tricksTeamA: 0,
-      tricksTeamB: 0,
+      roundNumber: 1,
       matchScoreTeamA: 0,
       matchScoreTeamB: 0,
+      tricksTeamA: 0,
+      tricksTeamB: 0,
+      deck: [],
+      players: [],
+      currentTrick: [],
+      trumpColor: null,
+      highestBid: 4,
+      bidWinner: null,
+      isForcedBid: false,
+      biddingHistory: [],
+      phase: 'LOBBY',
+      dealerIdx: 0,
+      currentTurn: 0,
+      isActionPending: false,
       timerRemaining: 12,
-      timerInterval: null,
-      // قفل لمنع رمي كرتين نهائياً (Strict Single-Card Lock)
-      isActionPending: false
+      timerInterval: null
     };
 
     function buildDeck() {
       const deck = [];
       const colors = ['red', 'blue', 'green', 'yellow'];
+      const rankLabels = {
+        '2': '2', '3': '3', '4': '4', '5': '5', '6': '6',
+        '7': '7', '8': '8', '9': '9', '0': '0',
+        'reverse': '⇄', 'skip': '⊘', 'draw2': '+2', '1': '1'
+      };
 
       colors.forEach(col => {
         SUIT_RANKS.forEach(rank => {
-          let label = rank;
-          let roleTitle = '';
-          if (rank === '1') { label = '1'; roleTitle = 'خال'; }
-          else if (rank === 'draw2') { label = '+2'; roleTitle = 'باش'; }
-          else if (rank === 'skip') { label = '⊘'; roleTitle = 'ميم'; }
-          else if (rank === 'reverse') { label = '⇄'; roleTitle = 'غلام'; }
-          else if (rank === '0') { label = '10'; roleTitle = '10'; }
-
           deck.push({
             id: `${col}_${rank}`,
             color: col,
             rank: rank,
-            label: label,
-            roleTitle: roleTitle,
+            label: rankLabels[rank] || rank,
             isJoker: false,
-            isMaker: false
+            isMaker: false,
+            roleTitle: rank === '1' ? 'الخال' : (rank === 'draw2' ? 'الباش (+2)' : (rank === 'skip' ? 'الميم (⊘)' : (rank === 'reverse' ? 'الغلام (⇄)' : rank)))
           });
         });
       });
 
-      // Joker (+4)
+      // Wild Joker (+4)
       deck.push({
-        id: 'uno_joker_draw4',
+        id: 'wild_joker',
         color: 'special',
-        rank: 'joker_draw4',
+        rank: 'wild_draw4',
         label: '+4',
-        roleTitle: 'الجيكر',
         isJoker: true,
-        isMaker: false
+        isMaker: false,
+        roleTitle: 'الجيكر (+4)'
       });
 
-      // Maker (Rainbow)
+      // Wild Maker (Rainbow)
       deck.push({
-        id: 'uno_maker_rainbow',
+        id: 'wild_maker',
         color: 'special',
-        rank: 'maker_rainbow',
-        label: 'maker',
-        roleTitle: 'الميكر',
+        rank: 'wild_rainbow',
+        label: '🌈',
         isJoker: false,
-        isMaker: true
+        isMaker: true,
+        roleTitle: 'الميكر (Rainbow)'
       });
 
-      // Shuffle
+      // Fisher-Yates shuffle
       for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
       }
+
       return deck;
+    }
+
+    /* ==========================================================================
+       ROOM SEAT CONFIGURATION & TEAM BUILDER
+       ========================================================================== */
+    function renderRoomSeatSelector() {
+      const grid = document.getElementById('roomSeatsSelectorGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      SEAT_DEFINITIONS.forEach((seat, idx) => {
+        const isMySeat = idx === currentHumanSeatIndex;
+        const isTeamA = seat.team === 'A';
+        const borderCol = isTeamA ? 'border-emerald-500/50 hover:border-emerald-400' : 'border-rose-500/50 hover:border-rose-400';
+        const bgCol = isMySeat ? (isTeamA ? 'bg-emerald-950/80 border-2 border-emerald-400 shadow-emerald-900/40' : 'bg-rose-950/80 border-2 border-rose-400 shadow-rose-900/40') : 'bg-slate-950/90 border border-slate-800';
+        const teamBadge = isTeamA ? 'bg-emerald-600/30 text-emerald-300 border-emerald-500/40' : 'bg-rose-600/30 text-rose-300 border-rose-500/40';
+
+        const avatarMarkup = UserStore.renderAvatar(seat.avatarId, seat.customPhoto);
+
+        const card = document.createElement('div');
+        card.className = `p-2 rounded-2xl flex flex-col items-center justify-between gap-1.5 transition active:scale-95 shadow-md ${bgCol} ${borderCol} cursor-pointer relative`;
+
+        card.innerHTML = `
+          <div class="w-full flex items-center justify-between text-[9px] font-mono px-1">
+            <span class="font-bold text-slate-400">مقعد #${idx}</span>
+            <span class="px-1.5 py-0.2 rounded-full border text-[9px] font-black ${teamBadge}">
+              ${isTeamA ? 'لنا 🟢' : 'لهم 🔴'}
+            </span>
+          </div>
+
+          <div class="relative w-11 h-11 rounded-full overflow-hidden border-2 ${isMySeat ? 'border-amber-400 ring-2 ring-amber-400/50' : 'border-slate-700'} bg-slate-900 flex items-center justify-center">
+            ${avatarMarkup}
+            ${isMySeat ? `<span class="absolute bottom-0 inset-x-0 bg-amber-500 text-slate-950 font-black text-[8px] text-center">أنت</span>` : ''}
+          </div>
+
+          <div class="text-center w-full">
+            <span class="text-xs font-black text-white block truncate">${isMySeat ? UserStore.user.name : seat.defaultName}</span>
+            <span class="text-[9px] font-bold text-slate-400 block">${isMySeat ? 'لاعب حقيقي' : 'بوت ذكي (AI)'}</span>
+          </div>
+
+          <div class="w-full mt-0.5">
+            ${isMySeat 
+              ? `<div class="w-full py-1 bg-amber-500/20 text-amber-300 border border-amber-400/40 rounded-lg text-[10px] font-black text-center">مكانك الحالي 👑</div>`
+              : `<button class="w-full py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-bold transition">اجلس هنا 💺</button>`
+            }
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          if (isMySeat) return;
+          moveHumanToSeat(idx);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function moveHumanToSeat(targetSeatIndex) {
+      const oldSeatIndex = currentHumanSeatIndex;
+      const targetSeatConfig = { ...SEAT_DEFINITIONS[targetSeatIndex] };
+
+      SEAT_DEFINITIONS[targetSeatIndex].defaultName = UserStore.user.name;
+      SEAT_DEFINITIONS[targetSeatIndex].avatarId = UserStore.user.avatarId;
+      SEAT_DEFINITIONS[targetSeatIndex].customPhoto = UserStore.user.customPhoto;
+      SEAT_DEFINITIONS[targetSeatIndex].isHuman = true;
+
+      SEAT_DEFINITIONS[oldSeatIndex].defaultName = targetSeatConfig.defaultName;
+      SEAT_DEFINITIONS[oldSeatIndex].avatarId = targetSeatConfig.avatarId;
+      SEAT_DEFINITIONS[oldSeatIndex].customPhoto = targetSeatConfig.customPhoto;
+      SEAT_DEFINITIONS[oldSeatIndex].isHuman = false;
+
+      currentHumanSeatIndex = targetSeatIndex;
+      renderRoomSeatSelector();
+
+      const newTeamText = SEAT_DEFINITIONS[targetSeatIndex].team === 'A' ? 'فريقنا (لنا 🟢)' : 'فريق الخصم (لهم 🔴)';
+      SoundEngine.speakKuwaitiPhrase(`انتقلت للمقعد رقم ${targetSeatIndex} في ${newTeamText}`, '💺');
     }
 
     /* ==========================================================================
@@ -3038,8 +3134,22 @@
       bindClick('btnOpenHostTableModal', () => {
         const disp = document.getElementById('hostModalRoomCodeDisplay');
         if (disp) disp.textContent = UserStore.currentRoomCode;
+        renderRoomSeatSelector();
         const modal = document.getElementById('hostFriendsModal');
         if (modal) modal.classList.remove('hidden');
+      });
+
+      bindClick('btnCloseHostModal', () => {
+        const modal = document.getElementById('hostFriendsModal');
+        if (modal) modal.classList.add('hidden');
+      });
+
+      bindClick('btnHostRegenerateCode', () => {
+        const newCode = String(Math.floor(1000 + Math.random() * 9000));
+        UserStore.setRoom(newCode);
+        const disp = document.getElementById('hostModalRoomCodeDisplay');
+        if (disp) disp.textContent = newCode;
+        renderRoomSeatSelector();
       });
 
       bindClick('btnCloseHostModal', () => {
