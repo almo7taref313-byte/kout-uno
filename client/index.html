@@ -1173,7 +1173,7 @@
           <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
             <h4 class="font-black text-yellow-400 text-sm mb-1">🏆 المزايدة والباون والحسم:</h4>
             <p>• أقل شراء يبدأ من <b>5 أكلات</b> وحتى <b>8</b>.</p>
-            <p>• <b>الباون (9 أكلات):</b> المشتري يتعهد بأكل جميع أكلات الجولة (16 نقطة للفائز أو تضاعف للخصم عند الكسر).</p>
+            <p>• <b>الباون (9 أكلات):</b> المشتري يتعهد بأكل جميع أكلات الجولة (<b>36 نقطة</b> لفريق المشتري عند الوصول، أو <b>18 نقطة</b> للفريق الخصم عند كسر الباون).</p>
             <p>• <b>وصلت!</b> عند تحقيق المشتري للرقم المطلوب تنتهي الجولة فوراً لصالحه.</p>
             <p>• <b>تم الكسر!</b> بمجرد استحالة وصول المشتري لهدفه رياضياً تنتهي الجولة بالكسر فوراً لصالح المدافعين.</p>
           </div>
@@ -1798,6 +1798,7 @@
       phase: 'DEALING',
       currentTurn: 0,
       dealerIdx: 0,
+      roundNumber: 1, // تتبع رقم الجولة لتطبيق قانون العسم في أول جولة
       trumpColor: null,
       bidWinner: null,
       highestBid: 4,
@@ -2451,6 +2452,7 @@
     function startNewMatch() {
       GameState.matchScoreTeamA = 0;
       GameState.matchScoreTeamB = 0;
+      GameState.roundNumber = 1; // بدء من الجولة الأولى
       GameState.dealerIdx = Math.floor(Math.random() * 6);
       startNewRound();
     }
@@ -2789,18 +2791,22 @@
       const isMyTeamBuyer = buyer.team === 'A';
       const userWon = (isBuyerWinner && isMyTeamBuyer) || (!isBuyerWinner && !isMyTeamBuyer);
       const isBaoon = GameState.highestBid === 9;
+      // قانون العسم: إذا كان باون في أول جولة ووصل المشتري تنتهي اللعبة كاملة فوراً بالعسم
+      const isAsam = isBaoon && isBuyerWinner && GameState.roundNumber === 1;
 
-      let pts = isBaoon ? 16 : (GameState.highestBid || 5);
+      // نقاط الباون الرسمية: 36 نقطة عند الوصول و 18 نقطة للخصم عند الكسر
+      let pts = isBaoon ? 36 : (GameState.highestBid || 5);
 
       // في حال الشراء الإجباري وخسارة المجبور (الملزوم) تحتسب 5 نقاط فقط بدون مضاعفة
-      let penaltyMultiplier = GameState.isForcedBid ? 1 : 2;
+      let penaltyMultiplier = isBaoon ? 1 : (GameState.isForcedBid ? 1 : 2);
 
       if (isBuyerWinner) {
         if (buyer.team === 'A') GameState.matchScoreTeamA += pts;
         else GameState.matchScoreTeamB += pts;
       } else {
-        if (buyer.team === 'A') GameState.matchScoreTeamB += pts * penaltyMultiplier;
-        else GameState.matchScoreTeamA += pts * penaltyMultiplier;
+        const defensePts = isBaoon ? 18 : pts * penaltyMultiplier;
+        if (buyer.team === 'A') GameState.matchScoreTeamB += defensePts;
+        else GameState.matchScoreTeamA += defensePts;
       }
 
       updateScoreboard();
@@ -2815,6 +2821,7 @@
       const rA = document.getElementById('resultTricksA');
       const rB = document.getElementById('resultTricksB');
       const rPts = document.getElementById('resultPointsEarned');
+      const btnNext = document.getElementById('btnNextRound');
 
       const forcedNotice = GameState.isForcedBid ? ' [ملزوم إجباري]' : '';
       bName.textContent = `${buyer.name || 'لاعب'} (${buyer.team === 'A' ? 'لنا 🟢' : 'لهم 🔴'})${forcedNotice}`;
@@ -2822,28 +2829,53 @@
       rA.textContent = GameState.tricksTeamA;
       rB.textContent = GameState.tricksTeamB;
 
-      const defensePts = pts * penaltyMultiplier;
+      const defensePts = isBaoon ? 18 : pts * penaltyMultiplier;
 
-      if (userWon) {
+      // حالة العسم (باون من أول جولة ووصل)
+      if (isAsam) {
+        if (userWon) {
+          icon.textContent = '👑';
+          title.textContent = 'عــــســـــم! فـوز سـاحـق!';
+          title.className = 'text-2xl sm:text-3xl font-black text-amber-400 mb-1 animate-bounce';
+          sub.textContent = 'باون من الجولة الأولى! انتهت اللعبة بفوز فريقكم بالضربة القاضية!';
+          rPts.textContent = `فوز كامل بالمباراة (عسم) 🏆`;
+          card.className = 'bg-slate-900 border-4 border-amber-400 rounded-3xl w-full max-w-md p-5 text-center shadow-[0_0_50px_rgba(251,191,36,0.6)]';
+          if (btnNext) btnNext.innerHTML = '<span>لعبة جديدة 🔄</span>';
+          SoundEngine.playVictoryFanfare(true);
+          SoundEngine.speakKuwaitiPhrase('عسسسسم! انتهت اللعبة وعاشوا الربع!', '👑');
+        } else {
+          icon.textContent = '🎯';
+          title.textContent = 'طلع عليكم عسم يالصيدة!';
+          title.className = 'text-2xl sm:text-3xl font-black text-rose-500 mb-1 animate-pulse';
+          sub.textContent = 'فاز الخصم بباون من أول جولة.. انتهت اللعبة بالكامل!';
+          rPts.textContent = `خسارة المباراة بالعسم ❌`;
+          card.className = 'bg-slate-900 border-4 border-rose-600 rounded-3xl w-full max-w-md p-5 text-center shadow-[0_0_50px_rgba(225,29,72,0.7)]';
+          if (btnNext) btnNext.innerHTML = '<span>لعبة جديدة 🔄</span>';
+          SoundEngine.playBustedSound();
+          SoundEngine.speakKuwaitiPhrase('طلع عليكم عسم يالصيدة!', '🎯');
+        }
+      } else if (userWon) {
         icon.textContent = isBaoon ? '👑' : '🎉';
-        title.textContent = isBuyerWinner ? 'وصــلـت! وعاشوا الربع!' : (GameState.isForcedBid ? 'انكسر المجبور! كفو!' : 'تم الكسر يا معوّد! كفو!');
+        title.textContent = isBuyerWinner ? (isBaoon ? 'وصل الباون وعاشوا الربع! 👑' : 'وصــلـت! وعاشوا الربع!') : (GameState.isForcedBid ? 'انكسر المجبور! كفو!' : (isBaoon ? 'انكسر الباون! كفو يا أبطال!' : 'تم الكسر يا معوّد! كفو!'));
         title.className = 'text-2xl sm:text-3xl font-black text-emerald-400 mb-1';
-        sub.textContent = isBuyerWinner ? 'حققتم عدد الأكلات المطلوب بجدارة!' : (GameState.isForcedBid ? 'خسر الملزوم وتُحتسب 5 نقاط فقط لقانون الكوت الأصيل!' : 'تصدى فريقكم للمشتري وتم كسره بنجاح!');
+        sub.textContent = isBuyerWinner ? (isBaoon ? 'حقق فريقكم الباون وحصدتم 36 نقطة بجدارة!' : 'حققتم عدد الأكلات المطلوب بجدارة!') : (GameState.isForcedBid ? 'خسر الملزوم وتُحتسب 5 نقاط فقط لقانون الكوت الأصيل!' : (isBaoon ? 'تم كسر الباون واحتساب 18 نقطة لفريقكم!' : 'تصدى فريقكم للمشتري وتم كسره بنجاح!'));
         rPts.textContent = `+${isBuyerWinner ? pts : defensePts} نقطة لفريقنا 🟢`;
         card.className = 'bg-slate-900 border-2 border-emerald-500 rounded-3xl w-full max-w-md p-5 text-center shadow-2xl';
+        if (btnNext) btnNext.innerHTML = '<span>الجولة القادمة 🔄</span>';
 
         SoundEngine.playVictoryFanfare(isBaoon);
-        SoundEngine.speakKuwaitiPhrase(isBuyerWinner ? 'وصلت وعاااشوا الربع!! مبروك!' : 'انكسر المجبور وكفو عليكم!', '🎉');
+        SoundEngine.speakKuwaitiPhrase(isBuyerWinner ? (isBaoon ? 'وصل الباون وعاشوا الأبطال! 36 نقطة' : 'وصلت وعاااشوا الربع!! مبروك!') : 'كفو تم الكسر!', '🎉');
       } else {
         icon.textContent = '❌';
-        title.textContent = isBuyerWinner ? 'وصل الخصم!' : (GameState.isForcedBid ? 'انكسر المجبور!' : 'انكسر فريقنا!');
+        title.textContent = isBuyerWinner ? (isBaoon ? 'وصل باون الخصم!' : 'وصل الخصم!') : (GameState.isForcedBid ? 'انكسر المجبور!' : (isBaoon ? 'انكسر الباون!' : 'انكسر فريقنا!'));
         title.className = 'text-2xl sm:text-3xl font-black text-rose-500 mb-1';
-        sub.textContent = isBuyerWinner ? 'حقق فريق الخصم هدفه المطلوب' : (GameState.isForcedBid ? 'خسر المجبور (الملزوم) واحتُسبت 5 نقاط للخصم دون مضاعفة' : 'للأسف تم كسر المشتري وتضاعفت النقاط للخصم');
+        sub.textContent = isBuyerWinner ? (isBaoon ? 'حقق الخصم الباون واحتُسبت له 36 نقطة كاملة!' : 'حقق فريق الخصم هدفه المطلوب') : (GameState.isForcedBid ? 'خسر المجبور (الملزوم) واحتُسبت 5 نقاط للخصم دون مضاعفة' : (isBaoon ? 'للأسف انكسر الباون وحصل الخصم على 18 نقطة' : 'للأسف تم كسر المشتري وتضاعفت النقاط للخصم'));
         rPts.textContent = `+${isBuyerWinner ? pts : defensePts} نقطة لخصمنا 🔴`;
         card.className = 'bg-slate-900 border-2 border-rose-500 rounded-3xl w-full max-w-md p-5 text-center shadow-2xl';
+        if (btnNext) btnNext.innerHTML = '<span>الجولة القادمة 🔄</span>';
 
         SoundEngine.playBustedSound();
-        SoundEngine.speakKuwaitiPhrase(GameState.isForcedBid ? 'خيرها بغيرها.. انكسر المجبور واحتسبت 5 نقاط' : 'خيرها بغيرها.. انكسرنا هالجولة!', '❌');
+        SoundEngine.speakKuwaitiPhrase(GameState.isForcedBid ? 'خيرها بغيرها.. انكسر المجبور واحتسبت 5 نقاط' : (isBaoon ? 'انكسر الباون واحتسبت 18 نقطة للخصم' : 'خيرها بغيرها.. انكسرنا هالجولة!'), '❌');
       }
 
       modal.classList.remove('hidden');
@@ -3447,6 +3479,16 @@
       bindClick('btnNextRound', () => {
         const resModal = document.getElementById('roundResultModal');
         if (resModal) resModal.classList.add('hidden');
+        
+        // إذا كان هناك عسم، تبدأ مباراة جديدة بالكامل
+        const isBaoon = GameState.highestBid === 9;
+        const buyerTricks = GameState.bidWinner !== null && GameState.players[GameState.bidWinner]?.team === 'A' ? GameState.tricksTeamA : GameState.tricksTeamB;
+        if (isBaoon && buyerTricks >= 9 && GameState.roundNumber === 1) {
+          startNewMatch();
+          return;
+        }
+
+        GameState.roundNumber++;
         GameState.dealerIdx = (GameState.dealerIdx + 1) % 6;
         startNewRound();
       });
