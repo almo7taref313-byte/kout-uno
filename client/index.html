@@ -69,21 +69,23 @@
       align-items: center;
       width: 100%;
       height: 100%;
+      height: 100dvh;
       max-width: 1400px;
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
     }
 
-    /* منطقة الطاولة المتمركزة */
+    /* منطقة الطاولة المتمركزة والمتكيفة تلقائياً */
     .arena-center-stage {
-      flex: 1 1 auto;
+      flex: 1 1 0%;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 2px 4px;
+      padding: 4px 6px;
       position: relative;
-      overflow: visible;
+      overflow: hidden;
       min-height: 0;
     }
 
@@ -95,29 +97,51 @@
       outline: 2px solid #94a3b8;
       width: 100%;
       max-width: 960px;
-      height: 98%;
+      height: 100%;
       max-height: 520px;
-      min-height: 280px;
-      aspect-ratio: 16 / 10.5;
       margin: auto;
+      position: relative;
+      transition: all 0.25s ease-out;
     }
 
-    @media (max-width: 640px) {
+    /* تكيف المقاسات في شاشات الموبايل الرأسية */
+    @media (max-width: 640px) and (orientation: portrait) {
       .felt-surface {
-        border-width: 6px;
-        min-height: 250px;
-        aspect-ratio: 16 / 12;
+        border-width: 5px;
+        max-height: 100%;
+        border-radius: 26px !important;
+      }
+      .uno-card {
+        width: 44px;
+        height: 66px;
+        border-radius: 7px;
+      }
+      .player-card {
+        width: 46px;
+        height: 70px;
+      }
+    }
+
+    /* تكيف المقاسات في الأجهزة اللوحية والشاشات العريضة */
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .felt-surface {
+        border-width: 7px;
+        max-height: 480px;
+      }
+      .uno-card {
+        width: 60px;
+        height: 90px;
       }
     }
 
     /* UNO Cards */
     .uno-card {
       position: relative;
-      width: 52px;
-      height: 78px;
+      width: 50px;
+      height: 76px;
       border-radius: 9px;
       background: #ffffff;
-      padding: 2.5px;
+      padding: 2px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255,255,255,0.4);
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
@@ -126,13 +150,13 @@
     }
 
     @media (min-width: 400px) {
-      .uno-card { width: 58px; height: 86px; border-radius: 10px; }
+      .uno-card { width: 54px; height: 82px; border-radius: 10px; }
     }
     @media (min-width: 640px) {
-      .uno-card { width: 72px; height: 106px; border-radius: 12px; }
+      .uno-card { width: 68px; height: 102px; border-radius: 12px; }
     }
     @media (min-width: 1024px) {
-      .uno-card { width: 82px; height: 120px; border-radius: 14px; }
+      .uno-card { width: 78px; height: 114px; border-radius: 14px; }
     }
 
     .uno-inner {
@@ -3219,6 +3243,41 @@
       bindClick('btnExitFromResults', () => {
         showLobby();
       });
+
+      // نظام إعادة التنسيق الديناميكي التلقائي لكافة الهواتف والأجهزة اللوحية
+      function recalculateResponsiveLayout() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const felt = document.querySelector('.felt-surface');
+        if (felt) {
+          if (isPortrait) {
+            // شاشات الهواتف الرأسية
+            const availableHeight = height - 190;
+            felt.style.height = `${Math.min(availableHeight, width * 1.25)}px`;
+            felt.style.aspectRatio = 'auto';
+          } else {
+            // شاشات التابلت أو الوضع العرضي
+            felt.style.height = '98%';
+            felt.style.aspectRatio = '16 / 10';
+          }
+        }
+
+        // تحديث رسم ساحة الكروت واليد لضبط الأبعاد فوراً
+        if (typeof renderTrickArena === 'function') renderTrickArena();
+        if (typeof renderHumanHand === 'function') renderHumanHand();
+        if (typeof renderBotSeats === 'function') renderBotSeats();
+      }
+
+      window.addEventListener('resize', recalculateResponsiveLayout);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(recalculateResponsiveLayout, 150);
+      });
+      recalculateResponsiveLayout();
 
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('room')) {
