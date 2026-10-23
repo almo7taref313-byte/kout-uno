@@ -62,12 +62,50 @@
     .safe-top { padding-top: max(8px, env(safe-area-inset-top)); }
     .safe-bottom { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
 
+    /* حاوية الشاشة الرئيسية واللعبة لضمان التوسيط التام في كافة الأجهزة والشاشات الكبيرة */
+    #gameMainWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* منطقة الطاولة المتمركزة عمودياً وأفقياً */
+    .arena-center-stage {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 4px 8px;
+      position: relative;
+    }
+
     /* Light Grey Luxury Felt Table 3D styling (أرضية الطاولة رمادي فاتح) */
     .felt-surface {
       background: radial-gradient(ellipse at center, #f1f5f9 0%, #e2e8f0 55%, #cbd5e1 100%);
       box-shadow: inset 0 0 70px rgba(71, 85, 105, 0.45), 0 10px 40px rgba(0,0,0,0.7);
       border: 10px solid #475569;
       outline: 3px solid #94a3b8;
+      width: 100%;
+      max-width: 960px;
+      height: 100%;
+      max-height: 520px;
+      min-height: 310px;
+      aspect-ratio: 16 / 9.8;
+      margin: auto;
+    }
+
+    @media (max-height: 600px) {
+      .felt-surface {
+        min-height: 260px;
+        max-height: 380px;
+      }
     }
 
     /* UNO Cards */
@@ -248,6 +286,37 @@
       }
     }
 
+    /* Hand Fan Mode (مسكة اليد الواقعية الاحترافية) */
+    .hand-mode-fan {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 120px;
+      padding-top: 15px;
+    }
+    @media (min-width: 640px) {
+      .hand-mode-fan { height: 140px; }
+    }
+    .hand-mode-fan .uno-card {
+      margin-left: -28px !important;
+      margin-right: -28px !important;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.2s ease, z-index 0.1s ease;
+      transform-origin: 50% 120%;
+    }
+    @media (min-width: 640px) {
+      .hand-mode-fan .uno-card {
+        margin-left: -34px !important;
+        margin-right: -34px !important;
+      }
+    }
+    .hand-mode-fan .player-card:hover {
+      transform: translateY(-28px) scale(1.15) rotate(0deg) !important;
+      margin-left: 2px !important;
+      margin-right: 2px !important;
+      z-index: 60 !important;
+    }
+
     /* Voice Callout Bubble */
     .callout-bubble {
       animation: calloutPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -336,688 +405,256 @@
           </div>
         </div>
       </div>
-
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-callout font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 tracking-wide drop-shadow-md">
-        كـوت بـو سـتـة
-      </h1>
-      <div class="inline-block px-3 py-1 bg-amber-500/10 border border-amber-400/30 rounded-full mt-1 mb-2">
-        <span class="text-xs sm:text-sm font-bold text-amber-300">نسخة كروت أونو الكويتية المطورة 🇰🇼</span>
-      </div>
-      <p class="text-slate-400 text-xs sm:text-sm max-w-sm">
-        الجيكر والميكر، الخال والباش، والمزايدة والباون مع أذكى البوتات أو ضد ربعك عبر رمز الغرفة!
-      </p>
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-wide mb-1">كوت بو ستة أونو</h1>
+      <p class="text-xs sm:text-sm text-slate-400 max-w-xs sm:max-w-sm">النسخة الكويتية الأصلية بقواعد الديوانية ونظام كروت أونو الممتع</p>
     </div>
 
-    <!-- Main Action Buttons -->
-    <div class="w-full max-w-md space-y-2.5 pb-2">
-      <!-- 1. Play Online Fast Button -->
-      <button id="btnPlayOnlineFast" class="btn-glow-green w-full text-slate-950 font-black py-3 sm:py-3.5 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-emerald-300/50">
-        <div class="flex items-center gap-3">
-          <span class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition">⚡</span>
-          <div class="text-right">
-            <div class="text-base sm:text-lg font-black leading-tight text-white">العب أونلاين فوراً</div>
-            <div class="text-[11px] text-emerald-950 font-bold">دخول طاولة سريعة ومقاعد مكتملة بالبوتات</div>
-          </div>
-        </div>
-        <span class="text-xl text-white font-black group-hover:translate-x-[-4px] transition">←</span>
+    <!-- Lobby Action Buttons -->
+    <div class="w-full max-w-sm space-y-2.5">
+      <button id="btnPlayOnlineFast" class="w-full py-3.5 px-4 rounded-2xl btn-glow-green text-white font-black text-base shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+        <span class="text-xl">⚡</span>
+        <span>لعب سريع ومباشر</span>
       </button>
 
-      <!-- 2. Host Custom Table for Friends Button -->
-      <button id="btnOpenHostTableModal" class="btn-glow-blue w-full text-white font-black py-3 sm:py-3.5 px-5 rounded-2xl flex items-center justify-between active:scale-[0.98] transition group shadow-2xl border border-blue-300/40">
-        <div class="flex items-center gap-3">
-          <span class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition">👥</span>
-          <div class="text-right">
-            <div class="text-base sm:text-lg font-black leading-tight text-white">افتح طاولة للعب مع الأصدقاء</div>
-            <div class="text-[11px] text-blue-100 font-bold">رمز غرفة خاص برابط دعوة للواتساب</div>
-          </div>
-        </div>
-        <span class="text-xl text-white font-black group-hover:translate-x-[-4px] transition">←</span>
+      <button id="btnOpenHostTableModal" class="w-full py-3 px-4 rounded-2xl btn-glow-blue text-white font-extrabold text-sm shadow-md transition active:scale-95 flex items-center justify-center gap-2">
+        <span class="text-lg">👥</span>
+        <span>إنشاء طاولة خاصة برمز</span>
       </button>
 
-      <!-- 3. Join by 4-digit code (Quick Bar) -->
+      <!-- Quick Room Code Join -->
       <div class="flex gap-2">
-        <input type="text" id="inputLobbyQuickJoinCode" maxlength="4" placeholder="أدخل رمز غرفة (4 أرقام)" class="flex-1 bg-slate-900 border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2 text-center font-mono font-black text-amber-300 tracking-widest text-sm outline-none placeholder:text-slate-500 placeholder:text-xs">
-        <button id="btnLobbyQuickJoin" class="bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 px-4 py-2 rounded-xl font-bold text-xs text-amber-300 transition">
-          انضمام 🚪
-        </button>
+        <input type="text" id="inputLobbyQuickJoinCode" maxlength="4" placeholder="رمز الغرفة (4 أرقام)" class="flex-1 bg-slate-900 border border-slate-700 focus:border-amber-400 px-3 py-2.5 rounded-xl text-white font-mono text-center font-bold text-sm tracking-wider uppercase outline-none">
+        <button id="btnLobbyQuickJoin" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition active:scale-95">دخول 🚪</button>
       </div>
 
-      <!-- 4. Install & Download Game Button (Universal for Android, iOS, Windows, Mac, iPad) -->
-      <button id="btnOpenInstallModal" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-4 rounded-xl flex items-center justify-between active:scale-[0.98] transition shadow-lg border border-yellow-200">
-        <div class="flex items-center gap-2.5">
-          <span class="text-xl">📥</span>
-          <div class="text-right">
-            <span class="text-xs sm:text-sm font-black block leading-tight">تثبيت وتحميل اللعبة على جهازك</span>
-            <span id="detectedPlatformText" class="text-[10px] text-slate-900/80 font-bold">يدعم: أندرويد • آيفون • آيباد • ويندوز • ماك</span>
-          </div>
-        </div>
-        <span class="bg-slate-950/15 px-2 py-0.5 rounded-lg text-[10px] font-black border border-slate-950/10">تثبيت 📲</span>
+      <!-- Install App Button -->
+      <button id="btnOpenInstallModal" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 font-bold text-xs shadow transition active:scale-95 flex items-center justify-center gap-1.5">
+        <span>📥</span>
+        <span>تثبيت وتحميل اللعبة على جهازك</span>
       </button>
 
-      <!-- 5. Exit Application Button -->
-      <button id="btnExitAppLobby" class="w-full bg-slate-900/90 hover:bg-rose-950/70 border border-slate-800 hover:border-rose-500/50 text-slate-400 hover:text-rose-300 font-bold py-2 rounded-xl text-xs transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
-        <span>🚪</span>
-        <span>الخروج من اللعبة</span>
-      </button>
+      <!-- PWA Prompt Banner if supported -->
+      <div id="pwaPromptContainer" class="hidden">
+        <button id="btnTriggerPWAInstall" class="w-full py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow transition active:scale-95 flex items-center justify-center gap-1">
+          <span>📲</span>
+          <span>تثبيت سريع كتطبيق بنقرة واحدة</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Footer Copyright & Info -->
-    <div class="text-center text-[10px] text-slate-500 pt-1">
-      كوت بو ستة أونو الكويتية • نسخة الويب الرسمية PWA
+    <!-- Exit / Footer Info -->
+    <div class="text-center text-[10px] text-slate-500 pt-2 flex items-center justify-between w-full max-w-sm">
+      <span id="detectedPlatformText">متوافق مع الهواتف والكمبيوتر والأجهزة اللوحية</span>
+      <button id="btnExitAppLobby" class="text-rose-400 hover:text-rose-300 font-bold text-[11px]">خروج 🚪</button>
     </div>
   </div>
 
   <!-- ==========================================
-       MODAL: INSTALL & DEVICE ORIENTATION SETTINGS (تحميل اللعبة لجميع الأجهزة)
+       1. GAME TABLE SCREEN (طاولة اللعبة الرئيسية)
        ========================================== -->
-  <div id="installAppModal" class="hidden fixed inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-slate-900 border-2 border-amber-500/80 rounded-3xl w-full max-w-lg p-4 sm:p-5 text-right shadow-2xl max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
-        <div class="flex items-center gap-2">
-          <span class="text-2xl">📱</span>
-          <div>
-            <h3 class="text-base sm:text-lg font-black text-amber-400">تثبيت اللعبة وإعدادات الشاشة</h3>
-            <span class="text-[10px] text-slate-400">تشغيل كتطبيق أصلي بملء الشاشة على كافة الأنظمة</span>
-          </div>
-        </div>
-        <button id="btnCloseInstallModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
-      </div>
-
-      <!-- Quick Native Install Action Banner (Shows when PWA prompt is ready) -->
-      <div id="pwaPromptContainer" class="hidden mb-3 bg-gradient-to-r from-emerald-600 to-teal-600 p-3 rounded-2xl text-white flex items-center justify-between shadow-lg">
-        <div>
-          <div class="font-black text-xs sm:text-sm">تثبيت بنقرة واحدة متاح لجهازك!</div>
-          <div class="text-[10px] text-emerald-100 font-medium">سيتم إنشاء أيقونة للعبة على الشاشة الرئيسية مباشرة</div>
-        </div>
-        <button id="btnTriggerPWAInstall" class="bg-white text-emerald-900 font-black px-3.5 py-2 rounded-xl text-xs active:scale-95 transition shadow">
-          تثبيت الآن 🚀
+  <div id="gameMainWrapper" class="safe-top safe-bottom">
+    <!-- Header: Match Status, Scoreboard & Quick Tools -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 px-2 sm:px-4 py-1.5 flex items-center justify-between shadow-sm z-30">
+      
+      <!-- Player Profile & Room Info -->
+      <div class="flex items-center gap-2">
+        <button id="btnHeaderReturnToLobby" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs transition active:scale-95" title="العودة للرئيسية">
+          🏠
         </button>
-      </div>
-
-      <!-- Screen Orientation & Display Controls (إعدادات الشاشة: طولي، عرضي، ملء الشاشة) -->
-      <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 mb-3.5">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-black text-amber-300">⚙️ وضع العرض والشاشة لجهازك:</span>
-          <span id="currentOrientationLabel" class="text-[10px] bg-slate-800 text-slate-300 font-bold px-2 py-0.5 rounded-md border border-slate-700">تلقائي</span>
-        </div>
-        
-        <div class="grid grid-cols-3 gap-2">
-          <button id="btnSetOrientationAuto" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-slate-700 flex flex-col items-center justify-center gap-0.5 transition">
-            <span class="text-sm">🔄</span>
-            <span>تلقائي (Auto)</span>
-          </button>
-          <button id="btnSetOrientationLandscape" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-slate-700 flex flex-col items-center justify-center gap-0.5 transition">
-            <span class="text-sm">🖥️</span>
-            <span>بالعرض (Landscape)</span>
-          </button>
-          <button id="btnToggleFullscreen" class="bg-indigo-600/80 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2 rounded-xl text-xs border border-indigo-400 flex flex-col items-center justify-center gap-0.5 transition">
-            <span class="text-sm">⛶</span>
-            <span>ملء الشاشة</span>
-          </button>
-        </div>
-        <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">
-          * على أجهزة التابلت والشاشات الكبيرة، يُفضل العرض بالعرض (Landscape) للاستمتاع برؤية مقاعد اللاعبين الستة بدقة تامة.
-        </p>
-      </div>
-
-      <!-- Tabs by OS (Android, iOS, Windows, Mac, iPad/Tablet) -->
-      <div class="flex border-b border-slate-800 mb-3 gap-1 overflow-x-auto pb-1 text-xs">
-        <button class="os-tab-btn active px-3 py-1.5 rounded-xl font-black bg-amber-500 text-slate-950 transition" data-os="android">Android 🤖</button>
-        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="ios">iPhone / iPad 🍏</button>
-        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="windows">Windows 💻</button>
-        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="mac">macOS 🖥️</button>
-        <button class="os-tab-btn px-3 py-1.5 rounded-xl font-black text-slate-400 hover:text-white transition" data-os="tablet">التابلت والأجهزة اللوحية 📟</button>
-      </div>
-
-      <!-- OS Content 1: Android -->
-      <div id="osContent-android" class="os-content-panel space-y-2 text-xs text-slate-300">
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
-          <div class="font-black text-emerald-400 flex items-center gap-1.5">
-            <span>🤖</span>
-            <span>التثبيت على هواتف وأجهزة أندرويد (Samsung, Huawei, Xiaomi, etc):</span>
-          </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
-            <li>افتح اللعبة عبر متصفح <b>Google Chrome</b> أو أي متصفح رئيسي.</li>
-            <li>اضغط على زر الخيارات <b>(⋮)</b> الموجود في أعلى أو أسفل المتصفح.</li>
-            <li>اختر <b>"تثبيت التطبيق" (Install app)</b> أو <b>"إضافة إلى الشاشة الرئيسية" (Add to Home screen)</b>.</li>
-            <li>ستظهر أيقونة كوت بو ستة أونو على شاشة هاتفك وتعمل فوراً بدون شريط المتصفح وبأداء كامل.</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- OS Content 2: iPhone / iPad (iOS) -->
-      <div id="osContent-ios" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
-          <div class="font-black text-amber-300 flex items-center gap-1.5">
-            <span>🍏</span>
-            <span>التثبيت على الآيفون والآيباد (iOS / Safari):</span>
-          </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
-            <li>افتح موقع اللعبة في متصفح <b>Safari</b>.</li>
-            <li>اضغط على زر <b>المشاركة (Share ⬆️)</b> الموجود في الشريط السفلي.</li>
-            <li>انزل لأسفل واضغط على <b>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen ➕)</b>.</li>
-            <li>اضغط <b>"إضافة" (Add)</b> في الزاوية العلوية. ستفتح اللعبة كتطبيق مستقل بشاشة كاملة وسلسة جداً!</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- OS Content 3: Windows -->
-      <div id="osContent-windows" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
-          <div class="font-black text-blue-400 flex items-center gap-1.5">
-            <span>💻</span>
-            <span>التثبيت على أجهزة الكمبيوتر وويندوز (Windows 10 / 11):</span>
-          </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
-            <li>افتح اللعبة في متصفح <b>Google Chrome</b> أو <b>Microsoft Edge</b>.</li>
-            <li>في شريط العنوان بالأعلى، اضغط على أيقونة التثبيت <b>(💻 أو ⊕)</b> بجانب النجمة.</li>
-            <li>أو اضغط على القائمة <b>(⋮) ثم اختر تطبيقات (Apps) ثم تثبيت هذا الموقع كتطبيق</b>.</li>
-            <li>يمكنك الضغط على <b>F11</b> للدخول في وضع ملء الشاشة للعب مثل ألعاب الحاسوب الأصلية.</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- OS Content 4: macOS -->
-      <div id="osContent-mac" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
-          <div class="font-black text-slate-200 flex items-center gap-1.5">
-            <span>🖥️</span>
-            <span>التثبيت على أجهزة ماك (macOS Sonoma / Ventura / Chrome / Safari):</span>
-          </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
-            <li>في متصفح <b>Safari</b>: اضغط من شريط القوائم العلوي على <b>ملف (File) ثم اختر إضافة إلى الـ Dock (Add to Dock)</b>.</li>
-            <li>في متصفح <b>Chrome</b>: اضغط على القائمة <b>(⋮) ثم حفظ ومشاركة ثم تثبيت كوت بو ستة</b>.</li>
-            <li>ستضاف اللعبة مباشرة إلى مجلد التطبيقات والـ Dock وتعمل كنافذة مستقلة فائقة السرعة.</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- OS Content 5: Tablet & iPad -->
-      <div id="osContent-tablet" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5">
-          <div class="font-black text-cyan-300 flex items-center gap-1.5">
-            <span>📟</span>
-            <span>إعدادات الأجهزة اللوحية (iPad, Galaxy Tab, Surface):</span>
-          </div>
-          <p class="text-[11px] text-slate-300 leading-relaxed">
-            اللعبة مبرمجة هندسياً لتعمل تلقائياً بحجم متجاوب 100%. عند تدوير التابلت إلى <b>الوضع الأفقي (Landscape)</b> يتم توزيع الكروت والمقاعد بمسافات مريحة وواضحة جداً تحاكي جلسة الديوانية الحقيقية.
-          </p>
-        </div>
-      </div>
-
-      <button id="btnGotInstallInfo" class="w-full mt-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl transition active:scale-95 text-xs shadow-lg">
-        حسناً، فهمت الطريقة 👍
-      </button>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       MODAL: CREATE / HOST TABLE WITH FRIENDS (دعوة الأصدقاء)
-       ========================================== -->
-  <div id="hostFriendsModal" class="hidden fixed inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-slate-900 border-2 border-blue-500/80 rounded-3xl w-full max-w-md p-4 sm:p-5 text-right shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
-        <div class="flex items-center gap-2">
-          <!-- تم استبدال الزهرة بالجيكر +4 -->
-          <div class="w-8 h-10 bg-slate-950 border-2 border-amber-400 rounded-lg flex items-center justify-center font-uno font-black text-xs text-amber-300 shadow">
-            +4
-          </div>
-          <h3 class="text-base sm:text-lg font-black text-blue-300">افتح طاولة لعب مع ربعك</h3>
-        </div>
-        <button id="btnCloseHostModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
-      </div>
-
-      <div class="space-y-3.5 text-xs">
-        <!-- Room Code Highlight -->
-        <div class="bg-slate-950 p-4 rounded-2xl border border-blue-500/40 text-center">
-          <span class="text-slate-400 block text-xs mb-1">رمز الطاولة المخصص لغرفتك:</span>
-          <div id="hostModalRoomCodeDisplay" class="font-mono text-4xl font-black text-amber-300 tracking-widest my-1">4821</div>
-          <div class="text-[11px] text-emerald-400 font-bold mt-1">المقاعد التي لا يدخلها أصدقاؤك تُملأ تلقائياً بالبوتات 🤖</div>
-        </div>
-
-        <!-- Share Options -->
-        <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800 space-y-2">
-          <div class="text-[11px] font-extrabold text-slate-300">أرسل الدعوة لأصدقائك:</div>
-          <div class="grid grid-cols-2 gap-2">
-            <button id="btnHostShareWhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 px-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
-              <span>💬</span>
-              <span>دعوة عبر واتساب</span>
-            </button>
-            <button id="btnHostCopyLink" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-black py-2.5 px-3 rounded-xl border border-slate-700 transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
-              <span>📋</span>
-              <span>نسخ رابط الطاولة</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Regenerate Code Option -->
-        <div class="flex justify-between items-center text-slate-400 px-1">
-          <span>تريد رمزاً مختلفاً؟</span>
-          <button id="btnHostRegenerateCode" class="text-blue-400 hover:text-blue-300 font-bold underline text-xs flex items-center gap-1">
-            <span>توليد كود غرفة جديد</span>
-            <span class="font-uno font-black text-[11px] bg-slate-800 px-1.5 py-0.5 rounded text-amber-300 border border-slate-700">+4</span>
-          </button>
-        </div>
-
-        <!-- Enter Table Button -->
-        <button id="btnHostEnterTable" class="w-full btn-glow-green text-slate-950 font-black py-3 rounded-xl text-sm transition active:scale-95 flex items-center justify-center gap-2 shadow-xl">
-          <span>دخول الطاولة وبدء اللعب 🃏</span>
+        <button id="btnOpenProfile" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 rounded-full pr-1 pl-2.5 py-0.5 border border-slate-300 transition active:scale-95">
+          <div id="topBarUserAvatar" class="w-6 h-6 rounded-full overflow-hidden border border-amber-500 bg-slate-900"></div>
+          <span id="topBarUserName" class="text-xs font-bold text-slate-800">أنت</span>
         </button>
+        <span id="roomCodeBadge" class="text-[10px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-300 px-2 py-0.5 rounded-full">#4821</span>
       </div>
-    </div>
-  </div>
 
-  <!-- ==========================================
-       MODAL: EXIT CONFIRMATION DIALOG (تأكيد الخروج)
-       ========================================== -->
-  <div id="exitConfirmModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-slate-900 border-2 border-rose-500/80 rounded-3xl w-full max-w-sm p-5 text-center shadow-2xl">
-      <div class="text-4xl mb-2">🚪</div>
-      <h3 class="text-lg font-black text-rose-400 mb-1">الخروج من اللعبة</h3>
-      <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-        هل أنت متأكد من رغبتك بالخروج والعودة إلى الشاشة الرئيسية؟
-      </p>
-      <div class="grid grid-cols-2 gap-2.5">
-        <button id="btnConfirmExitYes" class="bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-black py-2.5 rounded-xl transition text-xs shadow">
-          نعم، خروج 🚪
-        </button>
-        <button id="btnConfirmExitNo" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-bold py-2.5 rounded-xl transition text-xs">
-          إلغاء ومتابعة اللعب
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       1. GAME TABLE ARENA & IN-GAME HEADER (لوحة تحكم بيضاء نقية)
-       ========================================== -->
-  <!-- Top Header Navigation - PURE WHITE THEME (لوحة التحكم باللون الأبيض) -->
-  <header class="w-full bg-white border-b-2 border-slate-200 px-2 sm:px-4 py-1.5 flex flex-wrap items-center justify-between z-30 shadow-md text-xs md:text-sm gap-2 safe-top text-slate-800">
-    <!-- Player Profile & 4-Digit Room Code -->
-    <div class="flex items-center gap-2">
-      <!-- Leave Table to Lobby Button -->
-      <button id="btnHeaderReturnToLobby" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-300 px-2.5 py-1 rounded-xl text-xs font-bold transition active:scale-95 flex items-center gap-1 shadow-sm" title="الخروج إلى الشاشة الرئيسية">
-        <span>🏠</span>
-        <span class="hidden sm:inline">الرئيسية</span>
-      </button>
-
-      <!-- Profile Button -->
-      <button id="btnOpenProfile" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 border border-slate-300 rounded-xl px-2.5 py-1 transition shadow-sm" title="الملف الشخصي">
-        <div id="topBarUserAvatar" class="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center border border-amber-500 bg-white shadow-sm"></div>
-        <div class="text-right leading-tight hidden xs:block">
-          <div id="topBarUserName" class="font-black text-slate-800 text-xs truncate max-w-[90px]">أنت</div>
-          <div class="text-[9px] text-amber-600 font-bold">الملف الشخصي ⚙️</div>
-        </div>
-      </button>
-
-      <!-- 4-Digit Room Badge & Quick Share -->
-      <div class="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-xl border border-indigo-200 shadow-sm">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-        <span class="text-slate-500 text-[11px] font-bold">غرفة:</span>
-        <span id="roomCodeBadge" class="font-mono font-black text-indigo-700 text-xs sm:text-sm tracking-wider">#4821</span>
-        <button id="btnCopyInviteLink" class="text-indigo-600 hover:text-indigo-900 transition ml-1 p-0.5 active:scale-90" title="نسخ رابط الدعوة">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Match Scoreboard with Circular Dots for Tricks (عداد الأكلات دوائر صغيرة فارغة تملأ مع كل أكلة) -->
-    <div class="flex items-center gap-1 sm:gap-2.5 bg-slate-50 border border-slate-300 rounded-2xl px-2 sm:px-3 py-1 shadow-sm">
-      <!-- Team Us (لنا 🟢) with 9 Circular Trick Dots -->
-      <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-300 rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1">
-        <div class="flex flex-col items-center">
-          <div class="flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="font-black text-emerald-800 text-[11px] sm:text-xs">لنا 🟢</span>
+      <!-- Match Score Board (لنا 🟢 vs لهم 🔴) & Current Round Status -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Team A (لنا) -->
+        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-300 rounded-xl px-2 sm:px-3 py-0.5 shadow-sm">
+          <div class="flex flex-col text-right">
+            <span class="text-[9px] font-black text-emerald-800">لنا 🟢</span>
+            <div id="trickDotsContainerA" class="flex items-center gap-0.5 mt-0.5"></div>
           </div>
-          <span class="text-[9px] text-slate-500">سكور: <b id="scoreTeamA" class="text-emerald-700 font-black">0</b></span>
+          <span id="scoreTeamA" class="font-uno font-black text-base sm:text-lg text-emerald-700 leading-none mr-1">0</span>
+          <span class="text-[9px] text-emerald-600 font-bold hidden sm:inline">(<span id="tricksCountTextA">0</span>)</span>
         </div>
-        <div class="h-6 w-px bg-emerald-200 mx-0.5"></div>
-        <!-- 9 Circular Trick Dots Container for Team Us -->
-        <div class="flex flex-col items-center">
-          <span class="text-[8px] font-black text-emerald-800 mb-0.5">الأكلات (<span id="tricksCountTextA">0</span>/9)</span>
-          <div id="trickDotsContainerA" class="grid grid-cols-5 gap-1 p-0.5 bg-white border border-emerald-200 rounded-md"></div>
-        </div>
-      </div>
 
-      <!-- Live Buyer & Trump Status in White Header -->
-      <div class="flex flex-col items-center justify-center px-1">
-        <div class="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-300 text-[9px] sm:text-[11px] mb-0.5 text-slate-700">
-          <span class="text-slate-500 font-bold">المشتري:</span>
-          <div id="buyerStatusContent" class="flex items-center gap-1">
+        <!-- Center Match Info (المشتري + الحكم) -->
+        <div class="flex flex-col items-center justify-center px-1">
+          <div id="buyerStatusContent" class="flex items-center gap-1 text-[11px] font-black text-slate-700">
             <span class="text-slate-400">مزايدة...</span>
           </div>
+          <div id="hukmDisplay" class="flex items-center gap-1 mt-0.5 text-[10px] font-bold text-slate-500">
+            <span>الحكم:</span>
+            <span class="text-slate-400">-</span>
+          </div>
         </div>
-        <div class="flex items-center gap-1 text-[9px] sm:text-[10px] text-slate-700">
-          <span class="text-slate-500">الحكم:</span>
-          <div id="hukmDisplay" class="flex items-center gap-1 font-bold">
-            <span class="text-slate-400">لم يُحدد</span>
+
+        <!-- Team B (لهم) -->
+        <div class="flex items-center gap-1.5 bg-rose-50 border border-rose-300 rounded-xl px-2 sm:px-3 py-0.5 shadow-sm">
+          <span class="text-[9px] text-rose-600 font-bold hidden sm:inline">(<span id="tricksCountTextB">0</span>)</span>
+          <span id="scoreTeamB" class="font-uno font-black text-base sm:text-lg text-rose-700 leading-none ml-1">0</span>
+          <div class="flex flex-col text-left">
+            <span class="text-[9px] font-black text-rose-800">لهم 🔴</span>
+            <div id="trickDotsContainerB" class="flex items-center gap-0.5 mt-0.5"></div>
           </div>
         </div>
       </div>
 
-      <!-- Team Them (لهم 🔴) with 9 Circular Trick Dots -->
-      <div class="flex items-center gap-1.5 bg-rose-50 border border-rose-300 rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1">
-        <!-- 9 Circular Trick Dots Container for Team Them -->
-        <div class="flex flex-col items-center">
-          <span class="text-[8px] font-black text-rose-800 mb-0.5">الأكلات (<span id="tricksCountTextB">0</span>/9)</span>
-          <div id="trickDotsContainerB" class="grid grid-cols-5 gap-1 p-0.5 bg-white border border-rose-200 rounded-md"></div>
-        </div>
-        <div class="h-6 w-px bg-rose-200 mx-0.5"></div>
-        <div class="flex flex-col items-center">
-          <div class="flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-            <span class="font-black text-rose-800 text-[11px] sm:text-xs">لهم 🔴</span>
-          </div>
-          <span class="text-[9px] text-slate-500">سكور: <b id="scoreTeamB" class="text-rose-700 font-black">0</b></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Controls -->
-    <div class="flex items-center gap-1 sm:gap-1.5">
-      <!-- Screen Display & Orientation Quick Settings (زر وضع العرض والشاشة داخل صفحة اللعبة) -->
-      <div class="relative">
-        <button id="btnOpenScreenDisplayMenu" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="إعدادات الشاشة والعرض">
-          <span>🖥️</span>
-          <span class="hidden md:inline text-[11px]">الشاشة</span>
-        </button>
-
-        <!-- القائمة المنسدلة الخفيفة داخل لوحة التحكم بدون حجب الطاولة أو تشتيت اللعب -->
-        <div id="screenDisplayDropdown" class="hidden absolute left-0 mt-1.5 w-60 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-50 text-slate-800 text-right">
-          <div class="text-[11px] font-black text-slate-700 pb-1.5 border-b border-slate-200 mb-2 flex items-center justify-between">
-            <span>⚙️ وضع الشاشة والعرض:</span>
-            <span id="currentScreenModeText" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">تلقائي</span>
-          </div>
-
-          <div class="space-y-1.5">
-            <!-- 1. Auto -->
-            <button id="inGameScreenAutoBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
-              <span class="flex items-center gap-1.5">
-                <span>🔄</span>
-                <span>تلقائي (Auto)</span>
-              </span>
-              <span class="text-[10px] text-slate-400">حسب تدوير جهازك</span>
-            </button>
-
-            <!-- 2. Landscape Force -->
-            <button id="inGameScreenLandscapeBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
-              <span class="flex items-center gap-1.5">
-                <span>📱</span>
-                <span>بالعرض (Landscape)</span>
-              </span>
-              <span class="text-[10px] text-slate-400">مثالي للتابلت والكمبيوتر</span>
-            </button>
-
-            <!-- 3. Fullscreen Toggle -->
-            <button id="inGameScreenFullscreenBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-black bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white shadow-sm transition active:scale-95">
-              <span class="flex items-center gap-1.5">
-                <span>⛶</span>
-                <span>ملء الشاشة (Fullscreen)</span>
-              </span>
-              <span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded text-white font-mono">F11</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room Code Modal Button -->
-      <button id="btnOpenRoomsModal" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1 shadow-sm">
-        <span>🌐</span>
-        <span class="hidden sm:inline">الغرف أونلاين</span>
-      </button>
-
-      <!-- Audio SFX Toggle -->
-      <button id="soundToggleBtn" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 transition active:scale-95 shadow-sm" title="المؤثرات الصوتية">
-        <svg id="soundIconOn" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
-        <svg id="soundIconOff" class="w-4 h-4 hidden text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
-      </button>
-
-      <!-- Rules Guide -->
-      <button id="ruleGuideBtn" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 font-bold text-xs transition active:scale-95 shadow-sm">
-        📖
-      </button>
-
-      <!-- Exit Game Button in Table Header -->
-      <button id="btnHeaderExitGame" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-300 text-rose-600 font-bold text-xs transition active:scale-95 shadow-sm" title="خروج من اللعبة">
-        خروج 🚪
-      </button>
-    </div>
-  </header>
-  <!-- ==========================================
-       MODAL: INSTALL & DOWNLOAD APP (نافذة تثبيت اللعبة الواضحة والمبسطة لجميع الأنظمة)
-       ========================================== -->
-  <div id="installAppModal" class="hidden fixed inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-slate-900 border-2 border-amber-400/80 rounded-3xl w-full max-w-lg p-5 sm:p-6 text-right shadow-2xl text-slate-200 max-h-[92vh] overflow-y-auto">
-      
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-        <div class="flex items-center gap-2.5">
-          <span class="text-3xl">📥</span>
-          <div>
-            <h3 class="text-base sm:text-lg font-black text-amber-400">تثبيت اللعبة على جهازك</h3>
-            <p class="text-[11px] text-slate-400">تعمل كتطبيق أصلي سريع بدون الحاجة لمتجر التطبيقات</p>
-          </div>
-        </div>
-        <button id="btnCloseInstallModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
-      </div>
-
-      <!-- Quick Native PWA Install Action if available -->
-      <div id="pwaDirectInstallBox" class="hidden mb-4 bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/50 p-3.5 rounded-2xl flex items-center justify-between shadow-lg">
-        <div>
-          <span class="text-xs font-black text-emerald-300 block">جهازك يدعم التثبيت المباشر بنقرة واحدة!</span>
-          <span class="text-[10px] text-slate-300">أضف اللعبة لشاشتك الرئيسية فوراً</span>
-        </div>
-        <button id="btnTriggerPWAInstall" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl transition active:scale-95 shadow">
-          تثبيت الآن 🚀
-        </button>
-      </div>
-
-      <!-- Platform Selection Tabs -->
-      <div class="mb-3">
-        <div class="text-xs font-bold text-slate-300 mb-2">اختر نوع نظام جهازك لقراءة الخطوات:</div>
-        <div class="grid grid-cols-5 gap-1.5 text-center">
-          <button class="os-tab-btn active bg-amber-500 text-slate-950 font-black text-xs py-2 px-1 rounded-xl transition" data-os="android">Android 🤖</button>
-          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="ios">iPhone / iPad 🍏</button>
-          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="windows">Windows 💻</button>
-          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="macos">macOS 🖥️</button>
-          <button class="os-tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2 px-1 rounded-xl transition" data-os="tablet">تابلت 📟</button>
-        </div>
-      </div>
-
-      <!-- Platform Instructions Content Panels (واضحة تماماً وبدون أي رموز مشوهة) -->
-      <div class="bg-slate-950/90 border border-slate-800 p-4 rounded-2xl mb-4 text-xs leading-relaxed space-y-2.5">
+      <!-- Quick Controls: Display Mode, Card View, Rooms, Audio, Rules, Exit -->
+      <div class="flex items-center gap-1 sm:gap-1.5">
         
-        <!-- Android Guide -->
-        <div id="guide-android" class="os-guide-panel">
-          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
-            <span>🤖</span>
-            <span>طريقة التثبيت على أجهزة أندرويد (Chrome / Samsung Internet):</span>
-          </h4>
-          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
-            <li>افتح اللعبة في متصفح <b class="text-white">Google Chrome</b> أو متصفح جهازك.</li>
-            <li>اضغط على علامة النقاط الثلاث <b class="text-amber-400 font-mono">( ⋮ )</b> في أعلى المتصفح.</li>
-            <li>اختر من القائمة: <b class="text-emerald-400">«تثبيت التطبيق»</b> أو <b class="text-emerald-400">«إضافة إلى الشاشة الرئيسية»</b>.</li>
-            <li>اضغط <b class="text-white">«تثبيت»</b>، وستظهر أيقونة اللعبة مباشرة مع تطبيقات جهازك بدون متجر.</li>
-          </ol>
-        </div>
-
-        <!-- iOS Guide -->
-        <div id="guide-ios" class="os-guide-panel hidden">
-          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
-            <span>🍏</span>
-            <span>طريقة التثبيت على آيفون وآيباد (iPhone / iPad - Safari):</span>
-          </h4>
-          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
-            <li>افتح الرابط في متصفح <b class="text-white">Safari</b> الأساسي.</li>
-            <li>اضغط على زر المشاركة أسفل الشاشة <b class="text-amber-400 font-bold">«مشاركة ⎋ / Share»</b>.</li>
-            <li>مرر للأسفل واختر: <b class="text-emerald-400 font-bold">«إضافة إلى الصفحة الرئيسية ➕»</b>.</li>
-            <li>اضغط <b class="text-white">«إضافة (Add)»</b> في أعلى الشاشة.</li>
-            <li>ستعمل اللعبة الآن بملء الشاشة وبدون ظهور شريط المتصفح السفلي مثل أي تطبيق أصلي!</li>
-          </ol>
-        </div>
-
-        <!-- Windows Guide -->
-        <div id="guide-windows" class="os-guide-panel hidden">
-          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
-            <span>💻</span>
-            <span>طريقة التثبيت على أجهزة ويندوز (Windows 10 / 11):</span>
-          </h4>
-          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
-            <li>افتح الرابط في متصفح <b class="text-white">Google Chrome</b> أو <b class="text-white">Microsoft Edge</b>.</li>
-            <li>ستظهر لك أيقونة شاشة كمبيوتر صغيرة في شريط العنوان بالأعلى، اضغط عليها.</li>
-            <li>أو اضغط على القائمة <b class="text-amber-400 font-mono">( ⋮ )</b> ثم اختر: <b class="text-emerald-400">«تثبيت كوت بو ستة أونو»</b>.</li>
-            <li>ستفتح اللعبة كنافذة مستقلة فائقة السرعة على سطح المكتب، ويمكنك الضغط على <b class="text-indigo-400 font-mono">F11</b> لملء الشاشة.</li>
-          </ol>
-        </div>
-
-        <!-- macOS Guide -->
-        <div id="guide-macos" class="os-guide-panel hidden">
-          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
+        <!-- Screen Display Controls Dropdown -->
+        <div class="relative">
+          <button id="btnOpenScreenDisplayMenu" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="وضعية الشاشة والعرض">
             <span>🖥️</span>
-            <span>طريقة التثبيت على أجهزة ماك (macOS):</span>
-          </h4>
-          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
-            <li>في متصفح <b class="text-white">Safari</b>: اضغط من شريط القوائم العلوي على <b class="text-amber-400 font-bold">File (ملف)</b> ثم اختر <b class="text-emerald-400 font-bold">«Add to Dock (إضافة إلى الـ Dock)»</b>.</li>
-            <li>في متصفح <b class="text-white">Chrome</b>: اضغط على القائمة <b class="text-amber-400 font-mono">( ⋮ )</b> ثم اختر <b class="text-white">حفظ ومشاركة</b> ثم <b class="text-emerald-400 font-bold">«تثبيت كوت بو ستة»</b>.</li>
-            <li>تُضاف اللعبة مباشرة لمجلد التطبيقات وشريط الـ Dock وتعمل بدون متصفح.</li>
-          </ol>
-        </div>
+            <span id="currentScreenModeText" class="hidden md:inline text-[11px]">الشاشة</span>
+          </button>
 
-        <!-- Tablet Guide -->
-        <div id="guide-tablet" class="os-guide-panel hidden">
-          <h4 class="font-black text-amber-300 text-sm mb-2 flex items-center gap-1.5">
-            <span>📟</span>
-            <span>للأجهزة اللوحية (iPad / Android Tablet):</span>
-          </h4>
-          <ol class="space-y-2 pr-2 text-slate-300 list-decimal list-inside font-medium">
-            <li>قم بتثبيت التطبيق بنفس خطوات الأندرويد أو الآيباد الموضحة بالأعلى.</li>
-            <li>يمكنك دائماً استخدام زر <b class="text-amber-400">«الشاشة 🖥️»</b> داخل شريط اللعبة في أي وقت لاختيار العرض بالعرض (Landscape) لرؤية اللاعبين الستة بحجم كبير ومريح.</li>
-          </ol>
-        </div>
-
-      </div>
-
-      <button id="btnUnderstandInstall" class="w-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black py-3 rounded-xl transition active:scale-95 text-xs sm:text-sm shadow-xl flex items-center justify-center gap-1.5">
-        <span>حسنًا، فهمت الطريقة 👍</span>
-      </button>
-
-    </div>
-  </div>
-
-    <!-- Light Grey Felt Table Container -->
-    <div id="feltTableContainer" class="felt-surface relative w-full h-[330px] sm:h-[430px] md:h-[480px] max-w-4xl rounded-[40px] sm:rounded-[64px] flex items-center justify-center">
-      
-      <!-- Table Felt Subtle Texture -->
-      <div class="absolute inset-0 rounded-[32px] sm:rounded-[54px] opacity-25 bg-[radial-gradient(#64748b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-
-      <!-- BOT & HUMAN SEATS (Strict alternation: Us 🟢 vs Them 🔴) -->
-      <!-- Seat 1: Bottom Right (Opponent 🔴) -->
-      <div id="seat-1" class="absolute bottom-2 right-2 sm:right-8 z-20"></div>
-
-      <!-- Seat 2: Top Right (Partner 🟢) -->
-      <div id="seat-2" class="absolute top-2 right-2 sm:right-8 z-20"></div>
-
-      <!-- Seat 3: Top Center (Opponent 🔴) -->
-      <div id="seat-3" class="absolute top-1 left-1/2 -translate-x-1/2 z-20"></div>
-
-      <!-- Seat 4: Top Left (Partner 🟢) -->
-      <div id="seat-4" class="absolute top-2 left-2 sm:left-8 z-20"></div>
-
-      <!-- Seat 5: Bottom Left (Opponent 🔴) -->
-      <div id="seat-5" class="absolute bottom-2 left-2 sm:left-8 z-20"></div>
-
-      <!-- Center Trick Arena - Expanded layout where played cards lie closer to each player's seat -->
-      <div class="relative w-full h-full flex items-center justify-center pointer-events-none">
-        <!-- Center UNO-Kout Watermark subtle background -->
-        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-15">
-          <span class="font-callout font-black text-3xl sm:text-4xl text-slate-700 tracking-wider">كـوت أونو</span>
-          <span class="font-mono text-[10px] text-slate-600 font-bold uppercase tracking-widest">Kuwaiti Edition</span>
-        </div>
-
-        <!-- Played Trick Slots positioned dynamically close to each respective seat -->
-        <div id="trickSlots" class="relative w-full h-full pointer-events-auto"></div>
-
-        <!-- Effective Lead Suit Info -->
-        <div class="absolute bottom-16 sm:bottom-20 text-center pointer-events-none z-30">
-          <span id="leadColorBadge" class="hidden text-[10px] font-extrabold px-3 py-0.5 rounded-full border shadow-lg backdrop-blur-sm"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4-Digit Room & Online Multiplayer Modal -->
-    <div id="roomsModal" class="hidden absolute inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
-      <div class="bg-slate-900 border-2 border-indigo-500/80 rounded-3xl w-full max-w-md p-4 sm:p-5 text-right shadow-2xl">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">🌐</span>
-            <h3 class="text-base sm:text-lg font-black text-indigo-300">غرف اللعب أونلاين (رمز 4 أرقام)</h3>
-          </div>
-          <button id="btnCloseRoomsModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
-        </div>
-
-        <div class="space-y-3.5 text-xs">
-          <!-- Room Status and 4-Digit Display -->
-          <div class="bg-slate-950 p-3.5 rounded-2xl border border-indigo-500/40 text-center">
-            <span class="text-slate-400 block text-[11px] mb-1">رمز الغرفة الحالي الخاص بك:</span>
-            <div id="roomCodeBigDisplay" class="font-mono text-3xl font-black text-amber-300 tracking-widest my-1">4821</div>
-            <div class="text-[10px] text-emerald-400 font-bold mt-1">المقاعد الشاغرة تُملأ تلقائياً بأذكى البوتات 🤖</div>
-          </div>
-
-          <!-- Share to WhatsApp -->
-          <div class="bg-emerald-950/50 p-3 rounded-2xl border border-emerald-500/40 flex items-center justify-between">
-            <div>
-              <div class="font-extrabold text-emerald-300">مشاركة الغرفة عبر واتساب:</div>
-              <div class="text-[10px] text-slate-300 mt-0.5">ادعُ ربعك مباشرة بضغطة زر</div>
+          <div id="screenDisplayDropdown" class="hidden absolute left-0 mt-1.5 w-48 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2 z-50 text-slate-800 text-right">
+            <div class="text-[11px] font-black text-slate-700 pb-1.5 border-b border-slate-200 mb-1.5 flex items-center justify-between">
+              <span>🖥️ إعدادات العرض:</span>
             </div>
-            <button id="btnShareWhatsAppModal" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3.5 py-2 rounded-xl text-xs transition active:scale-95 flex items-center gap-1 shadow">
-              <span>💬</span>
-              <span>واتساب</span>
-            </button>
-          </div>
 
-          <!-- Create New 4-Digit Room -->
-          <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
-            <h4 class="font-extrabold text-amber-300 mb-1.5">إنشاء غرفة جديدة:</h4>
-            <div class="flex gap-2">
-              <button id="btnGenerateNewRoom" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black py-2.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-1.5 shadow">
-                <span>🎲</span>
-                <span>توليد كود غرفة جديد عشوائي</span>
+            <div class="space-y-1">
+              <button id="inGameScreenAutoBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>🔄</span><span>تلقائي (Auto)</span></span>
               </button>
-            </div>
-          </div>
-
-          <!-- Join 4-Digit Room -->
-          <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
-            <h4 class="font-extrabold text-amber-300 mb-1.5">انضمام إلى غرفة برمز 4 أرقام:</h4>
-            <div class="flex gap-2">
-              <input type="text" id="inputJoinRoomCode" maxlength="4" placeholder="مثال: 9024" class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-white outline-none font-mono text-center uppercase text-sm font-black text-amber-300 focus:border-indigo-400">
-              <button id="btnJoinByCode" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 rounded-xl transition active:scale-95">
-                دخول
+              <button id="inGameScreenLandscapeBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>📱</span><span>بالعرض (Landscape)</span></span>
+              </button>
+              <button id="inGameScreenFullscreenBtn" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+                <span class="flex items-center gap-1.5"><span>⛶</span><span>ملء الشاشة</span></span>
               </button>
             </div>
           </div>
         </div>
+
+        <!-- Card Display Style Toggle (زر اختيار طريقة عرض الورق: على الطاولة أو باليد) -->
+        <div class="relative">
+          <button id="btnOpenCardViewMenu" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="طريقة عرض الأوراق">
+            <span>🃏</span>
+            <span class="hidden md:inline text-[11px]">عرض الورق</span>
+          </button>
+
+          <div id="cardViewDropdown" class="hidden absolute left-0 mt-1.5 w-56 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2 z-50 text-slate-800 text-right">
+            <div class="text-[11px] font-black text-slate-700 pb-1.5 border-b border-slate-200 mb-1.5 flex items-center justify-between">
+              <span>🃏 طريقة مسك وعرض الورق:</span>
+              <span id="currentCardViewBadge" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">على الطاولة</span>
+            </div>
+
+            <div class="space-y-1">
+              <!-- 1. Table Mode -->
+              <button id="btnViewModeTable" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+                <span class="flex items-center gap-1.5">
+                  <span>🔲</span>
+                  <span>على الطاولة (متراصف)</span>
+                </span>
+                <span class="text-[10px] text-slate-400">أفقي مريح</span>
+              </button>
+
+              <!-- 2. Realistic Hand Fan Mode -->
+              <button id="btnViewModeFan" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
+                <span class="flex items-center gap-1.5">
+                  <span>🖐️</span>
+                  <span>مسكة باليد (مروحي)</span>
+                </span>
+                <span class="text-[10px] text-slate-400">إظهار زوايا الكروت</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Code Modal Button -->
+        <button id="btnOpenRoomsModal" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1 shadow-sm">
+          <span>🌐</span>
+          <span class="hidden sm:inline">الغرف أونلاين</span>
+        </button>
+
+        <!-- Audio SFX Toggle -->
+        <button id="soundToggleBtn" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 transition active:scale-95 shadow-sm" title="المؤثرات الصوتية">
+          <svg id="soundIconOn" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
+          <svg id="soundIconOff" class="w-4 h-4 hidden text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </button>
+
+        <!-- Rules Guide -->
+        <button id="ruleGuideBtn" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 font-bold text-xs transition active:scale-95 shadow-sm">
+          📖
+        </button>
+
+        <!-- Exit Game Button in Table Header -->
+        <button id="btnHeaderExitGame" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-300 text-rose-600 font-bold text-xs transition active:scale-95 shadow-sm" title="خروج من اللعبة">
+          خروج 🚪
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Table Arena (طاولة اللعب الفاخرة الموزعة هندسياً) -->
+    <main class="arena-center-stage">
+      <div class="felt-surface rounded-[40px] sm:rounded-[60px] relative flex items-center justify-center p-2 sm:p-4 select-none">
+        
+        <!-- Center Trick Area & Dynamic Played Cards -->
+        <div id="trickSlots" class="relative w-full h-full flex items-center justify-center"></div>
+
+        <!-- Lead Suit Badge in Center of Table -->
+        <div id="leadColorBadge" class="hidden absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-black shadow-lg border border-white z-30 transition-all duration-300"></div>
+
+        <!-- Voice Callout Banner -->
+        <div id="voiceCalloutBox" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950/95 border-2 border-amber-400 text-amber-300 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-2 pointer-events-none opacity-0 -translate-y-4 transition-all duration-300 z-40 max-w-xs text-center">
+          <span id="calloutEmoji" class="text-xl">📢</span>
+          <span id="calloutText" class="font-callout font-bold text-xs sm:text-sm text-white"></span>
+        </div>
+
+        <!-- Seats Layout around the Luxury Table: 5 Bot Seats (Seat 0 is Human Player at Bottom) -->
+        <!-- Seat 1: Bottom Right (فهد - لهم) -->
+        <div id="seat-1" class="absolute bottom-1 right-2 sm:bottom-2 sm:right-6 md:right-10 z-20"></div>
+
+        <!-- Seat 2: Top Right (جاسم - لنا) -->
+        <div id="seat-2" class="absolute top-1 right-2 sm:top-2 sm:right-6 md:right-10 z-20"></div>
+
+        <!-- Seat 3: Top Center (دلال - لهم) -->
+        <div id="seat-3" class="absolute top-1 left-1/2 -translate-x-1/2 z-20"></div>
+
+        <!-- Seat 4: Top Left (براك - لنا) -->
+        <div id="seat-4" class="absolute top-1 left-2 sm:top-2 sm:left-6 md:left-10 z-20"></div>
+
+        <!-- Seat 5: Bottom Left (سبيكة - لهم) -->
+        <div id="seat-5" class="absolute bottom-1 left-2 sm:bottom-2 sm:left-6 md:left-10 z-20"></div>
+
+      </div>
+    </main>
+
+    <!-- Modals Section -->
+    <!-- Exit Confirmation Modal -->
+    <div id="exitConfirmModal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-sm p-5 text-center shadow-2xl">
+        <div class="text-3xl mb-2">🚪</div>
+        <h3 class="text-lg font-black text-white mb-1">هل تود الخروج؟</h3>
+        <p class="text-xs text-slate-400 mb-4">سيتم العودة إلى القائمة الرئيسية للعبة.</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btnConfirmExitYes" class="py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 font-bold text-xs text-white transition active:scale-95 shadow">نعم، خروج</button>
+          <button id="btnConfirmExitNo" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs text-slate-300 transition active:scale-95">إلغاء</button>
+        </div>
       </div>
     </div>
 
-    <!-- Profile & Custom Avatar Modal -->
-    <div id="profileModal" class="hidden absolute inset-0 z-50 glass-dark flex items-center justify-center p-3 sm:p-4">
-      <div class="bg-slate-900 border-2 border-amber-500/80 rounded-3xl w-full max-w-lg p-4 sm:p-5 text-right shadow-2xl max-h-[92vh] overflow-y-auto">
+    <!-- Profile & Avatar Selector Modal -->
+    <div id="profileModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl w-full max-w-lg p-5 text-right shadow-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
           <div class="flex items-center gap-2">
             <span class="text-2xl">👤</span>
-            <h3 class="text-base sm:text-lg font-black text-amber-400">الملف الشخصي والشخصيات الواقعية</h3>
+            <h3 class="text-base sm:text-lg font-black text-amber-400">الملف الشخصي واختيار الشخصية</h3>
           </div>
           <button id="btnCloseProfileModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
         </div>
 
-        <div class="space-y-3 mb-4 bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">اسم اللاعب في اللعبة:</label>
-            <div class="flex gap-2">
-              <input type="text" id="inputPlayerName" maxlength="15" placeholder="أدخل اسمك..." class="flex-1 bg-slate-900 border border-slate-700 focus:border-amber-400 px-3 py-2 rounded-xl text-white text-sm outline-none">
-              <button id="btnSaveProfileInfo" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 px-4 rounded-xl transition text-xs shadow active:scale-95">حفظ</button>
-            </div>
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-slate-400 mb-1">اسم اللاعب:</label>
+          <div class="flex gap-2">
+            <input type="text" id="inputPlayerName" maxlength="14" placeholder="أدخل اسمك" class="flex-1 bg-slate-950 border border-slate-700 focus:border-amber-400 px-3 py-2 rounded-xl text-white font-bold text-xs outline-none">
+            <button id="btnSaveProfileInfo" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition active:scale-95 shadow">حفظ ✅</button>
           </div>
         </div>
 
@@ -1031,6 +668,154 @@
           </div>
           <div id="avatarGridContainer" class="grid grid-cols-2 sm:grid-cols-5 gap-2"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Rooms / Multiplayer Modal (4-Digit Code) -->
+    <div id="roomsModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-indigo-500/60 rounded-3xl w-full max-w-sm p-5 text-center shadow-2xl">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
+          <h3 class="text-base font-black text-indigo-400 flex items-center gap-1.5">
+            <span>🌐</span>
+            <span>غرف اللعب برمز (4 أرقام)</span>
+          </h3>
+          <button id="btnCloseRoomsModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 mb-3">
+          <span class="text-[10px] text-slate-400 block mb-1">رمز غرفتك الحالية:</span>
+          <div id="roomCodeBigDisplay" class="font-mono font-black text-2xl text-amber-400 tracking-widest">4821</div>
+          <div class="flex items-center justify-center gap-2 mt-2">
+            <button id="btnCopyInviteLink" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-[11px] font-bold border border-slate-700 transition active:scale-95">📋 نسخ الرابط</button>
+            <button id="btnShareWhatsAppModal" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[11px] font-bold transition active:scale-95">واتساب 💬</button>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2 mb-3">
+          <button id="btnGenerateNewRoom" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black shadow transition active:scale-95">
+            🎲 إنشاء غرفة برمز جديد
+          </button>
+        </div>
+
+        <div class="border-t border-slate-800 pt-3">
+          <span class="text-[11px] text-slate-400 block mb-1.5 font-bold">الدخول لغرفة صديق:</span>
+          <div class="flex gap-2">
+            <input type="text" id="inputJoinRoomCode" maxlength="4" placeholder="أدخل الـ 4 أرقام" class="flex-1 bg-slate-950 border border-slate-700 focus:border-indigo-400 px-3 py-2 rounded-xl text-white font-mono text-center font-bold text-sm tracking-wider uppercase outline-none">
+            <button id="btnJoinByCode" class="bg-indigo-500 hover:bg-indigo-400 text-white font-black px-4 py-2 rounded-xl text-xs transition active:scale-95 shadow">دخول 🚪</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Host Friends Modal -->
+    <div id="hostFriendsModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl w-full max-w-sm p-5 text-center shadow-2xl">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
+          <h3 class="text-base font-black text-amber-400 flex items-center gap-1.5">
+            <span>👥</span>
+            <span>طاولتك الخاصة مع الربع</span>
+          </h3>
+          <button id="btnCloseHostModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+        </div>
+
+        <p class="text-xs text-slate-300 mb-3 leading-relaxed">شارك الرمز مع أصدقائك، وسيقوم النظام بإكمال المقاعد بالبوتات تلقائياً عند البدء.</p>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 mb-3">
+          <span class="text-[10px] text-slate-400 block mb-0.5">رمز الطاولة الخاص:</span>
+          <div id="hostModalRoomCodeDisplay" class="font-mono font-black text-3xl text-amber-400 tracking-widest my-1">4821</div>
+          <button id="btnHostRegenerateCode" class="text-[10px] text-slate-400 hover:text-amber-400 font-bold transition">تغيير الرمز 🔄</button>
+        </div>
+
+        <div class="space-y-2 mb-3">
+          <button id="btnHostShareWhatsApp" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow transition active:scale-95 flex items-center justify-center gap-1.5">
+            <span>💬</span>
+            <span>إرسال دعوة عبر واتساب</span>
+          </button>
+          <button id="btnHostCopyLink" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition active:scale-95">
+            📋 نسخ رابط الطاولة المباشر
+          </button>
+        </div>
+
+        <button id="btnHostEnterTable" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow transition active:scale-95">
+          دخول الطاولة وبدء اللعب 🚀
+        </button>
+      </div>
+    </div>
+
+    <!-- Install App Modal for All Platforms -->
+    <div id="installAppModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-amber-500/70 rounded-3xl w-full max-w-md p-5 text-right shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">📥</span>
+            <h3 class="text-base sm:text-lg font-black text-amber-400">تثبيت اللعبة على جهازك</h3>
+          </div>
+          <button id="btnCloseInstallModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+        </div>
+
+        <!-- OS Switcher Tabs -->
+        <div class="flex items-center justify-between bg-slate-950 p-1 rounded-xl mb-3 text-[11px] font-bold">
+          <button class="os-tab-btn flex-1 py-1.5 rounded-lg text-center transition bg-amber-500 text-slate-950" data-os="android">Android 🤖</button>
+          <button class="os-tab-btn flex-1 py-1.5 rounded-lg text-center transition text-slate-400" data-os="ios">iOS / الآيفون 🍏</button>
+          <button class="os-tab-btn flex-1 py-1.5 rounded-lg text-center transition text-slate-400" data-os="windows">ويندوز 💻</button>
+          <button class="os-tab-btn flex-1 py-1.5 rounded-lg text-center transition text-slate-400" data-os="mac">ماك 🖥️</button>
+          <button class="os-tab-btn flex-1 py-1.5 rounded-lg text-center transition text-slate-400" data-os="tablet">التابلت 📟</button>
+        </div>
+
+        <!-- Android Panel -->
+        <div id="osContent-android" class="os-content-panel space-y-2 text-xs text-slate-300">
+          <p class="font-bold text-amber-300 text-sm">خطوات تثبيت أندرويد (Chrome):</p>
+          <ol class="list-decimal list-inside space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed">
+            <li>افتح اللعبة في متصفح Chrome أو متصفح سامسونج.</li>
+            <li>اضغط على زر القائمة (الثلاث نقاط) في أعلى زاوية المتصفح.</li>
+            <li>اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.</li>
+            <li>ستظهر اللعبة في قائمة التطبيقات كأي تطبيق رسمي وتعمل بدون أشرطة.</li>
+          </ol>
+        </div>
+
+        <!-- iOS Panel -->
+        <div id="osContent-ios" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+          <p class="font-bold text-amber-300 text-sm">خطوات الآيفون والآيباد (Safari):</p>
+          <ol class="list-decimal list-inside space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed">
+            <li>تأكد من فتح الرابط في متصفح <b>Safari</b> الرسمي.</li>
+            <li>اضغط على زر المشاركة أسفل الشاشة (أيقونة المربع بسهم لأعلى ⬆️).</li>
+            <li>اسحب القائمة لأسفل واختر <b>«إضافة إلى الصفحة الرئيسية (Add to Home Screen)»</b>.</li>
+            <li>اضغط <b>«إضافة (Add)»</b> في الزاوية العلوية، وستظهر أيقونة اللعبة على شاشتك فوراً.</li>
+          </ol>
+        </div>
+
+        <!-- Windows Panel -->
+        <div id="osContent-windows" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+          <p class="font-bold text-amber-300 text-sm">خطوات التثبيت على نظام ويندوز:</p>
+          <ol class="list-decimal list-inside space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed">
+            <li>في متصفح Chrome أو Edge، اضغط على أيقونة التثبيت في شريط العنوان أعلى الشاشة.</li>
+            <li>أو اضغط على قائمة المتصفح (⋮) ثم اختر تطبيقات (Apps) ثم تثبيت هذا الموقع كتطبيق.</li>
+            <li>ستفتح اللعبة في نافذة مستقلة كبرنامج كمبيوتر وتدعم ملء الشاشة عبر زر (F11).</li>
+          </ol>
+        </div>
+
+        <!-- Mac Panel -->
+        <div id="osContent-mac" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+          <p class="font-bold text-amber-300 text-sm">خطوات التثبيت على نظام ماك (macOS):</p>
+          <ol class="list-decimal list-inside space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed">
+            <li>في متصفح Safari: اضغط من شريط القوائم العلوي على ملف (File) ثم اختر إضافة إلى الـ Dock (Add to Dock).</li>
+            <li>في متصفح Chrome: اضغط على القائمة (⋮) ثم حفظ ومشاركة ثم تثبيت كوت بو ستة.</li>
+            <li>ستضاف اللعبة مباشرة إلى مجلد التطبيقات والـ Dock وتعمل كنافذة مستقلة فائقة السرعة.</li>
+          </ol>
+        </div>
+
+        <!-- Tablet Panel -->
+        <div id="osContent-tablet" class="os-content-panel hidden space-y-2 text-xs text-slate-300">
+          <p class="font-bold text-amber-300 text-sm">نصيحة للأجهزة اللوحية (Tablets & iPads):</p>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed space-y-1.5">
+            <p>• اللعبة تدعم التدوير التلقائي بالكامل على الأجهزة اللوحية.</p>
+            <p>• للحصول على تجربة الديوانية الأفضل، قم بتدوير جهازك اللوحي إلى <b>الوضع العرضي (Landscape)</b> واستخدم زر <b>«⛶ ملء الشاشة»</b> من القائمة العلوية.</p>
+          </div>
+        </div>
+
+        <button id="btnGotInstallInfo" class="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl transition active:scale-95 text-xs shadow-lg">
+          حسناً، فهمت الطريقة 👍
+        </button>
       </div>
     </div>
 
@@ -1748,18 +1533,29 @@
       },
 
       syncUI() {
-        document.getElementById('topBarUserName').textContent = this.user.name;
-        document.getElementById('humanPlayerDisplayName').textContent = `${this.user.name} [لنا 🟢]`;
-        document.getElementById('roomCodeBadge').textContent = `#${this.currentRoomCode}`;
-        document.getElementById('roomCodeBigDisplay').textContent = this.currentRoomCode;
+        const topName = document.getElementById('topBarUserName');
+        if (topName) topName.textContent = this.user.name;
+
+        const humanName = document.getElementById('humanPlayerDisplayName');
+        if (humanName) humanName.textContent = `${this.user.name} [لنا 🟢]`;
+
+        const roomBadge = document.getElementById('roomCodeBadge');
+        if (roomBadge) roomBadge.textContent = `#${this.currentRoomCode}`;
+
+        const roomBig = document.getElementById('roomCodeBigDisplay');
+        if (roomBig) roomBig.textContent = this.currentRoomCode;
 
         // Lobby Sync
         const lobbyNameEl = document.getElementById('lobbyUserName');
         if (lobbyNameEl) lobbyNameEl.textContent = this.user.name;
 
         const markup = this.renderAvatar(this.user.avatarId, this.user.customPhoto);
-        document.getElementById('topBarUserAvatar').innerHTML = markup;
-        document.getElementById('humanHandAvatarIcon').innerHTML = markup;
+        const topAvatar = document.getElementById('topBarUserAvatar');
+        if (topAvatar) topAvatar.innerHTML = markup;
+
+        const handAvatar = document.getElementById('humanHandAvatarIcon');
+        if (handAvatar) handAvatar.innerHTML = markup;
+
         const lobbyAvatarEl = document.getElementById('lobbyUserAvatar');
         if (lobbyAvatarEl) lobbyAvatarEl.innerHTML = markup;
 
@@ -1812,7 +1608,9 @@
       timerRemaining: 12,
       timerInterval: null,
       // قفل لمنع رمي كرتين نهائياً (Strict Single-Card Lock)
-      isActionPending: false
+      isActionPending: false,
+      // طريقة عرض ورق اليد: 'table' (على الطاولة) أو 'fan' (مسكة اليد الاحترافية)
+      cardViewMode: localStorage.getItem('kout_card_view_mode') || 'table'
     };
 
     function buildDeck() {
@@ -2027,18 +1825,39 @@
       const me = GameState.players[0];
       if (!me || !me.hand) return;
 
+      // ضبط كلاس المسكة (طاولة مصفوفة أو مروحي باليد)
+      if (GameState.cardViewMode === 'fan') {
+        container.className = 'hand-mode-fan overflow-visible max-w-full px-2 py-1 select-none';
+      } else {
+        container.className = 'flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto max-w-full px-1 py-1 min-h-[102px] sm:min-h-[120px] select-none';
+      }
+
       me.hand.sort((a, b) => {
         if (a.color !== b.color) return a.color.localeCompare(b.color);
         return SUIT_RANKS.indexOf(a.rank) - SUIT_RANKS.indexOf(b.rank);
       });
 
       const isMyTurn = GameState.currentTurn === 0 && GameState.phase === 'PLAYING' && !GameState.isActionPending;
+      const count = me.hand.length;
 
-      me.hand.forEach(card => {
+      me.hand.forEach((card, idx) => {
         const playable = isMyTurn ? isLegalMove(me.hand, card, GameState.currentTrick) : false;
         // أثناء المزايدة تكون الأوراق مرئية وبكامل وضوحها لمساعدته على اختيار الحكم
         const isBiddingPhase = GameState.phase === 'BIDDING';
         const el = createCardElement(card, true, (playable && !GameState.isActionPending) || isBiddingPhase);
+
+        // تطبيق زاوية الانحناء المروحي لليد الاحترافية
+        if (GameState.cardViewMode === 'fan' && count > 1) {
+          const mid = (count - 1) / 2;
+          const diff = idx - mid;
+          const angle = diff * 4.2; // زاوية ميلان الكرت
+          const offsetY = Math.abs(diff) * 3.5; // انحناء تقويسة اليد
+          el.style.transform = `rotate(${angle}deg) translateY(${offsetY}px)`;
+          el.style.zIndex = 10 + idx;
+        } else {
+          el.style.transform = '';
+          el.style.zIndex = '';
+        }
 
         if (isMyTurn && playable && !GameState.isActionPending) {
           el.classList.add('active-playable');
@@ -2205,6 +2024,7 @@
 
     function renderTrickArena() {
       const container = document.getElementById('trickSlots');
+      if (!container) return;
       container.innerHTML = '';
 
       // تموضع الورقة المرمية قريباً جداً من مقعد وصورة اللاعب الذي رماها
@@ -2226,11 +2046,12 @@
 
       GameState.currentTrick.forEach(play => {
         const playerObj = GameState.players[play.playerId];
+        if (!playerObj) return;
         const isPartner = playerObj.team === 'A';
         const teamBadgeColor = isPartner ? 'bg-emerald-600 text-white border-emerald-400' : 'bg-rose-600 text-white border-rose-400';
 
         const wrapper = document.createElement('div');
-        wrapper.className = `absolute ${SEAT_CARD_POSITIONS[play.playerId]} card-played-anim z-20 flex flex-col items-center pointer-events-none`;
+        wrapper.className = `absolute ${SEAT_CARD_POSITIONS[play.playerId] || 'bottom-4 left-1/2 -translate-x-1/2'} card-played-anim z-20 flex flex-col items-center pointer-events-none`;
 
         // شارة اسم اللاعب ملحقة بالكرت لتمييز من رماه بكل سهولة
         const tag = document.createElement('div');
@@ -2245,140 +2066,15 @@
       });
 
       const badge = document.getElementById('leadColorBadge');
-      const lead = getEffectiveLeadColor(GameState.currentTrick);
-      if (lead && lead !== 'special') {
-        badge.classList.remove('hidden');
-        badge.style.backgroundColor = SUIT_COLORS[lead].hex;
-        badge.style.color = lead === 'yellow' ? '#000' : '#fff';
-        badge.textContent = `الأكلة: ${SUIT_COLORS[lead].name}`;
-      } else {
-        badge.classList.add('hidden');
-      }
-    }
-
-    /* عداد الأكلات دوائر صغيرة فارغة تملأ تدريجياً مع كل أكلة */
-    function renderCircularTrickDots() {
-      const containerA = document.getElementById('trickDotsContainerA');
-      const containerB = document.getElementById('trickDotsContainerB');
-      const textA = document.getElementById('tricksCountTextA');
-      const textB = document.getElementById('tricksCountTextB');
-
-      if (!containerA || !containerB) return;
-
-      containerA.innerHTML = '';
-      containerB.innerHTML = '';
-
-      if (textA) textA.textContent = GameState.tricksTeamA;
-      if (textB) textB.textContent = GameState.tricksTeamB;
-
-      // 9 أكلات كدوائر لفريق لنا 🟢
-      for (let i = 0; i < 9; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'trick-dot border border-emerald-400';
-        if (i < GameState.tricksTeamA) {
-          dot.className += ' bg-emerald-500 shadow-[0_0_6px_#10b981] scale-110';
+      if (badge) {
+        const lead = getEffectiveLeadColor(GameState.currentTrick);
+        if (lead && lead !== 'special' && SUIT_COLORS[lead]) {
+          badge.classList.remove('hidden');
+          badge.style.backgroundColor = SUIT_COLORS[lead].hex;
+          badge.style.color = lead === 'yellow' ? '#000' : '#fff';
+          badge.textContent = `الأكلة: ${SUIT_COLORS[lead].name}`;
         } else {
-          dot.className += ' bg-slate-100 border-dashed border-slate-300';
-        }
-        containerA.appendChild(dot);
-      }
-
-      // 9 أكلات كدوائر لفريق لهم 🔴
-      for (let i = 0; i < 9; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'trick-dot border border-rose-400';
-        if (i < GameState.tricksTeamB) {
-          dot.className += ' bg-rose-500 shadow-[0_0_6px_#f43f5e] scale-110';
-        } else {
-          dot.className += ' bg-slate-100 border-dashed border-slate-300';
-        }
-        containerB.appendChild(dot);
-      }
-    }
-
-    function updateScoreboard() {
-      document.getElementById('scoreTeamA').textContent = GameState.matchScoreTeamA;
-      document.getElementById('scoreTeamB').textContent = GameState.matchScoreTeamB;
-
-      // تحديث الدوائر التفاعلية للأكلات
-      renderCircularTrickDots();
-
-      const buyerBox = document.getElementById('buyerStatusContent');
-      if (GameState.bidWinner !== null && (GameState.highestBid > 4 || GameState.isForcedBid)) {
-        const b = GameState.players[GameState.bidWinner];
-        const isA = b.team === 'A';
-        
-        let bidLabel = '';
-        if (GameState.isForcedBid) {
-          bidLabel = `<span class="bg-rose-100 text-rose-700 border border-rose-300 px-1.5 py-0.2 rounded font-black text-[10px] animate-pulse">ملزوم</span>`;
-        } else if (GameState.highestBid === 9) {
-          bidLabel = `<b class="text-amber-600 font-uno">باون</b>`;
-        } else {
-          bidLabel = `<b class="text-amber-600 font-uno">${GameState.highestBid}</b>`;
-        }
-
-        buyerBox.innerHTML = `
-          <b class="text-slate-900">${b.name}</b>
-          <span class="text-[9px] px-1 rounded font-black ${isA ? 'bg-emerald-600' : 'bg-rose-600'} text-white">${isA ? 'لنا' : 'لهم'}</span>
-          ${bidLabel}
-        `;
-      } else {
-        buyerBox.innerHTML = `<span class="text-slate-400">مزايدة...</span>`;
-      }
-
-      const hukmBox = document.getElementById('hukmDisplay');
-      if (GameState.trumpColor) {
-        const c = SUIT_COLORS[GameState.trumpColor];
-        hukmBox.innerHTML = `
-          <span class="w-3.5 h-3.5 rounded-full border border-slate-300 inline-block shadow-sm" style="background-color: ${c.hex}"></span>
-          <span class="text-amber-600 font-black text-xs">${c.name}</span>
-        `;
-      } else {
-        hukmBox.innerHTML = `<span class="text-slate-400 text-xs">لم يُحدد</span>`;
-      }
-    }
-
-    function updateHumanTimerDisplay(visible, secondsLeft = 12) {
-      const container = document.getElementById('humanTimerContainer');
-      const secondsEl = document.getElementById('humanTimerSeconds');
-      const statusEl = document.getElementById('humanTimerStatus');
-      const ring = document.getElementById('timerRing-0');
-
-      if (!container) return;
-
-      if (!visible) {
-        container.classList.add('opacity-0', 'pointer-events-none');
-        container.classList.remove('opacity-100');
-        if (ring) ring.style.strokeDashoffset = '0';
-        return;
-      }
-
-      container.classList.remove('opacity-0', 'pointer-events-none');
-      container.classList.add('opacity-100');
-
-      const secFloor = Math.max(0, Math.ceil(secondsLeft));
-      if (secondsEl) secondsEl.textContent = secFloor;
-
-      const totalCircumference = 125.6;
-      const progress = Math.max(0, Math.min(1, secondsLeft / 12));
-      const offset = totalCircumference * (1 - progress);
-
-      if (ring) {
-        ring.style.strokeDashoffset = offset;
-        if (secondsLeft <= 3) {
-          ring.setAttribute('stroke', '#ef4444');
-        } else {
-          ring.setAttribute('stroke', '#f59e0b');
-        }
-      }
-
-      if (statusEl) {
-        if (secondsLeft <= 3) {
-          statusEl.textContent = 'أسرع يا معود!';
-          statusEl.className = 'text-[10px] text-rose-500 font-black animate-pulse';
-        } else {
-          statusEl.textContent = 'دورك العب!';
-          statusEl.className = 'text-[10px] text-amber-400 font-black';
+          badge.classList.add('hidden');
         }
       }
     }
@@ -2435,6 +2131,114 @@
           ring.setAttribute('stroke', isCritical ? '#ef4444' : '#facc15');
         }
       }, 200);
+    }
+
+    function updateHumanTimerDisplay(isVisible, remaining = 12) {
+      const container = document.getElementById('humanTimerContainer');
+      const secondsEl = document.getElementById('humanTimerSeconds');
+      const statusEl = document.getElementById('humanTimerStatus');
+      const ring = document.getElementById('timerRing-0');
+
+      if (!container) return;
+
+      if (!isVisible) {
+        container.classList.add('opacity-0', 'pointer-events-none');
+        container.classList.remove('opacity-100');
+        if (ring) ring.style.strokeDashoffset = '0';
+        return;
+      }
+
+      container.classList.remove('opacity-0', 'pointer-events-none');
+      container.classList.add('opacity-100');
+
+      const sec = Math.max(0, Math.ceil(remaining));
+      if (secondsEl) secondsEl.textContent = sec;
+
+      const isCritical = remaining <= 3;
+      if (statusEl) {
+        if (isCritical) {
+          statusEl.textContent = 'أسرع! الوقت ينفذ';
+          statusEl.className = 'text-[10px] text-rose-400 font-black animate-pulse';
+        } else {
+          statusEl.textContent = 'دورك العب!';
+          statusEl.className = 'text-[10px] text-amber-400 font-black';
+        }
+      }
+
+      if (ring) {
+        const totalCircumference = 125.6;
+        const offset = totalCircumference * (1 - (remaining / 12));
+        ring.style.strokeDashoffset = offset;
+        ring.setAttribute('stroke', isCritical ? '#ef4444' : '#f59e0b');
+      }
+    }
+
+    function updateScoreboard() {
+      const sA = document.getElementById('scoreTeamA');
+      const sB = document.getElementById('scoreTeamB');
+      const tA = document.getElementById('tricksCountTextA');
+      const tB = document.getElementById('tricksCountTextB');
+      const dotsA = document.getElementById('trickDotsContainerA');
+      const dotsB = document.getElementById('trickDotsContainerB');
+      const buyerBox = document.getElementById('buyerStatusContent');
+      const hukmBox = document.getElementById('hukmDisplay');
+
+      if (sA) sA.textContent = GameState.matchScoreTeamA;
+      if (sB) sB.textContent = GameState.matchScoreTeamB;
+      if (tA) tA.textContent = GameState.tricksTeamA;
+      if (tB) tB.textContent = GameState.tricksTeamB;
+
+      if (dotsA) {
+        dotsA.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+          const d = document.createElement('span');
+          d.className = `trick-dot ${i < GameState.tricksTeamA ? 'bg-emerald-500 shadow-sm' : 'bg-slate-300'}`;
+          dotsA.appendChild(d);
+        }
+      }
+
+      if (dotsB) {
+        dotsB.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+          const d = document.createElement('span');
+          d.className = `trick-dot ${i < GameState.tricksTeamB ? 'bg-rose-500 shadow-sm' : 'bg-slate-300'}`;
+          dotsB.appendChild(d);
+        }
+      }
+
+      if (buyerBox) {
+        if (GameState.bidWinner !== null && GameState.highestBid > 4) {
+          const buyer = GameState.players[GameState.bidWinner];
+          const isPartner = buyer && buyer.team === 'A';
+          let bidLabel = `${GameState.highestBid} أكلات`;
+          if (GameState.isForcedBid) {
+            bidLabel = 'ملزوم (5) ⚡';
+          } else if (GameState.highestBid === 9) {
+            bidLabel = '👑 باون';
+          }
+
+          buyerBox.innerHTML = `
+            <span class="font-extrabold ${isPartner ? 'text-emerald-700' : 'text-rose-700'}">${buyer ? buyer.name : 'المشتري'}</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded font-black ${isPartner ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${bidLabel}</span>
+          `;
+        } else {
+          buyerBox.innerHTML = `<span class="text-slate-400">مزايدة...</span>`;
+        }
+      }
+
+      if (hukmBox) {
+        if (GameState.trumpColor && SUIT_COLORS[GameState.trumpColor]) {
+          const info = SUIT_COLORS[GameState.trumpColor];
+          hukmBox.innerHTML = `
+            <span>الحكم:</span>
+            <span class="inline-flex items-center gap-1 font-black px-1.5 py-0.2 rounded text-[10px]" style="background-color: ${info.hex}; color: ${GameState.trumpColor === 'yellow' ? '#000' : '#fff'}">
+              ${info.name}
+            </span>
+          `;
+        } else {
+          hukmBox.innerHTML = `<span>الحكم:</span><span class="text-slate-400">-</span>`;
+        }
+      }
     }
 
     function timeoutTurn() {
@@ -3253,7 +3057,7 @@
           } else if (docEl.msRequestFullscreen) {
             docEl.msRequestFullscreen();
           }
-          SoundEngine.speakKuwaitiPhrase('تم تفعيل ملء الشاشة ⛶', '⛶');
+          SoundEngine.speakKuwaitiPhrase('تم تفعيل ملء الشاشة وتوسيط الطاولة ⛶', '⛶');
         } else {
           if (document.exitFullscreen) {
             document.exitFullscreen().catch(() => {});
@@ -3262,6 +3066,50 @@
           }
           SoundEngine.speakKuwaitiPhrase('تم الخروج من ملء الشاشة', '🔲');
         }
+      });
+
+      // --- CARD VIEW MODE (طريقة عرض الورق: على الطاولة أو باليد) ---
+      const cardViewBtn = document.getElementById('btnOpenCardViewMenu');
+      const cardViewDropdown = document.getElementById('cardViewDropdown');
+      const cardViewBadge = document.getElementById('currentCardViewBadge');
+
+      const updateCardViewBadge = () => {
+        if (!cardViewBadge) return;
+        cardViewBadge.textContent = GameState.cardViewMode === 'fan' ? 'مسكة باليد 🖐️' : 'على الطاولة 🔲';
+      };
+      updateCardViewBadge();
+
+      if (cardViewBtn && cardViewDropdown) {
+        cardViewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          cardViewDropdown.classList.toggle('hidden');
+          // إغلاق قائمة الشاشة إن كانت مفتوحة
+          if (screenDropdown) screenDropdown.classList.add('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!cardViewDropdown.contains(e.target) && e.target !== cardViewBtn) {
+            cardViewDropdown.classList.add('hidden');
+          }
+        });
+      }
+
+      bindClick('btnViewModeTable', () => {
+        GameState.cardViewMode = 'table';
+        localStorage.setItem('kout_card_view_mode', 'table');
+        if (cardViewDropdown) cardViewDropdown.classList.add('hidden');
+        updateCardViewBadge();
+        renderHumanHand();
+        SoundEngine.speakKuwaitiPhrase('تم تفعيل عرض الورق على الطاولة', '🔲');
+      });
+
+      bindClick('btnViewModeFan', () => {
+        GameState.cardViewMode = 'fan';
+        localStorage.setItem('kout_card_view_mode', 'fan');
+        if (cardViewDropdown) cardViewDropdown.classList.add('hidden');
+        updateCardViewBadge();
+        renderHumanHand();
+        SoundEngine.speakKuwaitiPhrase('تم تفعيل مسكة الورق باليد الاحترافية', '🖐️');
       });
 
       // --- LOBBY BUTTON LISTENERS ---
