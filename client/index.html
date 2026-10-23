@@ -3,20 +3,2316 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>كوت بو ستة أونو (الكويتية)</title>
-  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%83%D9%88%D8%AA%20%D8%A8%D9%88%20%D8%B3%D8%AA%D8%A9%20%D8%A3%D9%88%D9%86%D9%88%22%2C%22short_name%22%3A%22%D9%83%D9%88%D8%AA%20%D8%A3%D9%88%D9%86%D9%88%22%2C%22display%22%3A%22standalone%22%2C%22theme_color%22%3A%22%23064e3b%22%2C%22background_color%22%3A%22%23022c22%22%7D">
+  <title>كوت بو ستة أونو الكويتية | أونلاين</title>
+  
+  <!-- Apple iOS Mobile Web App Capabilities -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="كوت أونو">
+  <link rel="apple-touch-icon" href="https://placehold.co/192x192/0f172a/f59e0b?text=%D9%83%D9%88%D8%AA">
+  <meta name="theme-color" content="#090d16">
+
+  <!-- Self-Contained Web App Manifest (PWA) -->
+  <link rel="manifest" href="data:application/manifest+json;utf-8,%7B%22name%22%3A%22%D9%83%D9%88%D8%AA%20%D8%A8%D9%88%20%D8%B3%D8%AA%D8%A9%20%D8%A3%D9%88%D9%86%D9%88%20%D8%A7%D9%84%D9%83%D9%88%D9%8A%D8%AA%D9%8A%D8%A9%22%2C%22short_name%22%3A%22%D9%83%D9%88%D8%AA%20%D8%A3%D9%88%D9%86%D9%88%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%2C%22background_color%22%3A%22%23090d16%22%2C%22theme_color%22%3A%22%23090d16%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fplacehold.co%2F192x192%2F0f172a%2Ff59e0b%3Ftext%3D%D9%83%D9%88%D8%AA%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
+  <!-- Tailwind CSS Framework CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Optimized Arabic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800;900&family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            uno: ['Fredoka', 'Impact', 'sans-serif'],
+          },
+          colors: {
+            felt: '#0d4a2d',
+            feltDark: '#082f1d',
+            feltBorder: '#3d2817',
+            unoRed: '#EA1D2D',
+            unoBlue: '#0063B0',
+            unoGreen: '#2EB844',
+            unoYellow: '#FED000',
+            jawakerGold: '#f59e0b',
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    /* Full Viewport App Container for Mobile/iPad */
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .safe-top { padding-top: max(8px, env(safe-area-inset-top)); }
+    .safe-bottom { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+
+    /* Uno Card Design */
+    .uno-card {
+      position: relative;
+      width: 66px;
+      height: 98px;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 3px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+      transform-origin: center bottom;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 640px) {
+      .uno-card {
+        width: 76px;
+        height: 114px;
+        border-radius: 12px;
+        padding: 3.5px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .uno-card {
+        width: 86px;
+        height: 128px;
+        border-radius: 14px;
+        padding: 4px;
+      }
+    }
+
+    .uno-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 7px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Iconic Tilted White Uno Oval */
+    .uno-ellipse {
+      position: absolute;
+      width: 84%;
+      height: 72%;
+      background: #ffffff;
+      border-radius: 50%;
+      transform: rotate(26deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Uno Card Palettes */
+    .card-red .uno-inner { background: linear-gradient(145deg, #f03a47, #d91424); }
+    .card-blue .uno-inner { background: linear-gradient(145deg, #1e90ff, #0056b3); }
+    .card-green .uno-inner { background: linear-gradient(145deg, #2ecc71, #1e824c); }
+    .card-yellow .uno-inner { background: linear-gradient(145deg, #f5d020, #d4ac0d); }
+    .card-special .uno-inner { background: linear-gradient(145deg, #232936, #0f141d); }
+
+    /* Central Character Colors */
+    .color-text-red { color: #d91424; }
+    .color-text-blue { color: #0056b3; }
+    .color-text-green { color: #1e824c; }
+    .color-text-yellow { color: #d4ac0d; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+    .color-text-special { color: #111827; }
+
+    /* Enlarged 4-Corner Badges */
+    .corner-badge {
+      position: absolute;
+      font-family: 'Fredoka', 'Impact', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+      pointer-events: none;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (min-width: 640px) {
+      .corner-badge { font-size: 15px; }
+    }
+
+    .corner-tl { top: 3px; left: 4px; }
+    .corner-tr { top: 3px; right: 4px; }
+    .corner-bl { bottom: 3px; left: 4px; }
+    .corner-br { bottom: 3px; right: 4px; }
+
+    /* Mini Color Swatch for Maker Corners */
+    .mini-swatch-maker {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: 1px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+
+    /* Player Cards Interactions */
+    .player-card:hover, .player-card:active {
+      transform: translateY(-20px) scale(1.08) !important;
+      z-index: 40 !important;
+      box-shadow: 0 14px 24px rgba(254, 208, 0, 0.55);
+    }
+
+    .player-card.disabled {
+      opacity: 0.35;
+      filter: grayscale(0.7) brightness(0.6);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .player-card.playable {
+      animation: bouncePlayable 2s infinite ease-in-out;
+    }
+
+    @keyframes bouncePlayable {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    /* Pulsing Turn Indicators */
+    .active-turn-ring {
+      animation: pulseGlow 1.3s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 6px 1px #f59e0b; }
+      to { box-shadow: 0 0 18px 5px #fef08a; }
+    }
+
+    .timer-ring__circle {
+      transition: stroke-dashoffset 0.15s linear;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    @keyframes flyToCenter {
+      0% { transform: scale(0.6) translateY(35px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .fly-in {
+      animation: flyToCenter 0.22s ease-out forwards;
+    }
+
+    .trick-counter-highlight {
+      animation: pulseScore 0.45s ease-out;
+    }
+    @keyframes pulseScore {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); filter: drop-shadow(0 0 8px #f59e0b); }
+      100% { transform: scale(1); }
+    }
+
+    .bid-floating-badge {
+      animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.3) translateY(6px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .glass-modal {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center justify-center p-4">
-  <div class="text-center max-w-md bg-slate-900 border border-emerald-500/30 rounded-2xl p-6 shadow-2xl">
-    <h1 class="text-2xl font-bold text-emerald-400 mb-2">كوت بو ستة - نسخة أونو 🃏</h1>
-    <p class="text-slate-300 text-sm mb-4">تم تجهيز ملف اللعبة بالكامل بنظام PWA الداعم للآيفون والأندرويد.</p>
-    <div class="bg-emerald-950/60 border border-emerald-500/40 rounded-xl p-3 text-xs text-emerald-200 mb-4">
-      ضع هذا الملف باسم <b>index.html</b> في المجلد الرئيسي لمستودع GitHub أو ارفعه على Netlify Drop.
+<body class="h-screen w-screen flex flex-col justify-between font-sans text-white bg-slate-950 overflow-hidden">
+
+  <header class="w-full bg-slate-900/95 backdrop-blur border-b border-amber-600/30 px-2 sm:px-4 py-1.5 flex flex-wrap items-center justify-between z-30 shadow-xl text-xs md:text-sm gap-2 safe-top">
+    <!-- Brand, Profile Quick Access & Online Room Indicator -->
+    <div class="flex items-center gap-2">
+      <!-- Profile Button / Avatar Preview -->
+      <button id="btnOpenProfile" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 border border-amber-500/40 rounded-xl px-2 py-1 transition group shadow" title="الملف الشخصي">
+        <div id="topBarUserAvatar" class="w-7 h-7 rounded-full bg-emerald-600 overflow-hidden flex items-center justify-center border border-amber-400">
+          <!-- Avatar Icon Rendered Dynamically -->
+        </div>
+        <div class="text-right leading-tight hidden xs:block">
+          <div id="topBarUserName" class="font-extrabold text-white text-xs truncate max-w-[80px] sm:max-w-[110px]">لاعب جديد</div>
+          <div class="text-[9px] text-amber-400">الملف الشخصي ⚙️</div>
+        </div>
+      </button>
+
+      <!-- Room Online Badge -->
+      <div class="flex items-center gap-1.5 bg-slate-950/80 px-2 py-1 rounded-xl border border-slate-700">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <span id="roomCodeDisplay" class="font-mono font-bold text-amber-300 text-xs">غرفة عامة</span>
+        <button id="btnShareRoom" class="text-slate-400 hover:text-white transition ml-1 p-0.5 active:scale-90" title="مشاركة رابط اللعبة مع أصدقائك">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+        </button>
+      </div>
     </div>
-  </div>
+
+    <!-- MAIN CONTROL PANEL (لوحة التحكم المركزية) -->
+    <div class="flex items-center gap-1 sm:gap-2.5 bg-slate-950/90 border border-slate-700/80 rounded-2xl px-2 sm:px-3 py-1 shadow-2xl">
+      <!-- TEAM US (فريقك - لنا 🟢) -->
+      <div class="flex items-center gap-1.5 bg-emerald-950/70 border border-emerald-500/50 rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 shadow-inner">
+        <div class="flex flex-col items-center">
+          <div class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="font-extrabold text-emerald-300 text-[11px] sm:text-xs">فريقك (لنا)</span>
+          </div>
+          <span class="text-[9px] text-slate-400">المجموع: <b id="scoreTeamA" class="text-emerald-400 font-bold">0</b></span>
+        </div>
+        <div class="h-5 sm:h-6 w-px bg-emerald-700/50 mx-0.5"></div>
+        <div class="flex flex-col items-center bg-emerald-900/80 border border-emerald-400/60 rounded-lg px-1.5 sm:px-2 py-0.5">
+          <span class="text-[8px] font-black text-emerald-200">الأكلات</span>
+          <span id="tricksTeamA" class="font-uno font-black text-emerald-300 text-sm sm:text-base leading-tight">0</span>
+        </div>
+      </div>
+
+      <!-- Live Buyer & Hukm Box -->
+      <div class="flex flex-col items-center justify-center px-1">
+        <div id="buyerHudBox" class="flex items-center gap-1 bg-slate-800/90 px-2 py-0.5 rounded-full border border-amber-500/40 text-[9px] sm:text-[11px] mb-0.5">
+          <span class="text-slate-300 font-bold">المشتري:</span>
+          <div id="buyerStatusContent" class="flex items-center gap-1">
+            <span class="text-slate-400">جارِ الشراء...</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1 text-[9px] sm:text-[10px]">
+          <span class="text-slate-400">الحكم:</span>
+          <div id="hukmDisplay" class="flex items-center gap-1 font-bold">
+            <span class="text-slate-400">لم يُحدد</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM THEM (خصمك - لهم 🔴) -->
+      <div class="flex items-center gap-1.5 bg-rose-950/70 border border-rose-500/50 rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 shadow-inner">
+        <div class="flex flex-col items-center bg-rose-900/80 border border-rose-400/60 rounded-lg px-1.5 sm:px-2 py-0.5">
+          <span class="text-[8px] font-black text-rose-200">الأكلات</span>
+          <span id="tricksTeamB" class="font-uno font-black text-rose-300 text-sm sm:text-base leading-tight">0</span>
+        </div>
+        <div class="h-5 sm:h-6 w-px bg-rose-700/50 mx-0.5"></div>
+        <div class="flex flex-col items-center">
+          <div class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+            <span class="font-extrabold text-rose-300 text-[11px] sm:text-xs">خصمك (لهم)</span>
+          </div>
+          <span class="text-[9px] text-slate-400">المجموع: <b id="scoreTeamB" class="text-rose-400 font-bold">0</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Controls: Rooms, PWA Install, Sound, Rules -->
+    <div class="flex items-center gap-1 sm:gap-1.5">
+      <button id="btnPwaInstall" class="px-2 py-1 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold rounded-lg text-xs shadow flex items-center gap-1 transition active:scale-95">
+        <span>📲</span>
+        <span class="hidden xs:inline">تثبيت التطبيق</span>
+      </button>
+
+      <button id="btnOpenRoomsModal" class="px-2 py-1 bg-indigo-900/70 hover:bg-indigo-800 border border-indigo-500/50 text-indigo-200 font-bold rounded-lg text-xs transition active:scale-95" title="الغرف أونلاين">
+        🌐 غرف
+      </button>
+
+      <button id="soundToggleBtn" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 text-amber-400 transition active:scale-95" title="الصوت">
+        <svg id="soundIconOn" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
+        <svg id="soundIconOff" class="w-4 h-4 hidden text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+      </button>
+
+      <button id="ruleGuideBtn" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 text-amber-400 font-bold text-xs transition active:scale-95">
+        القوانين
+      </button>
+
+      <button id="resetMatchBtn" class="px-2 py-1 bg-rose-900/60 hover:bg-rose-800 rounded-lg border border-rose-500/50 text-rose-300 font-bold text-xs transition active:scale-95">
+        إعادة
+      </button>
+    </div>
+  </header>
+
+  <main class="relative flex-1 w-full max-w-6xl mx-auto flex items-center justify-center p-1 sm:p-3 overflow-hidden">
+    <!-- Announcement Banner -->
+    <div id="gameBanner" class="absolute top-2 z-40 bg-slate-900/90 border border-amber-500 text-amber-300 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-2xl flex items-center gap-2 transform -translate-y-4 opacity-0 transition-all duration-300 pointer-events-none text-xs sm:text-sm">
+      <span id="bannerIcon" class="text-base">📢</span>
+      <span id="bannerText" class="font-extrabold">مرحباً بك في كوت بو ستة أونو</span>
+    </div>
+
+    <!-- Green Felt Table Container -->
+    <div class="relative w-full h-[320px] sm:h-[420px] md:h-[470px] max-w-4xl rounded-[36px] sm:rounded-[56px] bg-felt shadow-2xl border-[8px] sm:border-[12px] border-feltBorder flex items-center justify-center">
+      <div class="absolute inset-0 rounded-[28px] sm:rounded-[44px] opacity-25 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+      <!-- BOT SEATS (1 through 5 around the felt table with strict alternation) -->
+      <!-- Seat 1: فهد (خصمك 🔴 - Bottom Right) -->
+      <div id="seat-1" class="absolute bottom-2 right-2 sm:right-8 z-20"></div>
+
+      <!-- Seat 2: جاسم (زميلك 🟢 - Top Right) -->
+      <div id="seat-2" class="absolute top-2 right-2 sm:right-8 z-20"></div>
+
+      <!-- Seat 3: دلال (خصمك 🔴 - Top Center) -->
+      <div id="seat-3" class="absolute top-1 left-1/2 -translate-x-1/2 z-20"></div>
+
+      <!-- Seat 4: براك (زميلك 🟢 - Top Left) -->
+      <div id="seat-4" class="absolute top-2 left-2 sm:left-8 z-20"></div>
+
+      <!-- Seat 5: سبيكة (خصمك 🔴 - Bottom Left) -->
+      <div id="seat-5" class="absolute bottom-2 left-2 sm:left-8 z-20"></div>
+
+      <!-- Center Trick Arena -->
+      <div class="relative w-56 h-48 sm:w-72 sm:h-56 md:w-80 md:h-64 flex items-center justify-center rounded-3xl bg-black/20 border border-emerald-500/10 shadow-inner">
+        <div id="trickSlots" class="relative w-full h-full"></div>
+        <div id="trickCenterInfo" class="absolute text-center pointer-events-none">
+          <span id="leadColorBadge" class="hidden text-[10px] font-bold px-2.5 py-0.5 rounded-full border shadow-sm"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile & Avatar Selector Modal -->
+    <div id="profileModal" class="hidden absolute inset-0 z-50 glass-modal flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-amber-500/80 rounded-3xl w-full max-w-lg p-4 sm:p-5 text-right shadow-2xl max-h-[92vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">👤</span>
+            <h3 class="text-base sm:text-lg font-black text-amber-400">الملف الشخصي وصور اللاعبين</h3>
+          </div>
+          <button id="btnCloseProfileModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+        </div>
+
+        <div class="space-y-3 mb-4 bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">اسم اللاعب في اللعبة (يمكنك تغييره متى شئت):</label>
+            <input type="text" id="inputPlayerName" maxlength="15" placeholder="أدخل اسمك المستعار..." class="w-full bg-slate-900 border border-slate-700 focus:border-amber-400 px-3 py-2 rounded-xl text-white text-sm outline-none transition">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">البريد الإلكتروني المسجل:</label>
+              <input type="email" id="inputProfileEmail" disabled class="w-full bg-slate-900/50 border border-slate-800 px-2.5 py-1.5 rounded-lg text-slate-400 text-xs">
+            </div>
+            <div class="flex items-end">
+              <button id="btnSaveProfileInfo" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2 px-3 rounded-xl transition text-xs shadow active:scale-95">
+                حفظ الاسم
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-xs font-extrabold text-amber-300">اختر صورتك الرمزية من الـ 10 شخصيات المتاحة:</h4>
+            <label class="cursor-pointer bg-amber-500/20 hover:bg-amber-500/30 active:scale-95 border border-amber-400/50 text-amber-300 text-[11px] font-bold px-2 py-1 rounded-lg transition flex items-center gap-1 shadow-sm">
+              <span>📷 رفع صورة</span>
+              <input type="file" id="inputCustomAvatarUpload" accept="image/*" class="hidden">
+            </label>
+          </div>
+          <div id="avatarGridContainer" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <!-- 10 Avatars injected dynamically via JS -->
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+          <button id="btnLogoutAccount" class="text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            تسجيل الخروج
+          </button>
+          <span class="text-slate-500 text-[11px]">نسخة كوت أونو السحابية</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rooms Online Modal -->
+    <div id="roomsModal" class="hidden absolute inset-0 z-50 glass-modal flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-indigo-500/80 rounded-3xl w-full max-w-md p-4 sm:p-5 text-right shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🌐</span>
+            <h3 class="text-base sm:text-lg font-black text-indigo-300">غرف اللعب والمشاركة أونلاين</h3>
+          </div>
+          <button id="btnCloseRoomsModal" class="text-slate-400 hover:text-white text-2xl font-bold active:scale-90">&times;</button>
+        </div>
+
+        <div class="space-y-3.5 text-xs">
+          <div class="bg-emerald-950/40 p-3 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-emerald-300">مشاركة سريعة عبر واتساب:</div>
+              <div class="text-[10px] text-slate-300 mt-0.5">ادعُ أصدقاءك بضغطة زر واحدة</div>
+            </div>
+            <button id="btnShareWhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-3 py-2 rounded-xl text-xs transition active:scale-95 flex items-center gap-1 shadow">
+              <span>💬</span>
+              <span>واتساب</span>
+            </button>
+          </div>
+
+          <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
+            <h4 class="font-bold text-amber-300 mb-1">إنشاء غرفة خاصة جديدة:</h4>
+            <div class="flex gap-2">
+              <input type="text" id="newRoomNameInput" placeholder="اسم الغرفة (ديوانية بو فهد)" class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-white outline-none text-xs">
+              <button id="btnCreateCustomRoom" class="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold px-3 py-2 rounded-xl transition active:scale-95">
+                إنشاء
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800">
+            <h4 class="font-bold text-amber-300 mb-1">الانضمام إلى كود غرفة:</h4>
+            <div class="flex gap-2">
+              <input type="text" id="joinRoomCodeInput" placeholder="أدخل كود الغرفة..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-white outline-none font-mono text-center uppercase text-xs">
+              <button id="btnJoinRoomByCode" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-3 py-2 rounded-xl transition active:scale-95">
+                دخول
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 bg-indigo-950/50 border border-indigo-500/30 rounded-2xl flex items-center justify-between">
+            <div class="overflow-hidden">
+              <div class="font-bold text-white">رابط الغرفة الحالية:</div>
+              <div id="currentShareUrlText" class="text-[10px] text-indigo-300 truncate max-w-[190px] sm:max-w-[240px] font-mono mt-0.5">https://...</div>
+            </div>
+            <button id="btnCopyRoomLink" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition active:scale-95">
+              نسخ 📋
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iOS Install Guide Modal -->
+    <div id="iosInstallGuideModal" class="hidden absolute inset-0 z-50 glass-modal flex items-center justify-center p-4">
+      <div class="bg-slate-900 border-2 border-emerald-500/80 rounded-3xl w-full max-w-sm p-5 text-right shadow-2xl">
+        <div class="text-center mb-3">
+          <span class="text-4xl">🍎</span>
+          <h3 class="text-lg font-black text-amber-400 mt-1">تثبيت اللعبة على iPhone أو iPad</h3>
+          <p class="text-xs text-slate-300 mt-1">للحصول على تجربة شاشة كاملة وسرعة فائقة:</p>
+        </div>
+        <div class="bg-slate-950/80 rounded-2xl p-3 border border-slate-800 space-y-2 text-xs text-slate-200">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span>اضغط على زر المشاركة <b>(Share ⎋)</b> في أسفل أو أعلى Safari.</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span>مرر لأسفل واختر <b>إضافة إلى الشاشة الرئيسية (Add to Home Screen ➕)</b>.</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span>اضغط على <b>إضافة (Add)</b> لتصبح اللعبة تطبيقاً في جهازك!</span>
+          </div>
+        </div>
+        <button id="btnCloseIosGuide" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl text-xs transition active:scale-95">
+          فهمت ذلك، تم!
+        </button>
+      </div>
+    </div>
+
+    <!-- Round Result Modal (وصلت! / خسارة!) -->
+    <div id="roundResultModal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div id="resultModalCard" class="bg-slate-900 border-2 rounded-3xl w-full max-w-md p-5 sm:p-6 text-center shadow-2xl transform transition-all scale-95 duration-300">
+        <div id="resultIcon" class="text-5xl sm:text-6xl mb-2 animate-bounce">🎉</div>
+        <h2 id="resultMainTitle" class="text-2xl sm:text-3xl font-black text-amber-400 mb-1">وصلت!</h2>
+        <p id="resultSubTitle" class="text-xs sm:text-sm font-bold text-slate-300 mb-4">نجح فريقك في تحقيق عدد الأكلات المطلوب</p>
+
+        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 mb-4 shadow-inner">
+          <div class="text-xs text-slate-400 mb-3 flex items-center justify-between border-b border-slate-800 pb-2">
+            <span>المشتري: <b id="resultBuyerName" class="text-amber-300 font-extrabold">-</b></span>
+            <span>الطلب: <b id="resultBidTarget" class="text-white font-extrabold">-</b></span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 text-center">
+            <div class="bg-emerald-950/60 border border-emerald-500/50 rounded-xl p-2 sm:p-2.5">
+              <span class="text-[11px] font-black text-emerald-300">فريقك (لنا 🟢)</span>
+              <div class="text-2xl font-black font-uno text-emerald-200 mt-1" id="resultTricksA">0</div>
+              <span class="text-[10px] text-slate-400 block mt-0.5">أكلات</span>
+            </div>
+
+            <div class="bg-rose-950/60 border border-rose-500/50 rounded-xl p-2.5">
+              <span class="text-[11px] font-black text-rose-300">خصمك (لهم 🔴)</span>
+              <div class="text-2xl font-black font-uno text-rose-200 mt-1" id="resultTricksB">0</div>
+              <span class="text-[10px] text-slate-400 block mt-0.5">أكلات</span>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-2 border-t border-slate-800 text-xs flex justify-between items-center font-bold">
+            <span class="text-slate-300">النقاط المكتسبة:</span>
+            <span id="resultPointsEarned" class="text-amber-400 text-xs sm:text-sm font-black">+6 نقاط</span>
+          </div>
+        </div>
+
+        <button id="btnNextRound" class="w-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black py-2.5 sm:py-3 rounded-xl text-sm sm:text-base shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+          <span>جولة جديدة</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bidding Modal -->
+    <div id="biddingModal" class="hidden absolute inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border-2 border-amber-500/80 rounded-2xl w-full max-w-md p-4 sm:p-5 text-center shadow-2xl">
+        <div id="biddingPhaseStep1">
+          <h3 class="text-lg sm:text-xl font-black text-amber-400 mb-1">دورك في الشراء (المزايدة)</h3>
+          
+          <div id="modalBuyerStatusBox" class="bg-slate-950/90 border border-slate-700/80 rounded-xl p-2 sm:p-2.5 mb-3 sm:mb-4 shadow-inner flex flex-col items-center justify-center gap-1">
+            <span class="text-[10px] sm:text-[11px] font-bold text-slate-400">أعلى مزايد حالياً في الطاولة:</span>
+            <div id="modalBuyerCurrentDetails" class="flex items-center gap-1.5 flex-wrap justify-center">
+              <span class="text-amber-300 font-extrabold text-xs sm:text-sm">لا يوجد مشترٍ حتى الآن (بدء بـ 5)</span>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button class="bid-val-btn bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 hover:border-amber-400 py-2.5 sm:py-3 rounded-xl font-black text-base sm:text-lg transition" data-bid="5">5 أكلات</button>
+            <button class="bid-val-btn bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 hover:border-amber-400 py-2.5 sm:py-3 rounded-xl font-black text-base sm:text-lg transition" data-bid="6">6 أكلات</button>
+            <button class="bid-val-btn bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 hover:border-amber-400 py-2.5 sm:py-3 rounded-xl font-black text-base sm:text-lg transition" data-bid="7">7 أكلات</button>
+            <button class="bid-val-btn bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 hover:border-amber-400 py-2.5 sm:py-3 rounded-xl font-black text-base sm:text-lg transition" data-bid="8">8 أكلات</button>
+            <button class="bid-val-btn bg-gradient-to-r from-red-600 via-amber-600 to-yellow-500 hover:from-red-500 hover:to-yellow-400 active:scale-95 py-2.5 sm:py-3 rounded-xl font-black text-base sm:text-lg text-white shadow-xl transition col-span-2 flex items-center justify-center gap-1.5" data-bid="9">
+              <span>👑</span>
+              <span>بــاون (9 أكلات)</span>
+            </button>
+          </div>
+
+          <button id="btnPassBid" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 border border-rose-500/50 hover:border-rose-400 text-rose-400 font-bold py-2 sm:py-2.5 rounded-xl transition text-xs sm:text-sm">
+            طـوف (تمرير)
+          </button>
+        </div>
+
+        <!-- Step 2: Choose Trump Color -->
+        <div id="biddingPhaseStep2" class="hidden">
+          <h3 class="text-lg sm:text-xl font-black text-amber-400 mb-1">مبروك! اختر لون الحكم</h3>
+          <p class="text-xs text-slate-300 mb-4">اختر لون أونو ليكون هو الحكم لهذه الجولة</p>
+
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button class="hukm-pick-btn bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition text-xs sm:text-sm" data-color="red">
+              <span class="w-3.5 h-3.5 rounded-full bg-white shadow-inner"></span>
+              أحمر (Red)
+            </button>
+            <button class="hukm-pick-btn bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition text-xs sm:text-sm" data-color="blue">
+              <span class="w-3.5 h-3.5 rounded-full bg-white shadow-inner"></span>
+              أزرق (Blue)
+            </button>
+            <button class="hukm-pick-btn bg-green-600 hover:bg-green-500 active:scale-95 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition text-xs sm:text-sm" data-color="green">
+              <span class="w-3.5 h-3.5 rounded-full bg-white shadow-inner"></span>
+              أخضر (Green)
+            </button>
+            <button class="hukm-pick-btn bg-yellow-500 hover:bg-yellow-400 active:scale-95 text-slate-950 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition text-xs sm:text-sm" data-color="yellow">
+              <span class="w-3.5 h-3.5 rounded-full bg-slate-950 shadow-inner"></span>
+              أصفر (Yellow)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rulesModal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-slate-900 border border-amber-500/60 rounded-2xl w-full max-w-lg p-4 sm:p-5 text-right shadow-2xl max-h-[85vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+          <h3 class="text-base sm:text-lg font-black text-amber-400">قواعد كوت بو ستة - نسخة أونو</h3>
+          <button id="closeRulesBtn" class="text-slate-400 hover:text-white text-xl font-bold active:scale-90">&times;</button>
+        </div>
+        <div class="space-y-3 text-xs md:text-sm text-slate-300 leading-relaxed">
+          <p><b class="text-amber-400">تشكيلة الورق (54 كرت أونو):</b></p>
+          <div class="grid grid-cols-2 gap-2 text-xs bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+            <div>• <b class="text-slate-100 font-extrabold">الجيكر (+4):</b> كتابة بالأسود في المنتصف والأبيض بالزوايا</div>
+            <div>• <b class="text-amber-300">الميكر:</b> رمزه بالوسط 4 ألوان وفي الزوايا دوائر الألوان</div>
+            <div>• <b class="text-amber-300">رقم 1:</b> الخال (Ace) - الأقوى باللون</div>
+            <div>• <b class="text-amber-300">كرت (+2):</b> الباش (King)</div>
+            <div>• <b class="text-amber-300">كرت (Skip ⊘):</b> الميم (Queen)</div>
+            <div>• <b class="text-amber-300">كرت (Reverse ⇄):</b> الغلام (Jack)</div>
+            <div>• <b class="text-amber-300">رقم (0):</b> الرقم 10</div>
+            <div>• <b class="text-amber-300">الأرقام (9 إلى 2):</b> قيمها العادية</div>
+          </div>
+          
+          <div class="bg-slate-800/90 p-2.5 sm:p-3 rounded-xl border border-slate-700">
+            <h4 class="font-bold text-amber-300 mb-1.5">قواعد خاصة بالجيكر والميكر:</h4>
+            <ul class="list-disc list-inside space-y-1">
+              <li><b>افتتاح اللعب:</b> ممنوع افتتاح أي أكلة بالجيكر أو الميكر طالما تملك بديلاً في يدك.</li>
+              <li><b>النزول أثناء دوران اللعبة:</b> يحق لك ولأي لاعب (فريقك أو خصمك) لعب الجيكر أو الميكر في أي أكلة جارية حتى لو كنت تملك نفس اللون المطلوب.</li>
+              <li><b>الميكر على الجيكر:</b> لا يمكن لعب الميكر على الجيكر في نفس الأكلة إن وُجد بديل.</li>
+              <li><b>الباون (9 أكلات):</b> عند أكل جميع الأكلات التسع يسمى باون ويحصل الفريق على 16 نقطة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="relative w-full bg-slate-950/90 border-t border-slate-800 pb-2 sm:pb-3 pt-1 px-2 z-30 safe-bottom">
+    <div class="max-w-4xl mx-auto flex flex-col items-center">
+      <div class="relative flex items-center gap-2 sm:gap-3 mb-1">
+        <div id="bidBadge-0" class="hidden absolute -top-8 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 text-xs font-black px-3 py-0.5 rounded-full shadow-lg border border-white z-40 bid-floating-badge"></div>
+        <div id="playerAvatarTag" class="flex items-center gap-1.5 sm:gap-2 bg-slate-900 border border-emerald-500/40 rounded-full px-2.5 sm:px-3 py-0.5">
+          <div id="humanHandAvatarIcon" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-xs text-white overflow-hidden border border-emerald-400">
+          </div>
+          <span id="humanPlayerDisplayName" class="text-[11px] sm:text-xs font-bold text-emerald-300">أنت [فريقك 🟢 - لنا]</span>
+          <span id="playerActionNotice" class="text-[10px] sm:text-[11px] text-amber-300 hidden font-bold">دورك الآن! اختر كرتك</span>
+        </div>
+      </div>
+
+      <!-- Human Hand Cards Deck Container -->
+      <div id="playerHand" class="flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto max-w-full px-1 py-1 min-h-[105px] sm:min-h-[120px]">
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const AVATARS_CATALOG = [
+      {
+        id: 'bald_beard',
+        title: 'أصلع وملتحي لحية خفيفة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bb-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/></radialGradient>
+              <radialGradient id="bb-head" cx="45%" cy="30%" r="55%"><stop offset="0%" stop-color="#ffdfba"/><stop offset="60%" stop-color="#e5b88f"/><stop offset="100%" stop-color="#b88358"/></radialGradient>
+              <radialGradient id="bb-shine" cx="42%" cy="20%" r="35%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+              <linearGradient id="bb-beard" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3d271d"/><stop offset="100%" stop-color="#1f140e"/></linearGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#bb-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#1e293b"/>
+            <path d="M42 88 L60 102 L78 88 Z" fill="#e5b88f"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#c9956d"/>
+            <ellipse cx="60" cy="50" rx="31" ry="36" fill="url(#bb-head)"/>
+            <ellipse cx="55" cy="34" rx="20" ry="14" fill="url(#bb-shine)"/>
+            <ellipse cx="28" cy="52" rx="5.5" ry="9" fill="#d99f73"/>
+            <ellipse cx="92" cy="52" rx="5.5" ry="9" fill="#d99f73"/>
+            <path d="M38 42 Q48 39 54 43" stroke="#2b1810" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M66 43 Q72 39 82 42" stroke="#2b1810" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <ellipse cx="46" cy="48" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="47" cy="48" r="2.8" fill="#1e130c"/><circle cx="48" cy="46.8" r="1" fill="#ffffff"/>
+            <ellipse cx="74" cy="48" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="73" cy="48" r="2.8" fill="#1e130c"/><circle cx="74" cy="46.8" r="1" fill="#ffffff"/>
+            <path d="M58 46 L55 58 Q60 62 65 58 L62 46" fill="#c9956d" opacity="0.45"/>
+            <path d="M34 54 C34 76, 42 84, 60 84 C78 84, 86 76, 86 54 C82 56, 76 60, 60 60 C44 60, 38 56, 34 54 Z" fill="url(#bb-beard)" opacity="0.94"/>
+            <path d="M47 62 Q60 59 73 62 Q60 65 47 62 Z" fill="#1f140e"/>
+            <path d="M52 69 Q60 72 68 69" stroke="#b86b5c" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'bald_glasses',
+        title: 'أصلع غير ملتحي ويلبس نظارة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-glass-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#090724"/></radialGradient>
+              <radialGradient id="bg-skin" cx="45%" cy="30%" r="55%"><stop offset="0%" stop-color="#ffe4c9"/><stop offset="60%" stop-color="#e8be96"/><stop offset="100%" stop-color="#be8a61"/></radialGradient>
+              <radialGradient id="bg-shine" cx="42%" cy="20%" r="35%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#bg-glass-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#312e81"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#ce9d75"/>
+            <ellipse cx="60" cy="50" rx="31" ry="36" fill="url(#bg-skin)"/>
+            <ellipse cx="56" cy="33" rx="20" ry="14" fill="url(#bg-shine)"/>
+            <ellipse cx="28" cy="52" rx="5.5" ry="9" fill="#d99f73"/>
+            <ellipse cx="92" cy="52" rx="5.5" ry="9" fill="#d99f73"/>
+            <path d="M38 42 Q47 38 53 42" stroke="#4a2e1b" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <path d="M67 42 Q73 38 82 42" stroke="#4a2e1b" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <ellipse cx="46" cy="48" rx="4" ry="4.5" fill="#ffffff"/>
+            <circle cx="47" cy="48" r="2.5" fill="#26170f"/><circle cx="48" cy="46.8" r="1" fill="#ffffff"/>
+            <ellipse cx="74" cy="48" rx="4" ry="4.5" fill="#ffffff"/>
+            <circle cx="73" cy="48" r="2.5" fill="#26170f"/><circle cx="74" cy="46.8" r="1" fill="#ffffff"/>
+            <rect x="33" y="40" width="23" height="18" rx="5" fill="rgba(255,255,255,0.22)" stroke="#0f172a" stroke-width="3"/>
+            <rect x="64" y="40" width="23" height="18" rx="5" fill="rgba(255,255,255,0.22)" stroke="#0f172a" stroke-width="3"/>
+            <line x1="56" y1="48" x2="64" y2="48" stroke="#0f172a" stroke-width="3"/>
+            <line x1="28" y1="46" x2="33" y2="47" stroke="#0f172a" stroke-width="2.5"/>
+            <line x1="87" y1="47" x2="92" y2="46" stroke="#0f172a" stroke-width="2.5"/>
+            <line x1="36" y1="42" x2="48" y2="54" stroke="#ffffff" stroke-width="1.8" opacity="0.65" stroke-linecap="round"/>
+            <line x1="67" y1="42" x2="79" y2="54" stroke="#ffffff" stroke-width="1.8" opacity="0.65" stroke-linecap="round"/>
+            <path d="M57 52 Q60 61 63 52" stroke="#a66e46" stroke-width="2.2" fill="none"/>
+            <path d="M51 68 Q60 72 69 68" stroke="#ad5e4f" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'ghutra_beard',
+        title: 'ملتحي يلبس غترة بيضاء بستايل كويتي',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="gb-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#064e3b"/><stop offset="100%" stop-color="#022c22"/></radialGradient>
+              <radialGradient id="gb-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#fed7aa"/><stop offset="60%" stop-color="#e2ab7b"/><stop offset="100%" stop-color="#b67a48"/></radialGradient>
+              <linearGradient id="gb-ghutra" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="35%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#gb-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#f8fafc"/>
+            <path d="M60 88 L60 120" stroke="#cbd5e1" stroke-width="2"/>
+            <path d="M22 34 C12 55, 14 85, 25 105 C33 90, 36 70, 36 50 Z" fill="url(#gb-ghutra)"/>
+            <path d="M98 34 C108 55, 106 85, 95 105 C87 90, 84 70, 84 50 Z" fill="url(#gb-ghutra)"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#c9956d"/>
+            <ellipse cx="60" cy="54" rx="27" ry="32" fill="url(#gb-skin)"/>
+            <ellipse cx="60" cy="27" rx="36" ry="10.5" fill="#09090b"/>
+            <ellipse cx="60" cy="30" rx="34" ry="9" fill="#18181b"/>
+            <ellipse cx="60" cy="30" rx="28" ry="6.5" fill="url(#gb-ghutra)"/>
+            <path d="M28 32 C38 23, 82 23, 92 32 C90 42, 85 46, 85 52 C77 40, 43 40, 35 52 C35 46, 30 42, 28 32 Z" fill="#ffffff" filter="drop-shadow(0 2px 2px rgba(0,0,0,0.2))"/>
+            <path d="M42 46 Q49 42 55 45" stroke="#1c120c" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M65 45 Q71 42 78 46" stroke="#1c120c" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <ellipse cx="48" cy="51" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="49" cy="51" r="2.8" fill="#170d07"/><circle cx="50" cy="49.8" r="1" fill="#ffffff"/>
+            <ellipse cx="72" cy="51" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="71" cy="51" r="2.8" fill="#170d07"/><circle cx="72" cy="49.8" r="1" fill="#ffffff"/>
+            <path d="M60 48 L57 58 Q60 61 63 58 Z" fill="#b0764b"/>
+            <path d="M36 56 C36 78, 44 85, 60 85 C76 85, 84 78, 84 56 C80 60, 72 63, 60 63 C48 63, 40 60, 36 56 Z" fill="#181109"/>
+            <path d="M48 64 Q60 61 72 64 Q60 67 48 64 Z" fill="#0d0905"/>
+            <path d="M53 71 Q60 74 67 71" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'ghutra_glasses',
+        title: 'غير ملتحي يلبس غترة بستايل كويتي مع نظارة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="gg-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#042f2e"/><stop offset="100%" stop-color="#021c1b"/></radialGradient>
+              <radialGradient id="gg-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#ffe4c9"/><stop offset="60%" stop-color="#e8be96"/><stop offset="100%" stop-color="#bf875a"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#gg-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#ffffff"/>
+            <path d="M22 34 C12 55, 14 85, 25 105 C33 90, 36 70, 36 50 Z" fill="#f1f5f9"/>
+            <path d="M98 34 C108 55, 106 85, 95 105 C87 90, 84 70, 84 50 Z" fill="#f1f5f9"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#ce9d75"/>
+            <ellipse cx="60" cy="54" rx="27" ry="32" fill="url(#gg-skin)"/>
+            <ellipse cx="60" cy="27" rx="36" ry="10" fill="#09090b"/>
+            <ellipse cx="60" cy="30" rx="34" ry="8.5" fill="#18181b"/>
+            <ellipse cx="60" cy="30" rx="28" ry="6" fill="#ffffff"/>
+            <path d="M28 32 C38 23, 82 23, 92 32 C90 42, 85 46, 85 52 C77 40, 43 40, 35 52 C35 46, 30 42, 28 32 Z" fill="#ffffff"/>
+            <path d="M42 45 Q49 41 55 44" stroke="#2b1a11" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <path d="M65 44 Q71 41 78 45" stroke="#2b1a11" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <rect x="35" y="44" width="22" height="17" rx="4.5" fill="rgba(255,255,255,0.25)" stroke="#09090b" stroke-width="2.8"/>
+            <rect x="63" y="44" width="22" height="17" rx="4.5" fill="rgba(255,255,255,0.25)" stroke="#09090b" stroke-width="2.8"/>
+            <line x1="57" y1="51" x2="63" y2="51" stroke="#09090b" stroke-width="2.8"/>
+            <line x1="30" y1="48" x2="35" y2="49" stroke="#09090b" stroke-width="2.2"/>
+            <line x1="85" y1="49" x2="90" y2="48" stroke="#09090b" stroke-width="2.2"/>
+            <circle cx="46" cy="52" r="2.8" fill="#170d07"/><circle cx="47" cy="50.8" r="1" fill="#ffffff"/>
+            <circle cx="74" cy="52" r="2.8" fill="#170d07"/><circle cx="75" cy="50.8" r="1" fill="#ffffff"/>
+            <path d="M57 56 Q60 63 63 56" stroke="#b0764b" stroke-width="2" fill="none"/>
+            <path d="M52 72 Q60 76 68 72" stroke="#b85d50" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'blackhair_beard',
+        title: 'ملتحي وشعره أسود',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bh-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#451a03"/><stop offset="100%" stop-color="#1c0a00"/></radialGradient>
+              <radialGradient id="bh-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#fed7aa"/><stop offset="60%" stop-color="#dfa576"/><stop offset="100%" stop-color="#b27341"/></radialGradient>
+              <linearGradient id="bh-hair" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#262626"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#bh-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#1e3a8a"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#bf8556"/>
+            <ellipse cx="60" cy="54" rx="28" ry="32" fill="url(#bh-skin)"/>
+            <path d="M30 46 C28 20, 42 14, 60 14 C78 14, 92 20, 90 46 C84 32, 76 25, 60 25 C44 25, 36 32, 30 46 Z" fill="url(#bh-hair)"/>
+            <path d="M40 43 Q48 39 55 43" stroke="#0a0a0a" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+            <path d="M65 43 Q72 39 80 43" stroke="#0a0a0a" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+            <ellipse cx="47" cy="49" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="48" cy="49" r="2.8" fill="#120c08"/><circle cx="49" cy="47.8" r="1" fill="#ffffff"/>
+            <ellipse cx="73" cy="49" rx="4.5" ry="5" fill="#ffffff"/>
+            <circle cx="72" cy="49" r="2.8" fill="#120c08"/><circle cx="73" cy="47.8" r="1" fill="#ffffff"/>
+            <path d="M60 47 L57 58 Q60 61 63 58 Z" fill="#a66a3d"/>
+            <path d="M34 52 C34 78, 43 86, 60 86 C77 86, 86 78, 86 52 C81 57, 73 61, 60 61 C47 61, 39 57, 34 52 Z" fill="#0f0f10"/>
+            <path d="M46 63 Q60 60 74 63 Q60 66 46 63 Z" fill="#000000"/>
+            <path d="M52 71 Q60 74 68 71" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'blackhair_glasses',
+        title: 'غير ملتحي وشعره أسود ويلبس نظارة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-nh-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0a072b"/></radialGradient>
+              <radialGradient id="bg-nh-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#ffebd4"/><stop offset="60%" stop-color="#e2b58d"/><stop offset="100%" stop-color="#b97e50"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#bg-nh-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#0284c7"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#c48a5c"/>
+            <ellipse cx="60" cy="54" rx="28" ry="32" fill="url(#bg-nh-skin)"/>
+            <path d="M30 46 C28 18, 42 13, 60 13 C78 13, 92 18, 90 46 C83 31, 75 24, 60 24 C45 24, 37 31, 30 46 Z" fill="#171717"/>
+            <path d="M40 42 Q48 38 54 42" stroke="#171717" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <path d="M66 42 Q72 38 80 42" stroke="#171717" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <rect x="33" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.2)" stroke="#0f172a" stroke-width="3"/>
+            <rect x="64" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.2)" stroke="#0f172a" stroke-width="3"/>
+            <line x1="56" y1="50" x2="64" y2="50" stroke="#0f172a" stroke-width="3"/>
+            <circle cx="45" cy="51" r="2.8" fill="#1a120c"/><circle cx="46" cy="49.8" r="1" fill="#ffffff"/>
+            <circle cx="75" cy="51" r="2.8" fill="#1a120c"/><circle cx="76" cy="49.8" r="1" fill="#ffffff"/>
+            <path d="M57 54 Q60 62 63 54" stroke="#a66e46" stroke-width="2.2" fill="none"/>
+            <path d="M51 72 Q60 76 69 72" stroke="#ad5e4f" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'shirt_beard_glasses',
+        title: 'ملتحي يلبس قميص جميل ونظارة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sbg-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#881337"/><stop offset="100%" stop-color="#4c0519"/></radialGradient>
+              <radialGradient id="sbg-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#fed7aa"/><stop offset="60%" stop-color="#dfa576"/><stop offset="100%" stop-color="#b27341"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#sbg-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#047857"/>
+            <path d="M42 88 L60 106 L78 88 Z" fill="#ffffff"/>
+            <path d="M38 88 L52 100 L44 120 Z" fill="#065f46"/>
+            <path d="M82 88 L68 100 L76 120 Z" fill="#065f46"/>
+            <circle cx="60" cy="112" r="1.8" fill="#cbd5e1"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#bf8556"/>
+            <ellipse cx="60" cy="54" rx="28" ry="32" fill="url(#sbg-skin)"/>
+            <path d="M31 44 C30 18, 43 14, 60 14 C77 14, 90 18, 89 44 C82 30, 75 23, 60 23 C45 23, 38 30, 31 44 Z" fill="#292524"/>
+            <path d="M40 42 Q48 38 54 42" stroke="#1c1917" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <path d="M66 42 Q72 38 80 42" stroke="#1c1917" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <rect x="33" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.22)" stroke="#d97706" stroke-width="2.8"/>
+            <rect x="64" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.22)" stroke="#d97706" stroke-width="2.8"/>
+            <line x1="56" y1="50" x2="64" y2="50" stroke="#d97706" stroke-width="2.8"/>
+            <circle cx="45" cy="51" r="2.8" fill="#1c1917"/><circle cx="46" cy="49.8" r="1" fill="#ffffff"/>
+            <circle cx="75" cy="51" r="2.8" fill="#1c1917"/><circle cx="76" cy="49.8" r="1" fill="#ffffff"/>
+            <path d="M35 52 C35 76, 44 85, 60 85 C76 85, 85 76, 85 52 C80 57, 72 61, 60 61 C48 61, 40 57, 35 52 Z" fill="#262626"/>
+            <path d="M47 62 Q60 59 73 62 Q60 65 47 62 Z" fill="#171717"/>
+            <path d="M52 71 Q60 74 68 71" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'shirt_glasses',
+        title: 'غير ملتحي يلبس قميص جميل ويلبس نظارة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sg-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#0369a1"/><stop offset="100%" stop-color="#082f49"/></radialGradient>
+              <radialGradient id="sg-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#ffe4c9"/><stop offset="60%" stop-color="#e8be96"/><stop offset="100%" stop-color="#bf875a"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#sg-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#1e293b"/>
+            <path d="M44 88 L60 105 L76 88 Z" fill="#ffffff"/>
+            <path d="M40 88 L52 100 L44 120 Z" fill="#334155"/>
+            <path d="M80 88 L68 100 L76 120 Z" fill="#334155"/>
+            <circle cx="60" cy="112" r="1.6" fill="#cbd5e1"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#c48a5c"/>
+            <ellipse cx="60" cy="54" rx="28" ry="32" fill="url(#sg-skin)"/>
+            <path d="M31 44 C30 18, 43 14, 60 14 C77 14, 90 18, 89 44 C82 30, 75 23, 60 23 C45 23, 38 30, 31 44 Z" fill="#1c1917"/>
+            <path d="M40 42 Q48 38 54 42" stroke="#1c1917" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <path d="M66 42 Q72 38 80 42" stroke="#1c1917" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+            <rect x="33" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.25)" stroke="#09090b" stroke-width="3"/>
+            <rect x="64" y="42" width="23" height="18" rx="5" fill="rgba(255,255,255,0.25)" stroke="#09090b" stroke-width="3"/>
+            <line x1="56" y1="50" x2="64" y2="50" stroke="#09090b" stroke-width="3"/>
+            <circle cx="45" cy="51" r="2.8" fill="#1c1917"/><circle cx="46" cy="49.8" r="1" fill="#ffffff"/>
+            <circle cx="75" cy="51" r="2.8" fill="#1c1917"/><circle cx="76" cy="49.8" r="1" fill="#ffffff"/>
+            <path d="M57 54 Q60 62 63 54" stroke="#a66e46" stroke-width="2.2" fill="none"/>
+            <path d="M51 72 Q60 76 69 72" stroke="#ad5e4f" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'kuwaiti_dishdasha',
+        title: 'شاب كويتي كلاسيكي بدشداشة وغترة',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="kd-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#052e16"/></radialGradient>
+              <radialGradient id="kd-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#fed7aa"/><stop offset="60%" stop-color="#e0a778"/><stop offset="100%" stop-color="#b47543"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#kd-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#ffffff"/>
+            <path d="M60 88 L60 120" stroke="#e2e8f0" stroke-width="2.5"/>
+            <path d="M24 34 C16 50, 16 75, 26 95 C33 80, 36 65, 36 50 Z" fill="#f8fafc"/>
+            <path d="M96 34 C104 50, 104 75, 94 95 C87 80, 84 65, 84 50 Z" fill="#f8fafc"/>
+            <rect x="47" y="66" width="26" height="24" rx="6" fill="#c48a5c"/>
+            <ellipse cx="60" cy="54" rx="27" ry="32" fill="url(#kd-skin)"/>
+            <ellipse cx="60" cy="27" rx="35" ry="10" fill="#09090b"/>
+            <ellipse cx="60" cy="30" rx="33" ry="8.5" fill="#18181b"/>
+            <ellipse cx="60" cy="30" rx="27" ry="6" fill="#ffffff"/>
+            <path d="M28 32 C38 23, 82 23, 92 32 C90 42, 85 46, 85 52 C77 40, 43 40, 35 52 C35 46, 30 42, 28 32 Z" fill="#ffffff"/>
+            <path d="M42 45 Q49 41 55 44" stroke="#171717" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M65 44 Q71 41 78 45" stroke="#171717" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="48" cy="51" r="2.8" fill="#171717"/><circle cx="49" cy="49.8" r="1" fill="#ffffff"/>
+            <circle cx="72" cy="51" r="2.8" fill="#171717"/><circle cx="73" cy="49.8" r="1" fill="#ffffff"/>
+            <path d="M60 48 L57 58 Q60 61 63 58 Z" fill="#a66a3d"/>
+            <path d="M47 63 Q60 59 73 63 Q60 67 47 63 Z" fill="#171717"/>
+            <path d="M52 71 Q60 74 68 71" stroke="#ad5e4f" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          </svg>
+        `
+      },
+      {
+        id: 'kuwaiti_lady',
+        title: 'لاعبة كويتية أنيقة (بورتريه)',
+        render: () => `
+          <svg viewBox="0 0 120 120" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="kl-bg" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#581c87"/><stop offset="100%" stop-color="#2e1065"/></radialGradient>
+              <radialGradient id="kl-skin" cx="45%" cy="38%" r="55%"><stop offset="0%" stop-color="#ffebd4"/><stop offset="60%" stop-color="#e8be96"/><stop offset="100%" stop-color="#c98e62"/></radialGradient>
+            </defs>
+            <rect width="120" height="120" fill="url(#kl-bg)"/>
+            <path d="M15 120 C18 95, 38 88, 60 88 C82 88, 102 95, 105 120 Z" fill="#3b0764"/>
+            <rect x="49" y="66" width="22" height="24" rx="6" fill="#ce9d75"/>
+            <path d="M26 40 C24 75, 28 105, 36 115 C44 95, 46 70, 46 50 Z" fill="#0f172a"/>
+            <path d="M94 40 C96 75, 92 105, 84 115 C76 95, 74 70, 74 50 Z" fill="#0f172a"/>
+            <ellipse cx="60" cy="54" rx="26" ry="30" fill="url(#kl-skin)"/>
+            <path d="M30 42 C28 16, 42 12, 60 12 C78 12, 92 16, 90 42 C82 26, 75 20, 60 20 C45 20, 38 26, 30 42 Z" fill="#0f172a"/>
+            <path d="M42 45 Q48 40 54 44" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <path d="M66 44 Q72 40 78 45" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <ellipse cx="48" cy="50" rx="4.5" ry="4.5" fill="#ffffff"/>
+            <circle cx="49" cy="50" r="2.8" fill="#1e1b18"/><circle cx="50" cy="48.8" r="1.2" fill="#ffffff"/>
+            <ellipse cx="72" cy="50" rx="4.5" ry="4.5" fill="#ffffff"/>
+            <circle cx="71" cy="50" r="2.8" fill="#1e1b18"/><circle cx="72" cy="48.8" r="1.2" fill="#ffffff"/>
+            <path d="M43 51 Q48 54 53 50" stroke="#0f172a" stroke-width="1.4" fill="none"/>
+            <path d="M67 50 Q72 54 77 51" stroke="#0f172a" stroke-width="1.4" fill="none"/>
+            <path d="M58 52 Q60 59 62 52" stroke="#b0764b" stroke-width="1.8" fill="none"/>
+            <path d="M51 68 Q60 72 69 68 Q60 76 51 68 Z" fill="#e11d48"/>
+          </svg>
+        `
+      }
+    ];
+
+    const UserStore = {
+      user: null,
+
+      init() {
+        try {
+          const saved = localStorage.getItem('kout_uno_user');
+          if (saved) {
+            this.user = JSON.parse(saved);
+          } else {
+            this.createDefaultUser();
+          }
+        } catch(e) {
+          this.createDefaultUser();
+        }
+        this.syncUI();
+      },
+
+      createDefaultUser() {
+        this.user = {
+          email: 'guest@koutuno.com',
+          name: 'لاعب كويتي',
+          avatarId: 'ghutra_beard',
+          customAvatarDataUrl: null,
+          isGuest: true
+        };
+        this.save();
+      },
+
+      save() {
+        try {
+          localStorage.setItem('kout_uno_user', JSON.stringify(this.user));
+        } catch(e) {}
+      },
+
+      updateName(newName) {
+        if (!newName || !newName.trim()) return;
+        this.user.name = newName.trim();
+        this.save();
+        this.syncUI();
+      },
+
+      updateAvatar(avatarId) {
+        this.user.avatarId = avatarId;
+        this.user.customAvatarDataUrl = null;
+        this.save();
+        this.syncUI();
+      },
+
+      setCustomAvatar(dataUrl) {
+        this.user.customAvatarDataUrl = dataUrl;
+        this.save();
+        this.syncUI();
+      },
+
+      renderAvatarHtml(avatarId, customDataUrl = null) {
+        if (customDataUrl) {
+          return `
+            <div class="relative w-full h-full flex items-center justify-center overflow-hidden bg-slate-900 rounded-full">
+              <img src="${customDataUrl}" alt="صورة خاصة" class="w-full h-full object-cover select-none pointer-events-none" />
+            </div>
+          `;
+        }
+        const found = AVATARS_CATALOG.find(a => a.id === avatarId) || AVATARS_CATALOG[2];
+        return `
+          <div class="relative w-full h-full flex items-center justify-center overflow-hidden bg-slate-900 rounded-full">
+            ${found.render()}
+          </div>
+        `;
+      },
+
+      syncUI() {
+        if (!this.user) return;
+        const nameEl = document.getElementById('topBarUserName');
+        if (nameEl) nameEl.textContent = this.user.name;
+
+        const tagEl = document.getElementById('humanPlayerDisplayName');
+        if (tagEl) tagEl.textContent = `${this.user.name} [فريقك 🟢 - لنا]`;
+
+        const avatarMarkup = this.renderAvatarHtml(this.user.avatarId, this.user.customAvatarDataUrl);
+
+        const topAvatarEl = document.getElementById('topBarUserAvatar');
+        if (topAvatarEl) topAvatarEl.innerHTML = avatarMarkup;
+
+        const handAvatarEl = document.getElementById('humanHandAvatarIcon');
+        if (handAvatarEl) handAvatarEl.innerHTML = avatarMarkup;
+
+        const emailInp = document.getElementById('inputProfileEmail');
+        if (emailInp) emailInp.value = this.user.email;
+
+        const nameInp = document.getElementById('inputPlayerName');
+        if (nameInp) nameInp.value = this.user.name;
+
+        if (GameState.players && GameState.players[0]) {
+          GameState.players[0].name = this.user.name;
+          GameState.players[0].avatarId = this.user.avatarId;
+          GameState.players[0].customAvatarDataUrl = this.user.customAvatarDataUrl;
+        }
+      }
+    };
+
+    const AudioController = {
+      ctx: null,
+      enabled: true,
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+
+      playCard() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(130, this.ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      },
+
+      playTrickWon() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.25);
+        });
+      },
+
+      playBaoonFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.25, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.4);
+        });
+      },
+
+      playTick() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(820, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.03, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.03);
+      },
+
+      playDefeat() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [320, 280, 230, 170].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.35);
+        });
+      }
+    };
+
+    const BASE_PLAYERS_CONFIG = [
+      { id: 0, name: 'أنت', isBot: false, team: 'A', avatarId: 'ghutra_beard', seatEl: null },
+      { id: 1, name: 'فهد', isBot: true, team: 'B', avatarId: 'shirt_beard_glasses', seatEl: 'seat-1' },
+      { id: 2, name: 'جاسم', isBot: true, team: 'A', avatarId: 'bald_beard', seatEl: 'seat-2' },
+      { id: 3, name: 'دلال', isBot: true, team: 'B', avatarId: 'kuwaiti_lady', seatEl: 'seat-3' },
+      { id: 4, name: 'براك', isBot: true, team: 'A', avatarId: 'ghutra_glasses', seatEl: 'seat-4' },
+      { id: 5, name: 'سبيكة', isBot: true, team: 'B', avatarId: 'blackhair_glasses', seatEl: 'seat-5' }
+    ];
+
+    const COLORS_META = {
+      red: { name: 'أحمر', bg: 'bg-red-600', textClass: 'color-text-red', hex: '#EA1D2D' },
+      blue: { name: 'أزرق', bg: 'bg-blue-600', textClass: 'color-text-blue', hex: '#0063B0' },
+      green: { name: 'أخضر', bg: 'bg-green-600', textClass: 'color-text-green', hex: '#2EB844' },
+      yellow: { name: 'أصفر', bg: 'bg-yellow-500', textClass: 'color-text-yellow', hex: '#FED000' },
+      special: { name: 'خاص', bg: 'bg-slate-900', textClass: 'color-text-special', hex: '#111827' }
+    };
+
+    const SUIT_RANKS_ORDER = ['2', '3', '4', '5', '6', '7', '8', '9', '0', 'reverse', 'skip', 'draw2', '1'];
+
+    const GameState = {
+      deck: [],
+      players: [],
+      phase: 'DEALING',
+      currentTurn: 0,
+      dealerIdx: 0,
+      trumpColor: null,
+      bidWinner: null,
+      highestBid: 4,
+      biddingHistory: [],
+      currentTrick: [],
+      tricksTeamA: 0,
+      tricksTeamB: 0,
+      matchScoreTeamA: 0,
+      matchScoreTeamB: 0,
+      timerSecRemaining: 12,
+      timerInterval: null,
+      currentRoomCode: 'KOUT-Q8'
+    };
+
+    function buildUnoKoutDeck() {
+      const deck = [];
+      const colors = ['red', 'blue', 'green', 'yellow'];
+
+      colors.forEach(col => {
+        SUIT_RANKS_ORDER.forEach(rank => {
+          let label = rank;
+          let roleTitle = '';
+
+          if (rank === '1') { label = '1'; roleTitle = 'خال'; }
+          else if (rank === 'draw2') { label = '+2'; roleTitle = 'باش'; }
+          else if (rank === 'skip') { label = '⊘'; roleTitle = 'ميم'; }
+          else if (rank === 'reverse') { label = '⇄'; roleTitle = 'غلام'; }
+          else if (rank === '0') { label = '10'; roleTitle = '10'; }
+
+          deck.push({
+            id: `${col}_${rank}`,
+            color: col,
+            rank: rank,
+            label: label,
+            roleTitle: roleTitle,
+            isJoker: false,
+            isMaker: false
+          });
+        });
+      });
+
+      // الجيكر (+4)
+      deck.push({
+        id: 'wild_joker_draw4',
+        color: 'special',
+        rank: 'joker_draw4',
+        label: '+4',
+        roleTitle: 'الجيكر',
+        isJoker: true,
+        isMaker: false
+      });
+
+      // الميكر (4 ألوان)
+      deck.push({
+        id: 'wild_maker_colors',
+        color: 'special',
+        rank: 'maker_colors',
+        label: 'maker',
+        roleTitle: 'الميكر',
+        isJoker: false,
+        isMaker: true
+      });
+
+      // Shuffling
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+      return deck;
+    }
+
+    function getTrickEffectiveLead(trickList) {
+      if (!trickList || trickList.length === 0) return null;
+      if (trickList[0].card.isJoker) {
+        const nextValid = trickList.find(p => !p.card.isJoker);
+        return nextValid ? nextValid.card.color : null;
+      }
+      return trickList[0].card.color;
+    }
+
+    function getCardPower(card, trickList, trumpColor, playIndex) {
+      const isLead = playIndex === 0;
+
+      if (card.isJoker && isLead) return 0;
+      if (card.isJoker) return 1000;
+
+      const effectiveLeadColor = getTrickEffectiveLead(trickList);
+
+      if (card.color === trumpColor && card.rank === '1') return 900;
+      if (card.isMaker) return 800;
+
+      const baseRankVal = SUIT_RANKS_ORDER.indexOf(card.rank);
+
+      if (card.color === trumpColor) return 100 + baseRankVal;
+      if (effectiveLeadColor && card.color === effectiveLeadColor) return 10 + baseRankVal;
+
+      return 0;
+    }
+
+    function evaluateTrickWinner(trickList, trumpColor) {
+      if (!trickList || trickList.length === 0) return null;
+      let winningPlay = trickList[0];
+      let maxScore = getCardPower(winningPlay.card, trickList, trumpColor, 0);
+
+      for (let i = 1; i < trickList.length; i++) {
+        const currentPlay = trickList[i];
+        const score = getCardPower(currentPlay.card, trickList, trumpColor, i);
+        if (score > maxScore) {
+          maxScore = score;
+          winningPlay = currentPlay;
+        }
+      }
+      return winningPlay.playerId;
+    }
+
+    function isLegalMove(playerHand, cardToPlay, currentTrick) {
+      // 1. ممنوع افتتاح اللعب بالجيكر أو الميكر إن وُجد بديل
+      if (currentTrick.length === 0) {
+        if ((cardToPlay.isJoker || cardToPlay.isMaker) && playerHand.length > 1) {
+          const hasRegularCard = playerHand.some(c => !c.isJoker && !c.isMaker);
+          if (hasRegularCard) return false;
+        }
+        return true;
+      }
+
+      // 2. ممنوع لعب الميكر على الجيكر إن وُجد بديل
+      const hasJokerInTrick = currentTrick.some(p => p.card.isJoker);
+      if (hasJokerInTrick && cardToPlay.isMaker) {
+        const hasOtherOptions = playerHand.some(c => !c.isMaker);
+        if (hasOtherOptions) return false;
+      }
+
+      // 3. الجيكر والميكر يمكن لعبهما في أي دورة لاحقة من فريقي أو خصمي
+      if (cardToPlay.isJoker || cardToPlay.isMaker) {
+        return true;
+      }
+
+      const effectiveLeadColor = getTrickEffectiveLead(currentTrick);
+      if (!effectiveLeadColor || effectiveLeadColor === 'special') return true;
+
+      const hasLeadColor = playerHand.some(c => c.color === effectiveLeadColor);
+      if (hasLeadColor) {
+        return cardToPlay.color === effectiveLeadColor;
+      }
+      return true;
+    }
+
+    function createUnoCardDOM(card, isClickable = false, isPlayable = true) {
+      const cardEl = document.createElement('div');
+      cardEl.className = `uno-card card-${card.color} ${isClickable ? 'player-card' : ''} ${!isPlayable ? 'disabled' : ''}`;
+      cardEl.dataset.cardId = card.id;
+
+      const cornerColorClass = card.color === 'yellow' ? 'text-slate-950' : 'text-white';
+      const centerTextColorClass = COLORS_META[card.color].textClass;
+
+      let centerContent = '';
+      let cornerContentHTML = '';
+
+      if (card.isJoker) {
+        centerContent = `
+          <div class="flex flex-col items-center justify-center">
+            <span class="font-black text-2xl md:text-3xl font-uno text-slate-950 leading-none drop-shadow-sm">+4</span>
+            <span class="text-[8px] font-black text-slate-950 tracking-wider">الجيكر</span>
+          </div>
+        `;
+        cornerContentHTML = `<span class="text-white font-uno font-black drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">+4</span>`;
+      } else if (card.isMaker) {
+        centerContent = `
+          <div class="flex flex-col items-center justify-center">
+            <div class="grid grid-cols-2 w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full overflow-hidden border-2 border-slate-900 shadow-md transform -rotate-12">
+              <div class="bg-red-500"></div>
+              <div class="bg-blue-500"></div>
+              <div class="bg-yellow-400"></div>
+              <div class="bg-green-500"></div>
+            </div>
+            <span class="text-[8px] font-black text-slate-800 tracking-wider mt-0.5">الميكر</span>
+          </div>
+        `;
+        cornerContentHTML = `
+          <div class="mini-swatch-maker">
+            <div class="bg-red-500"></div>
+            <div class="bg-blue-500"></div>
+            <div class="bg-yellow-400"></div>
+            <div class="bg-green-500"></div>
+          </div>
+        `;
+      } else {
+        centerContent = `
+          <span class="font-black text-xl sm:text-2xl md:text-3xl font-uno select-none ${centerTextColorClass} leading-none">
+            ${card.label}
+          </span>
+        `;
+        cornerContentHTML = `<span class="${cornerColorClass}">${card.label}</span>`;
+      }
+
+      let roleBadge = '';
+      if (GameState.trumpColor && card.color === GameState.trumpColor && card.rank === '1') {
+        roleBadge = `<div class="absolute -top-2 -right-1 bg-amber-400 text-slate-950 font-black text-[9px] px-1.5 py-0.2 rounded-full shadow border border-white">خال الحكم</div>`;
+      } else if (card.isJoker) {
+        roleBadge = `<div class="absolute -top-2 -right-1 bg-slate-950 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full shadow border border-white">الجيكر (+4)</div>`;
+      } else if (card.isMaker) {
+        roleBadge = `<div class="absolute -top-2 -right-1 bg-gradient-to-r from-red-600 to-blue-600 text-yellow-300 font-black text-[9px] px-1.5 py-0.2 rounded-full shadow border border-white">الميكر</div>`;
+      }
+
+      cardEl.innerHTML = `
+        <div class="uno-inner">
+          <div class="uno-ellipse"></div>
+          <div class="corner-badge corner-tl">${cornerContentHTML}</div>
+          <div class="corner-badge corner-tr">${cornerContentHTML}</div>
+          <div class="corner-badge corner-bl">${cornerContentHTML}</div>
+          <div class="corner-badge corner-br">${cornerContentHTML}</div>
+          <div class="relative z-10 flex flex-col items-center justify-center pointer-events-none">
+            ${centerContent}
+          </div>
+          ${roleBadge}
+        </div>
+      `;
+      return cardEl;
+    }
+
+    function renderHumanHand() {
+      const container = document.getElementById('playerHand');
+      if (!container) return;
+      container.innerHTML = '';
+      const me = GameState.players[0];
+      if (!me || !me.hand) return;
+
+      me.hand.sort((a, b) => {
+        if (a.color !== b.color) return a.color.localeCompare(b.color);
+        return SUIT_RANKS_ORDER.indexOf(a.rank) - SUIT_RANKS_ORDER.indexOf(b.rank);
+      });
+
+      const isMyTurn = GameState.currentTurn === 0 && GameState.phase === 'PLAYING';
+
+      me.hand.forEach((card) => {
+        const playable = isMyTurn ? isLegalMove(me.hand, card, GameState.currentTrick) : true;
+        const cardNode = createUnoCardDOM(card, true, playable);
+
+        if (isMyTurn && playable) {
+          cardNode.classList.add('playable');
+        }
+
+        const handleCardPlay = (e) => {
+          e.preventDefault();
+          if (!isMyTurn) return;
+          if (GameState.currentTrick.length === 0 && (card.isJoker || card.isMaker)) {
+            const hasOtherCards = me.hand.some(c => !c.isJoker && !c.isMaker);
+            if (hasOtherCards) {
+              announceBanner('ممنوع افتتاح اللعب بالجيكر أو الميكر!', '⚠️');
+              return;
+            }
+          }
+          if (GameState.currentTrick.some(p => p.card.isJoker) && card.isMaker && me.hand.some(c => !c.isMaker)) {
+            announceBanner('لا يمكن لعب الميكر على الجيكر!', '🚫');
+            return;
+          }
+          if (!isLegalMove(me.hand, card, GameState.currentTrick)) {
+            announceBanner('يجب لعب نفس اللون المطلوب!', '⚠️');
+            return;
+          }
+          playCardTurn(0, card);
+        };
+
+        cardNode.addEventListener('click', handleCardPlay);
+        cardNode.addEventListener('touchend', handleCardPlay);
+
+        container.appendChild(cardNode);
+      });
+
+      const notice = document.getElementById('playerActionNotice');
+      if (notice) {
+        if (isMyTurn) notice.classList.remove('hidden');
+        else notice.classList.add('hidden');
+      }
+    }
+
+    function renderBotSeats() {
+      GameState.players.slice(1).forEach(p => {
+        const cfg = BASE_PLAYERS_CONFIG.find(c => c.id === p.id);
+        if (!cfg) return;
+        const seatEl = document.getElementById(cfg.seatEl);
+        if (!seatEl) return;
+
+        const isActive = GameState.currentTurn === p.id && (GameState.phase === 'PLAYING' || GameState.phase === 'BIDDING');
+        const isDealer = GameState.dealerIdx === p.id;
+        const isPartner = p.team === 'A';
+        const teamBorderClass = isPartner ? 'border-emerald-500/70 shadow-emerald-950/50' : 'border-rose-500/70 shadow-rose-950/50';
+
+        seatEl.innerHTML = `
+          <div class="relative flex flex-col items-center">
+            <div id="bidBadge-${p.id}" class="hidden absolute -top-6 bg-amber-400 text-slate-950 text-[10px] sm:text-[11px] font-black px-2 sm:px-2.5 py-0.5 rounded-full shadow-lg border border-slate-900 z-30 bid-floating-badge">
+            </div>
+
+            ${isDealer ? '<span class="absolute -top-2 -left-2 bg-amber-500 text-slate-950 font-black text-[9px] w-4 h-4 rounded-full flex items-center justify-center shadow z-30">D</span>' : ''}
+            
+            <div class="relative w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 flex items-center justify-center">
+              <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 44 44">
+                <circle cx="22" cy="22" r="19" stroke="rgba(255,255,255,0.15)" stroke-width="3" fill="none"/>
+                <circle id="timerRing-${p.id}" class="timer-ring__circle" cx="22" cy="22" r="19" stroke="#f59e0b" stroke-width="3.5" fill="none" stroke-dasharray="119.38" stroke-dashoffset="${isActive ? '0' : '119.38'}"/>
+              </svg>
+              <div class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md border-2 ${isActive ? 'border-amber-400 active-turn-ring' : (isPartner ? 'border-emerald-400' : 'border-rose-400')}">
+                ${UserStore.renderAvatarHtml(p.avatarId || cfg.avatarId)}
+              </div>
+            </div>
+
+            <div class="bg-slate-950/90 border ${teamBorderClass} rounded-full px-1.5 sm:px-2 py-0.5 text-center mt-0.5 sm:mt-1 shadow-lg flex items-center gap-1 backdrop-blur-sm">
+              <span class="text-[10px] sm:text-[11px] font-bold text-slate-200">${p.name}</span>
+              <span class="text-[8px] sm:text-[9px] font-black px-1 sm:px-1.5 py-0.2 rounded-full ${isPartner ? 'bg-emerald-600/90 text-white' : 'bg-rose-600/90 text-white'}">
+                ${isPartner ? 'فريقك 🟢' : 'خصمك 🔴'}
+              </span>
+              <span class="bg-amber-500/20 text-amber-400 text-[9px] sm:text-[10px] px-1 rounded-full font-mono font-bold">${p.hand ? p.hand.length : 0}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderTrickArena() {
+      const container = document.getElementById('trickSlots');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const POS_STYLES = {
+        0: 'bottom-1 sm:bottom-2 left-1/2 -translate-x-1/2',
+        1: 'bottom-4 sm:bottom-6 right-1 sm:right-2',
+        2: 'top-4 sm:top-6 right-1 sm:right-2',
+        3: 'top-1 sm:top-2 left-1/2 -translate-x-1/2',
+        4: 'top-4 sm:top-6 left-1 sm:left-2',
+        5: 'bottom-4 sm:bottom-6 left-1 sm:left-2'
+      };
+
+      GameState.currentTrick.forEach(play => {
+        const slot = document.createElement('div');
+        slot.className = `absolute ${POS_STYLES[play.playerId]} fly-in z-10`;
+        const miniCard = createUnoCardDOM(play.card, false, true);
+        miniCard.style.transform = `scale(0.8) rotate(${(play.playerId * 25) - 60}deg)`;
+        slot.appendChild(miniCard);
+        container.appendChild(slot);
+      });
+
+      const leadBadge = document.getElementById('leadColorBadge');
+      if (leadBadge) {
+        const effectiveColor = getTrickEffectiveLead(GameState.currentTrick);
+        if (effectiveColor && effectiveColor !== 'special') {
+          leadBadge.classList.remove('hidden');
+          leadBadge.style.backgroundColor = COLORS_META[effectiveColor].hex;
+          leadBadge.style.color = effectiveColor === 'yellow' ? '#000' : '#fff';
+          leadBadge.textContent = `مطلوب: ${COLORS_META[effectiveColor].name}`;
+        } else if (GameState.currentTrick.length > 0 && GameState.currentTrick[0].card.isJoker) {
+          leadBadge.classList.remove('hidden');
+          leadBadge.style.backgroundColor = '#111827';
+          leadBadge.style.color = '#fff';
+          leadBadge.textContent = 'بدأ بالجيكر: الأولوية للتالي';
+        } else {
+          leadBadge.classList.add('hidden');
+        }
+      }
+    }
+
+    function updateScoreboard() {
+      const sA = document.getElementById('scoreTeamA');
+      const sB = document.getElementById('scoreTeamB');
+      if (sA) sA.textContent = GameState.matchScoreTeamA;
+      if (sB) sB.textContent = GameState.matchScoreTeamB;
+
+      const tA = document.getElementById('tricksTeamA');
+      const tB = document.getElementById('tricksTeamB');
+
+      if (tA && tA.textContent !== String(GameState.tricksTeamA)) {
+        tA.textContent = GameState.tricksTeamA;
+        tA.classList.remove('trick-counter-highlight');
+        void tA.offsetWidth;
+        tA.classList.add('trick-counter-highlight');
+      }
+
+      if (tB && tB.textContent !== String(GameState.tricksTeamB)) {
+        tB.textContent = GameState.tricksTeamB;
+        tB.classList.remove('trick-counter-highlight');
+        void tB.offsetWidth;
+        tB.classList.add('trick-counter-highlight');
+      }
+
+      const buyerBox = document.getElementById('buyerStatusContent');
+      if (buyerBox) {
+        if (GameState.bidWinner !== null && GameState.highestBid > 4) {
+          const buyer = GameState.players[GameState.bidWinner];
+          const isPartner = buyer.team === 'A';
+          const teamTag = isPartner 
+            ? '<span class="bg-emerald-600/90 text-white font-black px-1.5 py-0.2 rounded text-[9px] sm:text-[10px]">فريقك 🟢</span>'
+            : '<span class="bg-rose-600/90 text-white font-black px-1.5 py-0.2 rounded text-[9px] sm:text-[10px]">خصمك 🔴</span>';
+
+          const bidTargetText = GameState.highestBid === 9 
+            ? '<span class="text-yellow-400 font-black">باون (9) 👑</span>' 
+            : `<span class="text-amber-300 font-bold">${GameState.highestBid} أكلات</span>`;
+
+          buyerBox.innerHTML = `
+            <span class="font-extrabold text-white">${buyer.name}</span>
+            ${teamTag}
+            ${bidTargetText}
+          `;
+        } else {
+          buyerBox.innerHTML = `<span class="text-slate-400">جارِ الشراء...</span>`;
+        }
+      }
+
+      const hukmDisplay = document.getElementById('hukmDisplay');
+      if (hukmDisplay) {
+        if (GameState.trumpColor) {
+          const info = COLORS_META[GameState.trumpColor];
+          hukmDisplay.innerHTML = `
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shadow-inner inline-block border border-white/60" style="background-color: ${info.hex}"></span>
+            <span class="text-[10px] sm:text-[11px] font-black text-amber-300">${info.name}</span>
+          `;
+        } else {
+          hukmDisplay.innerHTML = `<span class="text-slate-400 text-[10px] sm:text-[11px] font-bold">لم يُحدد</span>`;
+        }
+      }
+    }
+
+    function announceBanner(text, icon = '📢') {
+      const banner = document.getElementById('gameBanner');
+      const bText = document.getElementById('bannerText');
+      const bIcon = document.getElementById('bannerIcon');
+      if (!banner || !bText || !bIcon) return;
+
+      bText.textContent = text;
+      bIcon.textContent = icon;
+      banner.classList.remove('opacity-0', '-translate-y-4');
+      banner.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        banner.classList.remove('opacity-100', 'translate-y-0');
+        banner.classList.add('opacity-0', '-translate-y-4');
+      }, 2300);
+    }
+
+    function startTurnTimer() {
+      clearInterval(GameState.timerInterval);
+      GameState.timerSecRemaining = 12;
+      const totalCircumference = 119.38;
+
+      GameState.timerInterval = setInterval(() => {
+        GameState.timerSecRemaining -= 0.2;
+        if (GameState.timerSecRemaining < 0) {
+          clearInterval(GameState.timerInterval);
+          handleTurnTimeout();
+          return;
+        }
+
+        if (GameState.timerSecRemaining <= 3 && Math.floor(GameState.timerSecRemaining * 10) % 10 === 0) {
+          AudioController.playTick();
+        }
+
+        const offset = totalCircumference * (1 - (GameState.timerSecRemaining / 12));
+        const activeRing = document.getElementById(`timerRing-${GameState.currentTurn}`);
+        if (activeRing) {
+          activeRing.style.strokeDashoffset = offset;
+        }
+      }, 200);
+    }
+
+    function handleTurnTimeout() {
+      if (GameState.phase === 'BIDDING') {
+        submitBid(GameState.currentTurn, 0);
+      } else if (GameState.phase === 'PLAYING') {
+        const player = GameState.players[GameState.currentTurn];
+        const legal = player.hand.filter(c => isLegalMove(player.hand, c, GameState.currentTrick));
+        if (legal.length > 0) {
+          playCardTurn(player.id, legal[0]);
+        }
+      }
+    }
+
+    function startNewMatch() {
+      GameState.matchScoreTeamA = 0;
+      GameState.matchScoreTeamB = 0;
+      GameState.dealerIdx = Math.floor(Math.random() * 6);
+      startNewRound();
+    }
+
+    function startNewRound() {
+      clearInterval(GameState.timerInterval);
+      GameState.deck = buildUnoKoutDeck();
+      
+      GameState.players = BASE_PLAYERS_CONFIG.map(cfg => {
+        if (cfg.id === 0 && UserStore.user) {
+          return {
+            ...cfg,
+            name: UserStore.user.name,
+            avatarId: UserStore.user.avatarId,
+            customAvatarDataUrl: UserStore.user.customAvatarDataUrl,
+            hand: []
+          };
+        }
+        return { ...cfg, hand: [] };
+      });
+
+      // 9 cards each
+      for (let i = 0; i < 6; i++) {
+        GameState.players[i].hand = GameState.deck.slice(i * 9, (i + 1) * 9);
+      }
+
+      GameState.trumpColor = null;
+      GameState.bidWinner = null;
+      GameState.highestBid = 4;
+      GameState.biddingHistory = [];
+      GameState.currentTrick = [];
+      GameState.tricksTeamA = 0;
+      GameState.tricksTeamB = 0;
+      GameState.phase = 'BIDDING';
+      GameState.currentTurn = (GameState.dealerIdx + 1) % 6;
+
+      for (let i = 0; i < 6; i++) {
+        const b = document.getElementById(`bidBadge-${i}`);
+        if (b) {
+          b.classList.add('hidden');
+          b.textContent = '';
+        }
+      }
+
+      updateScoreboard();
+      renderBotSeats();
+      renderHumanHand();
+      renderTrickArena();
+
+      announceBanner('بدء مرحلة المزايدة (الشراء)!', '🔥');
+      setTimeout(runBiddingTurn, 1000);
+    }
+
+    function runBiddingTurn() {
+      if (GameState.phase !== 'BIDDING') return;
+
+      renderBotSeats();
+      renderHumanHand();
+      startTurnTimer();
+
+      const curPlayer = GameState.players[GameState.currentTurn];
+
+      if (curPlayer.id === 0) {
+        document.getElementById('biddingModal')?.classList.remove('hidden');
+        document.getElementById('biddingPhaseStep1')?.classList.remove('hidden');
+        document.getElementById('biddingPhaseStep2')?.classList.add('hidden');
+        
+        const modalBuyerDetails = document.getElementById('modalBuyerCurrentDetails');
+        if (modalBuyerDetails) {
+          if (GameState.bidWinner !== null && GameState.highestBid > 4) {
+            const currentBuyer = GameState.players[GameState.bidWinner];
+            const isMyTeam = currentBuyer.team === 'A';
+            const teamBadge = isMyTeam
+              ? '<span class="bg-emerald-600 text-white font-black text-xs px-2.5 py-0.5 rounded-full shadow border border-emerald-400 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>فريقك 🟢 (لنا)</span>'
+              : '<span class="bg-rose-600 text-white font-black text-xs px-2.5 py-0.5 rounded-full shadow border border-rose-400 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>خصمك 🔴 (لهم)</span>';
+            
+            const bidText = GameState.highestBid === 9 
+              ? '<b class="text-yellow-400 font-black">باون (9 أكلات) 👑</b>' 
+              : `<b class="text-amber-300 font-black">${GameState.highestBid} أكلات</b>`;
+
+            modalBuyerDetails.innerHTML = `
+              <span class="text-white font-extrabold text-sm">${currentBuyer.name}</span>
+              ${teamBadge}
+              <span class="text-slate-300 text-xs">طلب:</span>
+              ${bidText}
+            `;
+          } else {
+            modalBuyerDetails.innerHTML = `
+              <span class="text-amber-300 font-bold text-xs sm:text-sm">لا يوجد مشترٍ بعد (ابدأ المزايدة بـ 5 أكلات)</span>
+            `;
+          }
+        }
+
+        // Disable bid buttons less than or equal to current highest bid
+        document.querySelectorAll('.bid-val-btn').forEach(btn => {
+          const val = parseInt(btn.dataset.bid, 10);
+          if (val <= GameState.highestBid) {
+            btn.classList.add('opacity-40', 'cursor-not-allowed');
+            btn.disabled = true;
+          } else {
+            btn.classList.remove('opacity-40', 'cursor-not-allowed');
+            btn.disabled = false;
+          }
+        });
+      } else {
+        setTimeout(() => {
+          if (GameState.phase !== 'BIDDING' || GameState.currentTurn !== curPlayer.id) return;
+          const botBidEvaluation = evaluateBotBidding(curPlayer);
+          if (botBidEvaluation > GameState.highestBid) {
+            submitBid(curPlayer.id, botBidEvaluation);
+          } else {
+            submitBid(curPlayer.id, 0);
+          }
+        }, 1100);
+      }
+    }
+
+    function evaluateBotBidding(player) {
+      let score = 0;
+      let colorCount = { red: 0, blue: 0, green: 0, yellow: 0 };
+      
+      player.hand.forEach(c => {
+        if (c.isJoker) score += 2.0;
+        else if (c.isMaker) score += 1.3;
+        else if (c.rank === '1') score += 1.2;
+        else if (c.rank === 'draw2') score += 0.8;
+        else if (c.rank === 'skip' || c.rank === 'reverse') score += 0.5;
+        
+        if (c.color !== 'special') {
+          colorCount[c.color] = (colorCount[c.color] || 0) + 1;
+        }
+      });
+
+      const maxInColor = Math.max(...Object.values(colorCount));
+      const estimatedTricks = Math.floor(score + (maxInColor >= 4 ? 2 : 1));
+
+      if (estimatedTricks >= 9 && GameState.highestBid < 9) return 9;
+      if (estimatedTricks > GameState.highestBid && estimatedTricks >= 5) {
+        return Math.min(estimatedTricks, GameState.highestBid + 1);
+      }
+      return 0;
+    }
+
+    function submitBid(playerId, bidValue) {
+      clearInterval(GameState.timerInterval);
+      const player = GameState.players[playerId];
+
+      const badge = document.getElementById(`bidBadge-${playerId}`);
+      if (badge) {
+        badge.classList.remove('hidden');
+        if (bidValue === 0) {
+          badge.textContent = 'طـوف';
+          badge.className = 'absolute -top-6 bg-slate-700 text-slate-200 text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow border border-slate-600 z-30 bid-floating-badge';
+        } else if (bidValue === 9) {
+          badge.textContent = 'باون 👑';
+          badge.className = 'absolute -top-6 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow border border-yellow-300 z-30 bid-floating-badge';
+        } else {
+          badge.textContent = `${bidValue} أكلات`;
+          badge.className = 'absolute -top-6 bg-amber-400 text-slate-950 text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow border border-white z-30 bid-floating-badge';
+        }
+      }
+
+      GameState.biddingHistory.push({ playerId, bidValue });
+
+      if (bidValue > GameState.highestBid) {
+        GameState.highestBid = bidValue;
+        GameState.bidWinner = playerId;
+        announceBanner(`${player.name} رفع المزايدة إلى ${bidValue === 9 ? 'باون' : bidValue + ' أكلات'}!`, '🔥');
+        updateScoreboard();
+      }
+
+      if (GameState.biddingHistory.length === 6) {
+        finishBiddingPhase();
+      } else {
+        GameState.currentTurn = (GameState.currentTurn + 1) % 6;
+        runBiddingTurn();
+      }
+    }
+
+    function finishBiddingPhase() {
+      document.getElementById('biddingModal')?.classList.add('hidden');
+
+      if (GameState.bidWinner === null) {
+        GameState.bidWinner = GameState.dealerIdx;
+        GameState.highestBid = 5;
+        announceBanner(`الجميع طوفوا! الشراء إجباري على الموزع ${GameState.players[GameState.dealerIdx].name} (5 أكلات)`, '⚡');
+        updateScoreboard();
+      }
+
+      const winner = GameState.players[GameState.bidWinner];
+      announceBanner(`رسى الشراء على ${winner.name} بـ ${GameState.highestBid === 9 ? 'باون' : GameState.highestBid + ' أكلات'}!`, '🎯');
+
+      if (winner.id === 0) {
+        document.getElementById('biddingModal')?.classList.remove('hidden');
+        document.getElementById('biddingPhaseStep1')?.classList.add('hidden');
+        document.getElementById('biddingPhaseStep2')?.classList.remove('hidden');
+      } else {
+        setTimeout(() => {
+          const chosenColor = botChooseTrump(winner);
+          setTrumpAndStartPlay(chosenColor);
+        }, 1200);
+      }
+    }
+
+    function botChooseTrump(botPlayer) {
+      let counts = { red: 0, blue: 0, green: 0, yellow: 0 };
+      botPlayer.hand.forEach(c => {
+        if (c.color !== 'special') counts[c.color]++;
+      });
+      let bestColor = 'red';
+      let maxC = -1;
+      for (const [col, count] of Object.entries(counts)) {
+        if (count > maxC) {
+          maxC = count;
+          bestColor = col;
+        }
+      }
+      return bestColor;
+    }
+
+    function setTrumpAndStartPlay(color) {
+      GameState.trumpColor = color;
+      document.getElementById('biddingModal')?.classList.add('hidden');
+      updateScoreboard();
+      announceBanner(`تم تحديد الحكم: ${COLORS_META[color].name}! تبدأ الجولة الآن`, '♠️');
+
+      setTimeout(() => {
+        for (let i = 0; i < 6; i++) {
+          const b = document.getElementById(`bidBadge-${i}`);
+          if (b) b.classList.add('hidden');
+        }
+      }, 1500);
+
+      GameState.phase = 'PLAYING';
+      GameState.currentTurn = GameState.bidWinner;
+      renderBotSeats();
+      renderHumanHand();
+      renderTrickArena();
+      startTurnTimer();
+
+      if (GameState.currentTurn !== 0) {
+        setTimeout(runBotPlayTurn, 1200);
+      }
+    }
+
+    function playCardTurn(playerId, card) {
+      clearInterval(GameState.timerInterval);
+      AudioController.playCard();
+
+      const player = GameState.players[playerId];
+      const cardIdx = player.hand.findIndex(c => c.id === card.id);
+      if (cardIdx !== -1) {
+        player.hand.splice(cardIdx, 1);
+      }
+
+      GameState.currentTrick.push({ playerId, card });
+      renderTrickArena();
+      renderHumanHand();
+      renderBotSeats();
+
+      if (GameState.currentTrick.length === 6) {
+        setTimeout(resolveTrick, 1400);
+      } else {
+        GameState.currentTurn = (GameState.currentTurn + 1) % 6;
+        renderBotSeats();
+        renderHumanHand();
+        startTurnTimer();
+
+        if (GameState.currentTurn !== 0) {
+          setTimeout(runBotPlayTurn, 1000);
+        }
+      }
+    }
+
+    function runBotPlayTurn() {
+      if (GameState.phase !== 'PLAYING') return;
+      const bot = GameState.players[GameState.currentTurn];
+      if (!bot || !bot.isBot) return;
+
+      const legalCards = bot.hand.filter(c => isLegalMove(bot.hand, c, GameState.currentTrick));
+      if (legalCards.length === 0) return;
+
+      let chosenCard = null;
+
+      if (GameState.currentTrick.length === 0) {
+        const nonWilds = legalCards.filter(c => !c.isJoker && !c.isMaker);
+        const candidates = nonWilds.length > 0 ? nonWilds : legalCards;
+
+        const aces = candidates.filter(c => c.rank === '1');
+        if (aces.length > 0) chosenCard = aces[0];
+        else chosenCard = candidates[0];
+      } else {
+        const isPartnerWinning = checkTrickCurrentWinnerTeam() === bot.team;
+        if (isPartnerWinning) {
+          chosenCard = legalCards.reduce((min, c) => (getCardPower(c, GameState.currentTrick, GameState.trumpColor, 1) < getCardPower(min, GameState.currentTrick, GameState.trumpColor, 1) ? c : min), legalCards[0]);
+        } else {
+          const winningCards = legalCards.filter(c => {
+            const tempTrick = [...GameState.currentTrick, { playerId: bot.id, card: c }];
+            return evaluateTrickWinner(tempTrick, GameState.trumpColor) === bot.id;
+          });
+
+          if (winningCards.length > 0) {
+            chosenCard = winningCards[0];
+          } else {
+            chosenCard = legalCards.reduce((min, c) => (getCardPower(c, GameState.currentTrick, GameState.trumpColor, 1) < getCardPower(min, GameState.currentTrick, GameState.trumpColor, 1) ? c : min), legalCards[0]);
+          }
+        }
+      }
+
+      playCardTurn(bot.id, chosenCard || legalCards[0]);
+    }
+
+    function checkTrickCurrentWinnerTeam() {
+      if (GameState.currentTrick.length === 0) return null;
+      const winnerId = evaluateTrickWinner(GameState.currentTrick, GameState.trumpColor);
+      return GameState.players[winnerId]?.team;
+    }
+
+    function resolveTrick() {
+      const winnerId = evaluateTrickWinner(GameState.currentTrick, GameState.trumpColor);
+      const winner = GameState.players[winnerId];
+
+      if (winner.team === 'A') {
+        GameState.tricksTeamA++;
+        announceBanner(`أكلها ${winner.name} [فريقك 🟢]`, '👏');
+      } else {
+        GameState.tricksTeamB++;
+        announceBanner(`أكلها ${winner.name} [خصمك 🔴]`, '⚠️');
+      }
+
+      AudioController.playTrickWon();
+      updateScoreboard();
+
+      GameState.currentTrick = [];
+      renderTrickArena();
+
+      if (checkEarlyTermination()) {
+        return;
+      }
+
+      if (GameState.tricksTeamA + GameState.tricksTeamB === 9) {
+        finishRound();
+        return;
+      }
+
+      GameState.currentTurn = winnerId;
+      renderBotSeats();
+      renderHumanHand();
+      startTurnTimer();
+
+      if (GameState.currentTurn !== 0) {
+        setTimeout(runBotPlayTurn, 1000);
+      }
+    }
+
+    function checkEarlyTermination() {
+      const buyer = GameState.players[GameState.bidWinner];
+      const buyerTeam = buyer.team;
+      const buyerTarget = GameState.highestBid;
+      const buyerCurrentTricks = buyerTeam === 'A' ? GameState.tricksTeamA : GameState.tricksTeamB;
+      const defenderCurrentTricks = buyerTeam === 'A' ? GameState.tricksTeamB : GameState.tricksTeamA;
+
+      // 1. Buyer Team Reached Target -> "وصلت!"
+      if (buyerCurrentTricks >= buyerTarget) {
+        handleRoundVictory(true);
+        return true;
+      }
+
+      // 2. Buyer Team mathematically busted -> "خسارة! تم كسر المشتري"
+      const maxPossibleForBuyer = 9 - defenderCurrentTricks;
+      if (maxPossibleForBuyer < buyerTarget) {
+        handleRoundVictory(false);
+        return true;
+      }
+
+      return false;
+    }
+
+    function handleRoundVictory(isBuyerWinner) {
+      clearInterval(GameState.timerInterval);
+      GameState.phase = 'FINISHED';
+
+      const buyer = GameState.players[GameState.bidWinner];
+      const isMyTeamBuyer = buyer.team === 'A';
+      const userWon = (isBuyerWinner && isMyTeamBuyer) || (!isBuyerWinner && !isMyTeamBuyer);
+
+      let pts = GameState.highestBid;
+      if (GameState.highestBid === 9) pts = 16;
+
+      if (isBuyerWinner) {
+        if (buyer.team === 'A') GameState.matchScoreTeamA += pts;
+        else GameState.matchScoreTeamB += pts;
+      } else {
+        if (buyer.team === 'A') GameState.matchScoreTeamB += pts * 2;
+        else GameState.matchScoreTeamA += pts * 2;
+      }
+
+      updateScoreboard();
+
+      const modal = document.getElementById('roundResultModal');
+      const card = document.getElementById('resultModalCard');
+      const icon = document.getElementById('resultIcon');
+      const title = document.getElementById('resultMainTitle');
+      const sub = document.getElementById('resultSubTitle');
+      const bName = document.getElementById('resultBuyerName');
+      const bTarget = document.getElementById('resultBidTarget');
+      const rA = document.getElementById('resultTricksA');
+      const rB = document.getElementById('resultTricksB');
+      const rPts = document.getElementById('resultPointsEarned');
+
+      if (bName) bName.textContent = `${buyer.name} (${buyer.team === 'A' ? 'فريقك 🟢' : 'خصمك 🔴'})`;
+      if (bTarget) bTarget.textContent = buyerTargetText(GameState.highestBid);
+      if (rA) rA.textContent = GameState.tricksTeamA;
+      if (rB) rB.textContent = GameState.tricksTeamB;
+
+      if (userWon) {
+        if (icon) icon.textContent = '🎉';
+        if (title) {
+          title.textContent = isBuyerWinner ? 'وصـلـت!' : 'كفو! تم كسر المشتري';
+          title.className = 'text-2xl sm:text-3xl font-black text-emerald-400 mb-1';
+        }
+        if (sub) sub.textContent = isBuyerWinner ? 'نجح فريقك في تحقيق عدد الأكلات المطلوب' : 'نجح فريقك في التصدي للمشتري وكسره';
+        if (rPts) rPts.textContent = `+${isBuyerWinner ? pts : pts * 2} نقطة لفريقك 🟢`;
+        if (card) card.className = 'bg-slate-900 border-2 border-emerald-500 rounded-3xl w-full max-w-md p-5 sm:p-6 text-center shadow-2xl';
+        
+        if (GameState.highestBid === 9 && isBuyerWinner) AudioController.playBaoonFanfare();
+        else AudioController.playTrickWon();
+      } else {
+        if (icon) icon.textContent = '❌';
+        if (title) {
+          title.textContent = isBuyerWinner ? 'خسارة! وصل الخصم' : 'خسارة! تم كسر فريقكم';
+          title.className = 'text-2xl sm:text-3xl font-black text-rose-500 mb-1';
+        }
+        if (sub) sub.textContent = isBuyerWinner ? 'حقق فريق الخصم عدد الأكلات التي طلبها' : 'لم يستطع فريقكم تحقيق الأكلات المطلوبة وتم كسركم';
+        if (rPts) rPts.textContent = `+${isBuyerWinner ? pts : pts * 2} نقطة لخصمك 🔴`;
+        if (card) card.className = 'bg-slate-900 border-2 border-rose-500 rounded-3xl w-full max-w-md p-5 sm:p-6 text-center shadow-2xl';
+        AudioController.playDefeat();
+      }
+
+      modal?.classList.remove('hidden');
+    }
+
+    function buyerTargetText(bid) {
+      if (bid === 9) return 'باون (9 أكلات)';
+      return `${bid} أكلات`;
+    }
+
+    function finishRound() {
+      const buyer = GameState.players[GameState.bidWinner];
+      const buyerTricks = buyer.team === 'A' ? GameState.tricksTeamA : GameState.tricksTeamB;
+      const isBuyerWinner = buyerTricks >= GameState.highestBid;
+      handleRoundVictory(isBuyerWinner);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      UserStore.init();
+
+      // Render Avatar Selection Grid
+      const avatarGrid = document.getElementById('avatarGridContainer');
+      if (avatarGrid) {
+        avatarGrid.innerHTML = '';
+        AVATARS_CATALOG.forEach(av => {
+          const item = document.createElement('div');
+          item.className = 'cursor-pointer bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 hover:border-amber-400 rounded-xl p-1.5 flex flex-col items-center gap-1 transition active:scale-95 group shadow-sm';
+          item.innerHTML = `
+            <div class="w-12 h-12 rounded-full overflow-hidden border border-slate-600 group-hover:border-amber-400 shadow-inner flex items-center justify-center bg-slate-900">
+              ${av.render()}
+            </div>
+            <span class="text-[9px] text-center font-bold text-slate-300 group-hover:text-amber-300 leading-tight">${av.title}</span>
+          `;
+          item.addEventListener('click', () => {
+            UserStore.updateAvatar(av.id);
+            document.getElementById('profileModal')?.classList.add('hidden');
+            renderBotSeats();
+            announceBanner(`تم اختيار شخصية: ${av.title}`, '👤');
+          });
+          avatarGrid.appendChild(item);
+        });
+      }
+
+      // Custom Image Upload
+      document.getElementById('inputCustomAvatarUpload')?.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          UserStore.setCustomAvatar(evt.target.result);
+          document.getElementById('profileModal')?.classList.add('hidden');
+          renderBotSeats();
+          announceBanner('تم تعيين صورتك الخاصة بنجاح!', '📷');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Modals toggles
+      document.getElementById('btnOpenProfile')?.addEventListener('click', () => {
+        document.getElementById('profileModal')?.classList.remove('hidden');
+      });
+      document.getElementById('btnCloseProfileModal')?.addEventListener('click', () => {
+        document.getElementById('profileModal')?.classList.add('hidden');
+      });
+
+      document.getElementById('btnSaveProfileInfo')?.addEventListener('click', () => {
+        const nameVal = document.getElementById('inputPlayerName')?.value;
+        UserStore.updateName(nameVal);
+        document.getElementById('profileModal')?.classList.add('hidden');
+        renderBotSeats();
+        announceBanner('تم حفظ الاسم بنجاح', '✅');
+      });
+
+      document.getElementById('ruleGuideBtn')?.addEventListener('click', () => {
+        document.getElementById('rulesModal')?.classList.remove('hidden');
+      });
+      document.getElementById('closeRulesBtn')?.addEventListener('click', () => {
+        document.getElementById('rulesModal')?.classList.add('hidden');
+      });
+
+      document.getElementById('btnOpenRoomsModal')?.addEventListener('click', () => {
+        document.getElementById('roomsModal')?.classList.remove('hidden');
+        const link = window.location.href;
+        const linkText = document.getElementById('currentShareUrlText');
+        if (linkText) linkText.textContent = link;
+      });
+      document.getElementById('btnCloseRoomsModal')?.addEventListener('click', () => {
+        document.getElementById('roomsModal')?.classList.add('hidden');
+      });
+
+      document.getElementById('btnShareRoom')?.addEventListener('click', () => {
+        document.getElementById('roomsModal')?.classList.remove('hidden');
+      });
+
+      document.getElementById('btnCopyRoomLink')?.addEventListener('click', () => {
+        const tempInp = document.createElement('input');
+        tempInp.value = window.location.href;
+        document.body.appendChild(tempInp);
+        tempInp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInp);
+        announceBanner('تم نسخ رابط اللعبة بنجاح!', '📋');
+      });
+
+      document.getElementById('btnShareWhatsApp')?.addEventListener('click', () => {
+        const shareMsg = encodeURIComponent(`تعال العب معي كوت بو ستة أونو الكويتية أونلاين!\nادخل من الرابط:\n${window.location.href}`);
+        window.open(`https://api.whatsapp.com/send?text=${shareMsg}`, '_blank');
+      });
+
+      // PWA Install
+      let deferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+      });
+
+      document.getElementById('btnPwaInstall')?.addEventListener('click', async () => {
+        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIos) {
+          document.getElementById('iosInstallGuideModal')?.classList.remove('hidden');
+        } else if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          if (outcome === 'accepted') {
+            announceBanner('جاري تثبيت تطبيق كوت أونو!', '📲');
+          }
+        } else {
+          announceBanner('التطبيق جاهز ويعمل بكفاءة عالية على جهازك!', '✨');
+        }
+      });
+
+      document.getElementById('btnCloseIosGuide')?.addEventListener('click', () => {
+        document.getElementById('iosInstallGuideModal')?.classList.add('hidden');
+      });
+
+      // Sound Toggle
+      document.getElementById('soundToggleBtn')?.addEventListener('click', () => {
+        AudioController.enabled = !AudioController.enabled;
+        const onIcon = document.getElementById('soundIconOn');
+        const offIcon = document.getElementById('soundIconOff');
+        if (AudioController.enabled) {
+          onIcon?.classList.remove('hidden');
+          offIcon?.classList.add('hidden');
+          announceBanner('تم تفعيل الصوت', '🔊');
+        } else {
+          onIcon?.classList.add('hidden');
+          offIcon?.classList.remove('hidden');
+          announceBanner('تم كتم الصوت', '🔇');
+        }
+      });
+
+      // Bidding Buttons for Human Player
+      document.querySelectorAll('.bid-val-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = parseInt(btn.dataset.bid, 10);
+          submitBid(0, val);
+        });
+      });
+
+      document.getElementById('btnPassBid')?.addEventListener('click', () => {
+        submitBid(0, 0);
+      });
+
+      // Trump Picker
+      document.querySelectorAll('.hukm-pick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const color = btn.dataset.color;
+          setTrumpAndStartPlay(color);
+        });
+      });
+
+      // Next Round Button
+      document.getElementById('btnNextRound')?.addEventListener('click', () => {
+        document.getElementById('roundResultModal')?.classList.add('hidden');
+        GameState.dealerIdx = (GameState.dealerIdx + 1) % 6;
+        startNewRound();
+      });
+
+      // Reset Match
+      document.getElementById('resetMatchBtn')?.addEventListener('click', () => {
+        startNewMatch();
+        announceBanner('تمت إعادة المباراة من جديد!', '🔄');
+      });
+
+      // Start the match
+      startNewMatch();
+    });
+  </script>
 </body>
 </html>
