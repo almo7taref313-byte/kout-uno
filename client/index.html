@@ -84,6 +84,7 @@
       width: 100%;
       padding: 4px 8px;
       position: relative;
+      overflow: visible;
     }
 
     /* Light Grey Luxury Felt Table 3D styling (أرضية الطاولة رمادي فاتح) */
@@ -203,7 +204,7 @@
       font-weight: 800;
       font-size: 13px;
       line-height: 1;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.85);
       pointer-events: none;
       z-index: 15;
     }
@@ -213,17 +214,21 @@
     .corner-bl { bottom: 3px; left: 4px; }
     .corner-br { bottom: 3px; right: 4px; }
 
-    /* Interactive Hand Cards */
-    .player-card:hover {
-      transform: translateY(-22px) scale(1.08) !important;
-      box-shadow: 0 16px 26px rgba(245, 158, 11, 0.6) !important;
-      z-index: 45 !important;
+    /* Interactive Hand Cards - دائماً مرئية ومشرقة وبألوانها الحقيقية */
+    .player-card {
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: pointer;
     }
+    .player-card:hover {
+      transform: translateY(-28px) scale(1.12) !important;
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(245, 158, 11, 0.75) !important;
+      z-index: 70 !important;
+    }
+    /* عند عدم إمكانية اللعب لا نخفي أو نعتّم الورقة، بل نحافظ على لونها ووضوحها الكامل */
     .player-card.disabled {
-      opacity: 0.35;
-      filter: grayscale(0.85) brightness(0.6);
-      cursor: not-allowed;
-      pointer-events: none;
+      opacity: 0.95 !important;
+      filter: none !important;
     }
     .player-card.active-playable {
       animation: bounceCard 2.1s infinite ease-in-out;
@@ -286,35 +291,42 @@
       }
     }
 
-    /* Hand Fan Mode (مسكة اليد الواقعية الاحترافية) */
+    /* Hand Fan Mode (مسكة اليد الواقعية الاحترافية والواسعة والمريحة) */
     .hand-mode-fan {
       position: relative;
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      height: 120px;
-      padding-top: 15px;
+      height: 145px;
+      padding-top: 20px;
+      padding-bottom: 8px;
+      overflow: visible !important;
+      perspective: 1000px;
     }
     @media (min-width: 640px) {
-      .hand-mode-fan { height: 140px; }
+      .hand-mode-fan { height: 175px; padding-top: 25px; }
     }
     .hand-mode-fan .uno-card {
+      position: relative;
       margin-left: -28px !important;
       margin-right: -28px !important;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.2s ease, z-index 0.1s ease;
-      transform-origin: 50% 120%;
+      transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2), margin 0.22s ease, z-index 0.1s ease, box-shadow 0.22s ease;
+      transform-origin: 50% 260px !important;
+      box-shadow: -4px 6px 14px rgba(0, 0, 0, 0.45);
     }
     @media (min-width: 640px) {
       .hand-mode-fan .uno-card {
-        margin-left: -34px !important;
-        margin-right: -34px !important;
+        margin-left: -32px !important;
+        margin-right: -32px !important;
+        transform-origin: 50% 300px !important;
       }
     }
     .hand-mode-fan .player-card:hover {
-      transform: translateY(-28px) scale(1.15) rotate(0deg) !important;
-      margin-left: 2px !important;
-      margin-right: 2px !important;
-      z-index: 60 !important;
+      transform: translateY(-46px) scale(1.2) rotate(0deg) !important;
+      margin-left: 8px !important;
+      margin-right: 8px !important;
+      z-index: 120 !important;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(245, 158, 11, 0.9) !important;
     }
 
     /* Voice Callout Bubble */
@@ -471,13 +483,12 @@
       <!-- Match Score Board (لنا 🟢 vs لهم 🔴) & Current Round Status -->
       <div class="flex items-center gap-2 sm:gap-4">
         <!-- Team A (لنا) -->
-        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-300 rounded-xl px-2 sm:px-3 py-0.5 shadow-sm">
+        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-300 rounded-xl px-2.5 sm:px-3 py-0.5 shadow-sm">
           <div class="flex flex-col text-right">
             <span class="text-[9px] font-black text-emerald-800">لنا 🟢</span>
             <div id="trickDotsContainerA" class="flex items-center gap-0.5 mt-0.5"></div>
           </div>
           <span id="scoreTeamA" class="font-uno font-black text-base sm:text-lg text-emerald-700 leading-none mr-1">0</span>
-          <span class="text-[9px] text-emerald-600 font-bold hidden sm:inline">(<span id="tricksCountTextA">0</span>)</span>
         </div>
 
         <!-- Center Match Info (المشتري + الحكم) -->
@@ -492,8 +503,7 @@
         </div>
 
         <!-- Team B (لهم) -->
-        <div class="flex items-center gap-1.5 bg-rose-50 border border-rose-300 rounded-xl px-2 sm:px-3 py-0.5 shadow-sm">
-          <span class="text-[9px] text-rose-600 font-bold hidden sm:inline">(<span id="tricksCountTextB">0</span>)</span>
+        <div class="flex items-center gap-1.5 bg-rose-50 border border-rose-300 rounded-xl px-2.5 sm:px-3 py-0.5 shadow-sm">
           <span id="scoreTeamB" class="font-uno font-black text-base sm:text-lg text-rose-700 leading-none ml-1">0</span>
           <div class="flex flex-col text-left">
             <span class="text-[9px] font-black text-rose-800">لهم 🔴</span>
@@ -531,41 +541,6 @@
           </div>
         </div>
 
-        <!-- Card Display Style Toggle (زر اختيار طريقة عرض الورق: على الطاولة أو باليد) -->
-        <div class="relative">
-          <button id="btnOpenCardViewMenu" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-slate-700 font-bold text-xs transition active:scale-95 flex items-center gap-1 shadow-sm" title="طريقة عرض الأوراق">
-            <span>🃏</span>
-            <span class="hidden md:inline text-[11px]">عرض الورق</span>
-          </button>
-
-          <div id="cardViewDropdown" class="hidden absolute left-0 mt-1.5 w-56 bg-white/95 backdrop-blur-md border border-slate-300 rounded-2xl shadow-2xl p-2 z-50 text-slate-800 text-right">
-            <div class="text-[11px] font-black text-slate-700 pb-1.5 border-b border-slate-200 mb-1.5 flex items-center justify-between">
-              <span>🃏 طريقة مسك وعرض الورق:</span>
-              <span id="currentCardViewBadge" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">على الطاولة</span>
-            </div>
-
-            <div class="space-y-1">
-              <!-- 1. Table Mode -->
-              <button id="btnViewModeTable" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
-                <span class="flex items-center gap-1.5">
-                  <span>🔲</span>
-                  <span>على الطاولة (متراصف)</span>
-                </span>
-                <span class="text-[10px] text-slate-400">أفقي مريح</span>
-              </button>
-
-              <!-- 2. Realistic Hand Fan Mode -->
-              <button id="btnViewModeFan" class="w-full flex items-center justify-between p-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200 transition active:scale-95">
-                <span class="flex items-center gap-1.5">
-                  <span>🖐️</span>
-                  <span>مسكة باليد (مروحي)</span>
-                </span>
-                <span class="text-[10px] text-slate-400">إظهار زوايا الكروت</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
         <!-- Room Code Modal Button -->
         <button id="btnOpenRoomsModal" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1 shadow-sm">
           <span>🌐</span>
@@ -597,8 +572,8 @@
         <!-- Center Trick Area & Dynamic Played Cards -->
         <div id="trickSlots" class="relative w-full h-full flex items-center justify-center"></div>
 
-        <!-- Lead Suit Badge in Center of Table -->
-        <div id="leadColorBadge" class="hidden absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-black shadow-lg border border-white z-30 transition-all duration-300"></div>
+        <!-- Lead Suit Badge in Exact Center of Table (شارة لون الأكلة في وسط الطاولة تماماً) -->
+        <div id="leadColorBadge" class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-black shadow-2xl border-2 border-white z-25 pointer-events-none transition-all duration-300 flex items-center gap-2 backdrop-blur-sm"></div>
 
         <!-- Voice Callout Banner -->
         <div id="voiceCalloutBox" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950/95 border-2 border-amber-400 text-amber-300 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-2 pointer-events-none opacity-0 -translate-y-4 transition-all duration-300 z-40 max-w-xs text-center">
@@ -972,8 +947,8 @@
   </main>
 
   <!-- Player Hand Footer -->
-  <footer class="relative w-full bg-slate-950/95 border-t border-slate-800 pb-2 sm:pb-3 pt-1 px-2 z-30 safe-bottom">
-    <div class="max-w-4xl mx-auto flex flex-col items-center">
+  <footer class="relative w-full bg-slate-950/95 border-t border-slate-800 pb-2 sm:pb-3 pt-1 px-2 z-30 safe-bottom overflow-visible">
+    <div class="max-w-4xl mx-auto flex flex-col items-center overflow-visible">
       <div class="relative w-full flex items-center justify-between px-2 sm:px-4 mb-1">
         
         <!-- Left Side: Human Player Timer Ring & Countdown (عداد الوقت للاعب على الناحية اليسرى) -->
@@ -1010,7 +985,7 @@
       </div>
 
       <!-- Human Hand Container -->
-      <div id="playerHand" class="flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto max-w-full px-1 py-1 min-h-[102px] sm:min-h-[120px]"></div>
+      <div id="playerHand" class="flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-visible max-w-full px-1 py-1 min-h-[102px] sm:min-h-[120px]"></div>
     </div>
   </footer>
 
@@ -1021,6 +996,7 @@
     const SoundEngine = {
       ctx: null,
       enabled: true,
+      lastSlideTime: 0,
 
       init() {
         if (!this.ctx) {
@@ -1032,56 +1008,62 @@
         }
       },
 
-      // صوت رمي الكرت الطبيعي والواقعي (ورق كوتشينة حقيقي على قماش)
+      // صوت رمي الكرت الطبيعي، الهادئ والناعم جداً غير المزعج
       playCardSlide() {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        const now = this.ctx.currentTime;
 
-        // 1. صوت احتكاك وانزلاق الورقة الطبيعي (Organic Paper Slide)
-        const duration = 0.07;
+        const now = this.ctx.currentTime;
+        // منع تراكم الأصوات المتزامنة
+        if (now - this.lastSlideTime < 0.08) return;
+        this.lastSlideTime = now;
+
+        // تنويع طفيف جداً في النغمة لمحاكاة احتكاك الورق الطبيعي
+        const pitchVariance = 0.92 + Math.random() * 0.16;
+
+        // 1. حفيف ورقي فائق الهدوء والنعومة
+        const duration = 0.045;
         const bufferSize = Math.floor(this.ctx.sampleRate * duration);
         const noiseBuf = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
         const data = noiseBuf.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
           const progress = i / bufferSize;
-          // انحسار طبيعي يحاكي احتكاك سطح الورق المصقول
-          data[i] = (Math.random() * 2 - 1) * Math.sin(progress * Math.PI) * Math.exp(-progress * 2.5);
+          data[i] = (Math.random() * 2 - 1) * Math.sin(progress * Math.PI) * Math.exp(-progress * 3.5);
         }
 
         const slideSource = this.ctx.createBufferSource();
         slideSource.buffer = noiseBuf;
 
-        // فلتر دافئ غير حاد (Bandpass طبيعي للورق)
         const slideFilter = this.ctx.createBiquadFilter();
         slideFilter.type = 'bandpass';
-        slideFilter.frequency.setValueAtTime(1200, now);
-        slideFilter.frequency.linearRampToValueAtTime(700, now + duration);
-        slideFilter.Q.setValueAtTime(1.8, now);
+        slideFilter.frequency.setValueAtTime(950 * pitchVariance, now);
+        slideFilter.frequency.linearRampToValueAtTime(550 * pitchVariance, now + duration);
+        slideFilter.Q.setValueAtTime(1.2, now);
 
         const slideGain = this.ctx.createGain();
-        slideGain.gain.setValueAtTime(0.35, now);
-        slideGain.gain.exponentialRampToValueAtTime(0.005, now + duration);
+        // مستوى صوت خافت وهادئ ومريح للأذن
+        slideGain.gain.setValueAtTime(0.12, now);
+        slideGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
         slideSource.connect(slideFilter);
         slideFilter.connect(slideGain);
         slideGain.connect(this.ctx.destination);
         slideSource.start(now);
 
-        // 2. طقة قماشية ناعمة وخفيفة (Soft Table Felt Tap)
+        // 2. نقرة قماشية خافتة جداً
         const tapOsc = this.ctx.createOscillator();
         const tapGain = this.ctx.createGain();
-        tapOsc.type = 'triangle';
-        tapOsc.frequency.setValueAtTime(160, now + 0.015);
-        tapOsc.frequency.exponentialRampToValueAtTime(55, now + duration);
+        tapOsc.type = 'sine';
+        tapOsc.frequency.setValueAtTime(110 * pitchVariance, now + 0.01);
+        tapOsc.frequency.exponentialRampToValueAtTime(45, now + duration);
 
-        tapGain.gain.setValueAtTime(0.22, now + 0.015);
+        tapGain.gain.setValueAtTime(0.08, now + 0.01);
         tapGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
         tapOsc.connect(tapGain);
         tapGain.connect(this.ctx.destination);
-        tapOsc.start(now + 0.015);
+        tapOsc.start(now + 0.01);
         tapOsc.stop(now + duration);
       },
 
@@ -1608,9 +1590,7 @@
       timerRemaining: 12,
       timerInterval: null,
       // قفل لمنع رمي كرتين نهائياً (Strict Single-Card Lock)
-      isActionPending: false,
-      // طريقة عرض ورق اليد: 'table' (على الطاولة) أو 'fan' (مسكة اليد الاحترافية)
-      cardViewMode: localStorage.getItem('kout_card_view_mode') || 'table'
+      isActionPending: false
     };
 
     function buildDeck() {
@@ -1821,16 +1801,13 @@
        ========================================================================== */
     function renderHumanHand() {
       const container = document.getElementById('playerHand');
+      if (!container) return;
       container.innerHTML = '';
       const me = GameState.players[0];
       if (!me || !me.hand) return;
 
-      // ضبط كلاس المسكة (طاولة مصفوفة أو مروحي باليد)
-      if (GameState.cardViewMode === 'fan') {
-        container.className = 'hand-mode-fan overflow-visible max-w-full px-2 py-1 select-none';
-      } else {
-        container.className = 'flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto max-w-full px-1 py-1 min-h-[102px] sm:min-h-[120px] select-none';
-      }
+      // تثبيت عرض الأوراق على الطاولة بشكل متراصف وأفقي مريح وواضح
+      container.className = 'flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto max-w-full px-1 py-1 min-h-[102px] sm:min-h-[120px] select-none';
 
       me.hand.sort((a, b) => {
         if (a.color !== b.color) return a.color.localeCompare(b.color);
@@ -1838,27 +1815,16 @@
       });
 
       const isMyTurn = GameState.currentTurn === 0 && GameState.phase === 'PLAYING' && !GameState.isActionPending;
-      const count = me.hand.length;
 
       me.hand.forEach((card, idx) => {
         const playable = isMyTurn ? isLegalMove(me.hand, card, GameState.currentTrick) : false;
-        // أثناء المزايدة تكون الأوراق مرئية وبكامل وضوحها لمساعدته على اختيار الحكم
-        const isBiddingPhase = GameState.phase === 'BIDDING';
-        const el = createCardElement(card, true, (playable && !GameState.isActionPending) || isBiddingPhase);
+        
+        // الأوراق دائماً ظاهرة ومرئية بالكامل وبألوانها الحقيقية للاعب
+        const el = createCardElement(card, true, true);
+        el.style.transform = '';
+        el.style.zIndex = '';
 
-        // تطبيق زاوية الانحناء المروحي لليد الاحترافية
-        if (GameState.cardViewMode === 'fan' && count > 1) {
-          const mid = (count - 1) / 2;
-          const diff = idx - mid;
-          const angle = diff * 4.2; // زاوية ميلان الكرت
-          const offsetY = Math.abs(diff) * 3.5; // انحناء تقويسة اليد
-          el.style.transform = `rotate(${angle}deg) translateY(${offsetY}px)`;
-          el.style.zIndex = 10 + idx;
-        } else {
-          el.style.transform = '';
-          el.style.zIndex = '';
-        }
-
+        // وميض تشجيعي لطيف فقط للكرت المتاح عند حلول الدور
         if (isMyTurn && playable && !GameState.isActionPending) {
           el.classList.add('active-playable');
         }
@@ -1873,7 +1839,14 @@
             return;
           }
 
-          // شرط صارم: لا يسمح للاعب برمي كرتين نهائياً
+          // منع إلقاء الكرت نهائياً إذا لم يكن دور اللاعب
+          if (GameState.phase === 'PLAYING' && GameState.currentTurn !== 0) {
+            const currentPlayerName = GameState.players[GameState.currentTurn]?.name || 'الخصم';
+            SoundEngine.speakKuwaitiPhrase(`اصبر يا معود! الدور عند ${currentPlayerName} ⏳`, '✋');
+            return;
+          }
+
+          // شرط صارم: لا يسمح للاعب برمي كرتين نهائياً أو اللعب خارج الدور
           if (!isMyTurn || GameState.isActionPending) return;
 
           if (GameState.currentTrick.length === 0 && (card.isJoker || card.isMaker)) {
@@ -1896,9 +1869,7 @@
 
           // تفعيل القفل فوراً حتى لا يتمكن اللاعب من لمس أو رمي كرت ثانٍ
           GameState.isActionPending = true;
-          // إزالة الفاعلية عن كامل كروت اليد بصرياً
           document.querySelectorAll('.player-card').forEach(c => {
-            c.classList.add('disabled');
             c.classList.remove('active-playable');
           });
 
@@ -1906,118 +1877,103 @@
         };
 
         el.addEventListener('click', handleCardPlay);
-        el.addEventListener('touchend', handleCardPlay);
         container.appendChild(el);
       });
 
       const notice = document.getElementById('playerActionNotice');
-      if (isMyTurn && !GameState.isActionPending) notice.classList.remove('hidden');
-      else notice.classList.add('hidden');
+      if (notice) {
+        if (isMyTurn && !GameState.isActionPending) notice.classList.remove('hidden');
+        else notice.classList.add('hidden');
+      }
     }
 
+    /* ==========================================================================
+       رسم مقاعد البوتات حول الطاولة (Bot Seats Renderer)
+       ========================================================================== */
     function renderBotSeats() {
-      GameState.players.slice(1).forEach(p => {
-        const cfg = SEAT_DEFINITIONS.find(s => s.id === p.id);
-        if (!cfg) return;
-        const seat = document.getElementById(cfg.seatEl);
-        if (!seat) return;
+      // تحديث المقاعد من 1 إلى 5 المحيطة بالطاولة
+      for (let i = 1; i <= 5; i++) {
+        const seatEl = document.getElementById(`seat-${i}`);
+        if (!seatEl) continue;
+        const player = GameState.players[i];
+        if (!player) continue;
 
-        const isTurn = GameState.currentTurn === p.id && (GameState.phase === 'PLAYING' || GameState.phase === 'BIDDING');
-        const isPartner = p.team === 'A';
-        const teamClass = isPartner ? 'border-emerald-500/80' : 'border-rose-500/80';
+        const isPartner = player.team === 'A';
+        const teamColor = isPartner ? 'emerald' : 'rose';
+        const isTurn = GameState.currentTurn === i && GameState.phase !== 'FINISHED';
+        const isBuyer = GameState.bidWinner === i && GameState.highestBid > 4;
 
-        // فحص إذا كان هذا اللاعب هو المشتري لإظهار لون الحكم ورقم الأكلات أو "ملزوم" عند صورته
-        const isBuyer = GameState.bidWinner === p.id && GameState.trumpColor;
-        let buyerBadgeMarkup = '';
+        // حالة المشتري أو الملزوم
+        let buyerBadge = '';
         if (isBuyer) {
-          const trumpInfo = SUIT_COLORS[GameState.trumpColor];
-          let bidDisplay = '';
           if (GameState.isForcedBid) {
-            bidDisplay = '<span class="text-rose-600 font-black">ملزوم ⚡</span>';
-          } else if (GameState.highestBid === 9) {
-            bidDisplay = '👑 باون';
+            buyerBadge = `<div class="absolute -top-3.5 right-1/2 translate-x-1/2 bg-amber-500 text-slate-950 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-white shadow-md z-30 whitespace-nowrap animate-pulse">ملزوم ⚡</div>`;
           } else {
-            bidDisplay = `${GameState.highestBid} أكلات`;
+            const trumpColorObj = GameState.trumpColor && SUIT_COLORS[GameState.trumpColor] ? SUIT_COLORS[GameState.trumpColor] : null;
+            const trumpStyle = trumpColorObj ? `background-color: ${trumpColorObj.hex}; color: ${GameState.trumpColor === 'yellow' ? '#000' : '#fff'}` : 'background-color: #f59e0b; color: #000';
+            const bidText = GameState.highestBid === 9 ? 'باون' : `${GameState.highestBid}`;
+            buyerBadge = `<div class="absolute -top-3.5 right-1/2 translate-x-1/2 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-white shadow-md z-30 whitespace-nowrap" style="${trumpStyle}">المشتري (${bidText})</div>`;
           }
+        }
 
-          buyerBadgeMarkup = `
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white border-2 ${GameState.isForcedBid ? 'border-rose-500 ring-2 ring-rose-300/60' : 'border-amber-400'} rounded-full px-2 py-0.5 shadow-md flex items-center gap-1 z-30 whitespace-nowrap animate-bounce">
-              <span class="w-3 h-3 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${trumpInfo.hex}"></span>
-              <span class="text-[9px] font-black text-slate-900">${bidDisplay}</span>
+        // بطاقات اليد المتبقية للبوت
+        const remainingCards = player.hand ? player.hand.length : 0;
+        let cardStackMarkup = '';
+        if (GameState.phase === 'PLAYING' && remainingCards > 0) {
+          cardStackMarkup = `
+            <div class="flex items-center justify-center -space-x-2 mt-0.5">
+              <span class="text-[9px] font-mono font-bold bg-slate-900/90 text-amber-300 border border-slate-700 px-1.5 rounded-full">🎴 ${remainingCards}</span>
             </div>
           `;
         }
 
-        const isCriticalTime = isTurn && GameState.timerRemaining <= 3;
-        const glowClass = isTurn ? (isCriticalTime ? 'glow-turn-critical-red' : 'glow-turn-phosphor') : teamClass;
+        const avatarMarkup = UserStore.renderAvatar(player.avatarId, player.customPhoto);
 
-        seat.innerHTML = `
+        seatEl.innerHTML = `
           <div class="relative flex flex-col items-center">
-            <div id="bidBadge-${p.id}" class="hidden absolute -top-6 bg-amber-400 text-slate-950 text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow border border-slate-900 z-30"></div>
+            <!-- Bidding Badge -->
+            <div id="bidBadge-${i}" class="hidden absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow border z-30 whitespace-nowrap"></div>
 
-            <!-- شارة المشتري عند صورته (لون الحكم ورقم الأكلات أو كلمة ملزوم) -->
-            ${buyerBadgeMarkup}
+            ${buyerBadge}
 
-            <div class="relative w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 flex items-center justify-center">
-              <!-- Neon Turn Timer SVG Circle -->
-              <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 44 44">
-                <circle cx="22" cy="22" r="20" stroke="rgba(0,0,0,0.1)" stroke-width="3" fill="none"/>
-                <circle id="timerRing-${p.id}" class="timer-ring-neon" cx="22" cy="22" stroke="${isCriticalTime ? '#ef4444' : (isTurn ? '#facc15' : 'transparent')}" stroke-width="3.5" fill="none"/>
+            <!-- Avatar with Timer SVG & Glowing Turn Highlight -->
+            <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 44 44">
+                <circle cx="22" cy="22" r="20" stroke="rgba(255,255,255,0.12)" stroke-width="2.5" fill="none"/>
+                <circle id="timerRing-${i}" class="timer-ring-neon" cx="22" cy="22" r="20" stroke="#f59e0b" stroke-width="3" fill="none"/>
               </svg>
-
-              <!-- Avatar Holder مع الوهج الفسفوري البسيط أو الأحمر عند الخطر -->
-              <div id="avatarHolder-${p.id}" class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md border-2 ${glowClass} bg-slate-950 transition-all duration-200">
-                ${UserStore.renderAvatar(p.avatarId)}
+              <div id="avatarHolder-${i}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-${teamColor}-400 bg-slate-950 shadow-lg relative transition-all duration-300 ${isTurn ? 'glow-turn-phosphor' : ''}">
+                ${avatarMarkup}
               </div>
             </div>
 
-            <!-- Name and Team Badge -->
-            <div class="bg-white/95 border ${teamClass} rounded-full px-2 py-0.5 text-center mt-1 shadow-md flex items-center gap-1 backdrop-blur-sm">
-              <span class="text-[10px] sm:text-[11px] font-black text-slate-800">${p.name}</span>
-              <span class="text-[8px] font-black px-1.5 py-0.2 rounded-full ${isPartner ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">
-                ${isPartner ? 'لنا 🟢' : 'لهم 🔴'}
+            <!-- Bot Player Name & Team Badge -->
+            <div class="flex items-center gap-1 mt-0.5 bg-slate-900/90 border border-slate-700/80 rounded-full px-2 py-0.5 shadow-sm">
+              <span class="text-[10px] sm:text-[11px] font-black text-slate-100">${player.name}</span>
+              <span class="text-[8px] font-black px-1 rounded-full ${isPartner ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-400 border border-rose-500/40'}">
+                ${isPartner ? 'لنا' : 'لهم'}
               </span>
-              <span class="bg-slate-200 text-slate-800 text-[9px] px-1 rounded-full font-mono font-bold">${p.hand ? p.hand.length : 0}</span>
             </div>
+
+            ${cardStackMarkup}
           </div>
         `;
-      });
-
-      // تحديث شارة المشتري والوهج للاعب البشري ("أنت") أسفل الشاشة
-      const humanAvatar = document.getElementById('humanHandAvatarIcon');
-      const isHumanTurn = GameState.currentTurn === 0 && (GameState.phase === 'PLAYING' || GameState.phase === 'BIDDING');
-      const isHumanCritical = isHumanTurn && GameState.timerRemaining <= 3;
-
-      if (humanAvatar) {
-        humanAvatar.classList.remove('glow-turn-phosphor', 'glow-turn-critical-red', 'border-emerald-400');
-        if (isHumanTurn) {
-          humanAvatar.classList.add(isHumanCritical ? 'glow-turn-critical-red' : 'glow-turn-phosphor');
-        } else {
-          humanAvatar.classList.add('border-emerald-400');
-        }
       }
 
-      const humanBuyerBadge = document.getElementById('humanBuyerIndicator');
-      if (humanBuyerBadge) {
-        if (GameState.bidWinner === 0 && GameState.trumpColor) {
-          const trumpInfo = SUIT_COLORS[GameState.trumpColor];
-          let bidDisplay = '';
+      // تحديث شارة المشتري للاعب البشري (المقعد 0)
+      const humanBuyerIndicator = document.getElementById('humanBuyerIndicator');
+      if (humanBuyerIndicator) {
+        if (GameState.bidWinner === 0 && GameState.highestBid > 4) {
+          humanBuyerIndicator.classList.remove('hidden');
           if (GameState.isForcedBid) {
-            bidDisplay = '<span class="text-rose-600 font-black">ملزوم ⚡</span>';
-          } else if (GameState.highestBid === 9) {
-            bidDisplay = '👑 باون';
+            humanBuyerIndicator.innerHTML = `<span class="text-[9px] font-black text-amber-900">ملزوم ⚡</span>`;
           } else {
-            bidDisplay = `${GameState.highestBid} أكلات`;
+            const trumpColorObj = GameState.trumpColor && SUIT_COLORS[GameState.trumpColor] ? SUIT_COLORS[GameState.trumpColor] : null;
+            const colName = trumpColorObj ? trumpColorObj.name : '';
+            humanBuyerIndicator.innerHTML = `<span class="text-[9px] font-black text-slate-900">المشتري (${GameState.highestBid === 9 ? 'باون' : GameState.highestBid}) ${colName}</span>`;
           }
-
-          humanBuyerBadge.innerHTML = `
-            <span class="w-3 h-3 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${trumpInfo.hex}"></span>
-            <span class="text-[9px] font-black text-slate-900">${bidDisplay}</span>
-          `;
-          humanBuyerBadge.className = `absolute -top-3.5 right-0 bg-white border-2 ${GameState.isForcedBid ? 'border-rose-500 ring-2 ring-rose-300' : 'border-amber-400'} rounded-full px-2 py-0.2 shadow flex items-center gap-1 z-30`;
-          humanBuyerBadge.classList.remove('hidden');
         } else {
-          humanBuyerBadge.classList.add('hidden');
+          humanBuyerIndicator.classList.add('hidden');
         }
       }
     }
@@ -2068,11 +2024,15 @@
       const badge = document.getElementById('leadColorBadge');
       if (badge) {
         const lead = getEffectiveLeadColor(GameState.currentTrick);
-        if (lead && lead !== 'special' && SUIT_COLORS[lead]) {
+        if (lead && lead !== 'special' && SUIT_COLORS[lead] && GameState.currentTrick.length > 0) {
           badge.classList.remove('hidden');
           badge.style.backgroundColor = SUIT_COLORS[lead].hex;
           badge.style.color = lead === 'yellow' ? '#000' : '#fff';
-          badge.textContent = `الأكلة: ${SUIT_COLORS[lead].name}`;
+          const circleColor = lead === 'yellow' ? 'bg-slate-950' : 'bg-white';
+          badge.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full ${circleColor} shadow animate-pulse"></span>
+            <span>الأكلة: ${SUIT_COLORS[lead].name}</span>
+          `;
         } else {
           badge.classList.add('hidden');
         }
@@ -2176,8 +2136,6 @@
     function updateScoreboard() {
       const sA = document.getElementById('scoreTeamA');
       const sB = document.getElementById('scoreTeamB');
-      const tA = document.getElementById('tricksCountTextA');
-      const tB = document.getElementById('tricksCountTextB');
       const dotsA = document.getElementById('trickDotsContainerA');
       const dotsB = document.getElementById('trickDotsContainerB');
       const buyerBox = document.getElementById('buyerStatusContent');
@@ -2185,8 +2143,6 @@
 
       if (sA) sA.textContent = GameState.matchScoreTeamA;
       if (sB) sB.textContent = GameState.matchScoreTeamB;
-      if (tA) tA.textContent = GameState.tricksTeamA;
-      if (tB) tB.textContent = GameState.tricksTeamB;
 
       if (dotsA) {
         dotsA.innerHTML = '';
@@ -2207,9 +2163,12 @@
       }
 
       if (buyerBox) {
-        if (GameState.bidWinner !== null && GameState.highestBid > 4) {
+        if (GameState.bidWinner !== null && GameState.highestBid >= 5) {
           const buyer = GameState.players[GameState.bidWinner];
-          const isPartner = buyer && buyer.team === 'A';
+          const buyerName = (buyer && buyer.name) ? buyer.name : (GameState.bidWinner === 0 ? UserStore.user.name : `لاعب ${GameState.bidWinner + 1}`);
+          const buyerTeam = (buyer && buyer.team) ? buyer.team : (GameState.bidWinner % 2 === 0 ? 'A' : 'B');
+          const isPartner = buyerTeam === 'A';
+          
           let bidLabel = `${GameState.highestBid} أكلات`;
           if (GameState.isForcedBid) {
             bidLabel = 'ملزوم (5) ⚡';
@@ -2218,7 +2177,7 @@
           }
 
           buyerBox.innerHTML = `
-            <span class="font-extrabold ${isPartner ? 'text-emerald-700' : 'text-rose-700'}">${buyer ? buyer.name : 'المشتري'}</span>
+            <span class="font-extrabold ${isPartner ? 'text-emerald-700' : 'text-rose-700'}">${buyerName}</span>
             <span class="text-[10px] px-1.5 py-0.2 rounded font-black ${isPartner ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${bidLabel}</span>
           `;
         } else {
@@ -3066,50 +3025,6 @@
           }
           SoundEngine.speakKuwaitiPhrase('تم الخروج من ملء الشاشة', '🔲');
         }
-      });
-
-      // --- CARD VIEW MODE (طريقة عرض الورق: على الطاولة أو باليد) ---
-      const cardViewBtn = document.getElementById('btnOpenCardViewMenu');
-      const cardViewDropdown = document.getElementById('cardViewDropdown');
-      const cardViewBadge = document.getElementById('currentCardViewBadge');
-
-      const updateCardViewBadge = () => {
-        if (!cardViewBadge) return;
-        cardViewBadge.textContent = GameState.cardViewMode === 'fan' ? 'مسكة باليد 🖐️' : 'على الطاولة 🔲';
-      };
-      updateCardViewBadge();
-
-      if (cardViewBtn && cardViewDropdown) {
-        cardViewBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          cardViewDropdown.classList.toggle('hidden');
-          // إغلاق قائمة الشاشة إن كانت مفتوحة
-          if (screenDropdown) screenDropdown.classList.add('hidden');
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!cardViewDropdown.contains(e.target) && e.target !== cardViewBtn) {
-            cardViewDropdown.classList.add('hidden');
-          }
-        });
-      }
-
-      bindClick('btnViewModeTable', () => {
-        GameState.cardViewMode = 'table';
-        localStorage.setItem('kout_card_view_mode', 'table');
-        if (cardViewDropdown) cardViewDropdown.classList.add('hidden');
-        updateCardViewBadge();
-        renderHumanHand();
-        SoundEngine.speakKuwaitiPhrase('تم تفعيل عرض الورق على الطاولة', '🔲');
-      });
-
-      bindClick('btnViewModeFan', () => {
-        GameState.cardViewMode = 'fan';
-        localStorage.setItem('kout_card_view_mode', 'fan');
-        if (cardViewDropdown) cardViewDropdown.classList.add('hidden');
-        updateCardViewBadge();
-        renderHumanHand();
-        SoundEngine.speakKuwaitiPhrase('تم تفعيل مسكة الورق باليد الاحترافية', '🖐️');
       });
 
       // --- LOBBY BUTTON LISTENERS ---
