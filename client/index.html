@@ -431,75 +431,74 @@
     <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 px-1 sm:px-3 py-1 flex items-center justify-between shadow-sm z-30 relative select-none h-11 sm:h-12 flex-shrink-0">
       
       <!-- Right: User & Room Info -->
-      <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-        <button id="btnHeaderReturnToLobby" class="p-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs transition active:scale-95 shadow-sm" title="الرئيسية">
+      <div class="flex items-center gap-1 flex-shrink-0">
+        <button id="btnHeaderReturnToLobby" class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs transition active:scale-95 shadow-sm p-0" title="الرئيسية">
           🏠
         </button>
         <button id="btnOpenProfile" class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 rounded-full pr-0.5 pl-1.5 py-0.5 border border-slate-300 transition active:scale-95">
           <div id="topBarUserAvatar" class="w-4 h-4 sm:w-5 sm:h-5 rounded-full overflow-hidden border border-amber-500 bg-slate-900"></div>
-          <span id="topBarUserName" class="text-[9px] sm:text-xs font-black text-slate-800 max-w-[36px] sm:max-w-none truncate">أنت</span>
+          <span id="topBarUserName" class="text-[9px] sm:text-xs font-black text-slate-800 max-w-[32px] sm:max-w-none truncate">أنت</span>
         </button>
-        <span id="roomCodeBadge" class="text-[8px] sm:text-[9px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-300 px-1 py-0.2 rounded-full">#4821</span>
+        <span id="roomCodeBadge" class="text-[8px] sm:text-[9px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-300 px-1 py-0.2 rounded-full hidden xs:inline-block">#4821</span>
       </div>
 
-      <!-- Center: Score Board (لنا vs المشتري vs لهم) -->
-      <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0 mx-auto">
+      <!-- Center: Score Board (لنا vs المشتري vs لهم) - مضمون الظهور بدون انكماش -->
+      <div class="flex items-center justify-center gap-1 sm:gap-2 flex-shrink-0 mx-1">
         <!-- Team A (لنا) -->
-        <div class="flex items-center gap-1 bg-emerald-50 border border-emerald-300 rounded-lg px-1.5 py-0.5 shadow-sm">
+        <div class="flex items-center gap-1 bg-emerald-50 border border-emerald-400 rounded-lg px-1.5 py-0.5 shadow-sm">
           <div class="flex flex-col text-right leading-none">
-            <span class="text-[7px] sm:text-[8px] font-black text-emerald-800">لنا 🟢</span>
+            <span class="text-[8px] sm:text-[9px] font-black text-emerald-800">لنا 🟢</span>
             <div id="trickDotsContainerA" class="flex items-center gap-0.5 mt-0.5"></div>
           </div>
-          <span id="scoreTeamA" class="font-uno font-black text-xs sm:text-base text-emerald-700 leading-none mr-0.5">0</span>
+          <span id="scoreTeamA" class="font-uno font-black text-xs sm:text-base text-emerald-700 leading-none">0</span>
         </div>
 
         <!-- Center Match Info (المشتري + الحكم) -->
-        <div class="flex flex-col items-center justify-center px-0.5 leading-none min-w-[50px] sm:min-w-[70px]">
-          <div id="buyerStatusContent" class="flex items-center gap-0.5 text-[8px] sm:text-[10px] font-black text-slate-700">
+        <div class="flex flex-col items-center justify-center px-0.5 leading-none">
+          <div id="buyerStatusContent" class="flex items-center gap-0.5 text-[8px] sm:text-[9px] font-black text-slate-700">
             <span class="text-slate-400">مزايدة...</span>
           </div>
-          <div id="hukmDisplay" class="flex items-center gap-0.5 mt-0.5 text-[7px] sm:text-[9px] font-bold text-slate-500">
+          <div id="hukmDisplay" class="flex items-center gap-0.5 mt-0.5 text-[7px] sm:text-[8px] font-bold text-slate-500">
             <span>الحكم:</span>
             <span class="text-slate-400">-</span>
           </div>
         </div>
 
         <!-- Team B (لهم) -->
-        <div class="flex items-center gap-1 bg-rose-50 border border-rose-300 rounded-lg px-1.5 py-0.5 shadow-sm">
-          <span id="scoreTeamB" class="font-uno font-black text-xs sm:text-base text-rose-700 leading-none ml-0.5">0</span>
+        <div class="flex items-center gap-1 bg-rose-50 border border-rose-400 rounded-lg px-1.5 py-0.5 shadow-sm">
+          <span id="scoreTeamB" class="font-uno font-black text-xs sm:text-base text-rose-700 leading-none">0</span>
           <div class="flex flex-col text-left leading-none">
-            <span class="text-[7px] sm:text-[8px] font-black text-rose-800">لهم 🔴</span>
+            <span class="text-[8px] sm:text-[9px] font-black text-rose-800">لهم 🔴</span>
             <div id="trickDotsContainerB" class="flex items-center gap-0.5 mt-0.5"></div>
           </div>
         </div>
       </div>
 
-      <!-- Left: Toolbar Buttons (دائماً واضحة وبحجم مناسب للموبايل) -->
-      <div class="flex items-center gap-1 flex-shrink-0">
+      <!-- Left: Toolbar Buttons (دائماً واضحة ومدمجة بدون أي ضغط على السكور) -->
+      <div class="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
         <!-- Screen Settings Modal Trigger Button -->
-        <button id="btnOpenScreenDisplayMenu" type="button" class="w-7 h-7 sm:w-auto sm:px-1.5 sm:py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 border border-amber-600 rounded-lg font-black text-[10px] sm:text-xs transition active:scale-95 flex items-center justify-center gap-0.5 shadow cursor-pointer p-0" title="أوضاع الشاشة">
-          <span class="text-xs sm:text-xs leading-none">🖥️</span>
-          <span id="currentScreenModeText" class="text-[9px] font-bold hidden lg:inline">الشاشة</span>
+        <button id="btnOpenScreenDisplayMenu" type="button" class="w-6 h-6 sm:w-7 sm:h-7 bg-amber-500 hover:bg-amber-400 text-slate-950 border border-amber-600 rounded-lg font-black text-[10px] transition active:scale-95 flex items-center justify-center shadow cursor-pointer p-0" title="أوضاع الشاشة">
+          <span class="text-xs leading-none">🖥️</span>
         </button>
 
         <!-- Rooms Modal Button -->
-        <button id="btnOpenRoomsModal" class="w-7 h-7 sm:w-auto sm:px-1.5 sm:py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-xs transition active:scale-95 flex items-center justify-center shadow-sm p-0" title="الغرف أونلاين">
+        <button id="btnOpenRoomsModal" class="w-6 h-6 sm:w-7 sm:h-7 bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-indigo-700 font-bold rounded-lg text-[10px] transition active:scale-95 flex items-center justify-center shadow-sm p-0" title="الغرف أونلاين">
           <span>🌐</span>
         </button>
 
         <!-- Audio SFX Toggle -->
-        <button id="soundToggleBtn" class="w-7 h-7 sm:w-auto sm:p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="الصوت">
+        <button id="soundToggleBtn" class="w-6 h-6 sm:w-7 sm:h-7 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="الصوت">
           <svg id="soundIconOn" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
           <svg id="soundIconOff" class="w-3.5 h-3.5 hidden text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
         </button>
 
         <!-- Rules Guide -->
-        <button id="ruleGuideBtn" class="w-7 h-7 sm:w-auto sm:px-1.5 sm:py-1 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 font-bold text-xs transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="القوانين">
+        <button id="ruleGuideBtn" class="w-6 h-6 sm:w-7 sm:h-7 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 text-amber-600 font-bold text-[10px] transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="القوانين">
           <span>📖</span>
         </button>
 
         <!-- Exit -->
-        <button id="btnHeaderExitGame" class="w-7 h-7 sm:w-auto sm:px-1.5 sm:py-1 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-300 text-rose-600 font-bold text-xs transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="خروج">
+        <button id="btnHeaderExitGame" class="w-6 h-6 sm:w-7 sm:h-7 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-300 text-rose-600 font-bold text-[10px] transition active:scale-95 shadow-sm flex items-center justify-center p-0" title="خروج">
           <span>🚪</span>
         </button>
       </div>
@@ -2169,8 +2168,8 @@
       const buyerBox = document.getElementById('buyerStatusContent');
       const hukmBox = document.getElementById('hukmDisplay');
 
-      if (sA) sA.textContent = GameState.matchScoreTeamA;
-      if (sB) sB.textContent = GameState.matchScoreTeamB;
+      if (sA) sA.textContent = GameState.matchScoreTeamA ?? 0;
+      if (sB) sB.textContent = GameState.matchScoreTeamB ?? 0;
 
       if (dotsA) {
         dotsA.innerHTML = '';
@@ -2193,7 +2192,8 @@
       if (buyerBox) {
         if (GameState.bidWinner !== null && GameState.highestBid >= 5) {
           const buyer = GameState.players[GameState.bidWinner] || SEAT_DEFINITIONS[GameState.bidWinner];
-          const buyerName = buyer ? buyer.name : (GameState.bidWinner === 0 ? UserStore.user.name : `لاعب ${GameState.bidWinner + 1}`);
+          let buyerName = buyer ? buyer.name : (GameState.bidWinner === 0 ? UserStore.user.name : `لاعب ${GameState.bidWinner + 1}`);
+          if (!buyerName || buyerName.trim() === '') buyerName = GameState.bidWinner === 0 ? 'أنت' : `لاعب ${GameState.bidWinner + 1}`;
           const isPartner = buyer ? buyer.team === 'A' : (GameState.bidWinner % 2 === 0);
           
           let bidLabel = `${GameState.highestBid} أكلات`;
@@ -2204,8 +2204,8 @@
           }
 
           buyerBox.innerHTML = `
-            <span class="font-extrabold ${isPartner ? 'text-emerald-700' : 'text-rose-700'}">${buyerName}</span>
-            <span class="text-[8px] px-1 py-0.2 rounded font-black ${isPartner ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${bidLabel}</span>
+            <span class="font-extrabold max-w-[42px] truncate ${isPartner ? 'text-emerald-700' : 'text-rose-700'}">${buyerName}</span>
+            <span class="text-[7px] sm:text-[8px] px-1 py-0.2 rounded font-black whitespace-nowrap ${isPartner ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${bidLabel}</span>
           `;
         } else {
           buyerBox.innerHTML = `<span class="text-slate-400">مزايدة...</span>`;
@@ -2217,7 +2217,7 @@
           const info = SUIT_COLORS[GameState.trumpColor];
           hukmBox.innerHTML = `
             <span>الحكم:</span>
-            <span class="inline-flex items-center gap-0.5 font-black px-1 py-0.2 rounded text-[8px]" style="background-color: ${info.hex}; color: ${GameState.trumpColor === 'yellow' ? '#000' : '#fff'}">
+            <span class="inline-flex items-center gap-0.5 font-black px-1 py-0.2 rounded text-[7px] sm:text-[8px]" style="background-color: ${info.hex}; color: ${GameState.trumpColor === 'yellow' ? '#000' : '#fff'}">
               ${info.name}
             </span>
           `;
